@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-nx-theme="void">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noxen v2.1 — New Features</title>
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/noxen.min.css">
+<style>
+/* ── Page chrome ── */
+body { margin: 0; }
+.topbar { position: sticky; top: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 56px; background: rgba(3,3,10,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--nx-color-border); }
+.logo { font-family: var(--nx-font-display); font-size: 18px; font-weight: 900; color: var(--nx-color-accent); letter-spacing: 4px; }
+.version { font-family: var(--nx-font-mono); font-size: 11px; color: var(--nx-color-ok); background: var(--nx-color-ok-lo); border: 1px solid rgba(0,255,136,0.25); border-radius: 99px; padding: 2px 10px; }
+.page-wrap { max-width: 900px; margin: 0 auto; padding: 48px 32px 100px; }
+.section-head { margin: 64px 0 32px; padding-bottom: 16px; border-bottom: 1px solid var(--nx-color-border); }
+.section-head h2 { margin: 0 0 6px; font-size: clamp(1.6rem,3vw,2.2rem); }
+.section-head p { margin: 0; color: var(--nx-color-text-2); font-size: 15px; }
+.feat-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; background: var(--nx-color-ok-lo); border: 1px solid rgba(0,255,136,0.3); border-radius: 99px; font-family: var(--nx-font-mono); font-size: 10px; color: var(--nx-color-ok); margin-bottom: 12px; }
+.demo-box { background: var(--nx-color-surface-2); border: 1px solid var(--nx-color-border); border-radius: var(--nx-radius-lg); padding: 32px; margin: 20px 0; }
+.code { background: var(--nx-color-surface); border: 1px solid var(--nx-color-border); border-radius: var(--nx-radius-md); padding: 20px; font-family: var(--nx-font-mono); font-size: 12.5px; line-height: 1.8; color: var(--nx-color-text-2); overflow-x: auto; margin: 16px 0; white-space: pre; }
+.t { color: #7ec8a4; } .a { color: var(--nx-color-accent); } .v { color: #ffd369; } .c { color: var(--nx-color-text-3); font-style: italic; } .k { color: #cc99ff; }
+
+/* ── Theme dots ── */
+.tdot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; flex-shrink: 0; }
+.tdot:hover, .tdot.on { border-color: #fff; transform: scale(1.25); }
+
+/* ── Carousel slide style ── */
+.slide-card { background: var(--nx-color-surface); border: 1px solid var(--nx-color-border-2); border-radius: var(--nx-radius-lg); padding: 24px; height: 160px; display: flex; flex-direction: column; justify-content: space-between; }
+.slide-num { font-family: var(--nx-font-display); font-size: 2.5rem; font-weight: 900; color: var(--nx-color-accent); line-height: 1; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="logo">NOXEN</span>
+    <span class="version">v2.1.0 NEW</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center">
+    <span style="font-family:var(--nx-font-mono);font-size:11px;color:var(--nx-color-text-3);margin-right:4px">Theme:</span>
+    <div class="tdot on" style="background:#00e5ff" onclick="setTheme('void',this)"></div>
+    <div class="tdot" style="background:#4d9fff" onclick="setTheme('neon',this)"></div>
+    <div class="tdot" style="background:#ff4422" onclick="setTheme('carbon',this)"></div>
+    <div class="tdot" style="background:#00e87a" onclick="setTheme('bio',this)"></div>
+    <div class="tdot" style="background:#ffd700" onclick="setTheme('gold',this)"></div>
+    <div class="tdot" style="background:#d45500" onclick="setTheme('paper',this)"></div>
+    <div class="tdot" style="background:#cc44ff" onclick="setTheme('aurora',this)"></div>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button nx="btn" size="xs" variant="ghost" data-command-open="cmd-main">⌘K Command</button>
+    <a href="https://github.com/noxen-css/noxen" nx="btn" size="xs" variant="outline">★ GitHub</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="page-wrap">
+  <div style="text-align:center;padding:48px 0 32px;border-bottom:1px solid var(--nx-color-border);margin-bottom:48px">
+    <span class="feat-badge">✦ 5 World-Class Features Added</span>
+    <h1 nx-enter="rise" style="font-size:clamp(2rem,5vw,3.5rem);margin:12px 0;background:linear-gradient(135deg,var(--nx-color-text) 40%,var(--nx-color-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Noxen v2.1 — Feature Drop</h1>
+    <p style="color:var(--nx-color-text-2);font-size:1.05rem;max-width:540px;margin:0 auto">Drawer · Command Palette · Carousel · Container Queries · Data Grid. All with CSS + JS + full API.</p>
+  </div>
+
+  <!-- ════════════════════════════════
+       FEATURE 1 — DRAWER
+  ════════════════════════════════ -->
+  <div class="section-head">
+    <span class="feat-badge">Feature 1 of 5</span>
+    <h2>nx="drawer" — Slide-In Panel</h2>
+    <p>Slide in from any edge — left, right, bottom, or top. One attribute. Full API. Zero layout shift.</p>
+  </div>
+
+  <div class="demo-box">
+    <div nx="row" gap="sm" style="flex-wrap:wrap">
+      <button nx="btn" data-drawer-open="drawer-left">← Left Drawer</button>
+      <button nx="btn" variant="outline" data-drawer-open="drawer-right">Right Drawer →</button>
+      <button nx="btn" variant="ghost" data-drawer-open="drawer-bottom">↓ Bottom Sheet</button>
+      <button nx="btn" variant="solid" data-drawer-open="drawer-nav">Navigation Drawer</button>
+    </div>
+  </div>
+
+  <div class="code"><span class="c">&lt;!-- Trigger --&gt;</span>
+<span class="t">&lt;button</span> <span class="a">data-drawer-open</span>=<span class="v">"my-drawer"</span><span class="t">&gt;</span>Open<span class="t">&lt;/button&gt;</span>
+
+<span class="c">&lt;!-- Drawer markup --&gt;</span>
+<span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"drawer-backdrop"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"drawer"</span> <span class="a">id</span>=<span class="v">"my-drawer"</span> <span class="a">side</span>=<span class="v">"right"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"drawer-header"</span><span class="t">&gt;</span>
+      <span class="t">&lt;h3&gt;</span>Title<span class="t">&lt;/h3&gt;</span>
+      <span class="t">&lt;button</span> <span class="a">nx</span>=<span class="v">"drawer-close"</span><span class="t">&gt;</span>×<span class="t">&lt;/button&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"drawer-body"</span><span class="t">&gt;</span>Content here<span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"drawer-footer"</span><span class="t">&gt;</span>
+      <span class="t">&lt;button</span> <span class="a">nx</span>=<span class="v">"btn"</span><span class="t">&gt;</span>Save<span class="t">&lt;/button&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">// JavaScript API</span>
+<span class="k">Noxen</span>.drawer.open(<span class="v">'my-drawer'</span>)
+<span class="k">Noxen</span>.drawer.close()
+<span class="k">Noxen</span>.drawer.toggle(<span class="v">'my-drawer'</span>)</div>
+
+  <!-- ════════════════════════════════
+       FEATURE 2 — COMMAND PALETTE
+  ════════════════════════════════ -->
+  <div class="section-head">
+    <span class="feat-badge">Feature 2 of 5</span>
+    <h2>nx="command" — Command Palette</h2>
+    <p>Press <kbd style="background:var(--nx-color-surface-3);border:1px solid var(--nx-color-border);border-radius:4px;padding:2px 8px;font-family:var(--nx-font-mono);font-size:12px">⌘K</kbd> anywhere on this page. Keyboard navigation, live search, grouped items.</p>
+  </div>
+
+  <div class="demo-box">
+    <div nx="row" gap="sm">
+      <button nx="btn" data-command-open="cmd-main">Open Command Palette</button>
+      <button nx="btn" variant="ghost" size="sm" onclick="Noxen.command.open('cmd-main')">Via JS API</button>
+    </div>
+    <p style="margin:12px 0 0;font-size:12px;color:var(--nx-color-text-3)">Or press <strong style="color:var(--nx-color-accent)">⌘K / Ctrl+K</strong> — works globally on this page.</p>
+  </div>
+
+  <div class="code"><span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"command-backdrop"</span> <span class="a">id</span>=<span class="v">"my-cmd"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"command"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"command-input-wrap"</span><span class="t">&gt;</span>
+      <span class="t">&lt;input</span> <span class="a">nx</span>=<span class="v">"command-input"</span> <span class="a">placeholder</span>=<span class="v">"Search commands..."</span><span class="t">&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"command-list"</span><span class="t">&gt;</span>
+      <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"command-group"</span><span class="t">&gt;</span>
+        <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"command-group-label"</span><span class="t">&gt;</span>Navigation<span class="t">&lt;/div&gt;</span>
+        <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"command-item"</span><span class="t">&gt;</span>
+          <span class="t">&lt;span</span> <span class="a">class</span>=<span class="v">"cmd-icon"</span><span class="t">&gt;</span>🏠<span class="t">&lt;/span&gt;</span>
+          <span class="t">&lt;span</span> <span class="a">class</span>=<span class="v">"cmd-label"</span><span class="t">&gt;</span>Go Home<span class="t">&lt;/span&gt;</span>
+          <span class="t">&lt;span</span> <span class="a">class</span>=<span class="v">"cmd-shortcut"</span><span class="t">&gt;</span>G H<span class="t">&lt;/span&gt;</span>
+        <span class="t">&lt;/div&gt;</span>
+      <span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">// JavaScript API</span>
+<span class="k">Noxen</span>.command.open(<span class="v">'my-cmd'</span>)  <span class="c">// Open</span>
+<span class="k">Noxen</span>.command.close()           <span class="c">// Close</span>
+<span class="c">// Cmd+K / Ctrl+K opens automatically — globally</span></div>
+
+  <!-- ════════════════════════════════
+       FEATURE 3 — CAROUSEL
+  ════════════════════════════════ -->
+  <div class="section-head">
+    <span class="feat-badge">Feature 3 of 5</span>
+    <h2>nx="carousel" — Responsive Slider</h2>
+    <p>Touch/drag support. Autoplay. Dots navigation. Auto-responsive per-view at breakpoints.</p>
+  </div>
+
+  <div class="demo-box">
+    <p style="font-family:var(--nx-font-mono);font-size:11px;color:var(--nx-color-text-3);margin:0 0 16px">Single slide — with autoplay:</p>
+    <div nx="carousel" autoplay="3000">
+      <div nx="carousel-track">
+        <div nx="carousel-slide"><div class="slide-card"><div class="slide-num">01</div><strong>Antigravity Engine</strong><p style="margin:0;font-size:12px;color:var(--nx-color-text-3)">World's first CSS physics layout</p></div></div>
+        <div nx="carousel-slide"><div class="slide-card"><div class="slide-num">02</div><strong>Intent API</strong><p style="margin:0;font-size:12px;color:var(--nx-color-text-3)">nx="" — describe what things ARE</p></div></div>
+        <div nx="carousel-slide"><div class="slide-card"><div class="slide-num">03</div><strong>AI Palette</strong><p style="margin:0;font-size:12px;color:var(--nx-color-text-3)">Full design system from one hex</p></div></div>
+        <div nx="carousel-slide"><div class="slide-card"><div class="slide-num">04</div><strong>Auto-ARIA</strong><p style="margin:0;font-size:12px;color:var(--nx-color-text-3)">WCAG 2.1 AA by default</p></div></div>
+      </div>
+      <button nx="carousel-prev">‹</button>
+      <button nx="carousel-next">›</button>
+      <div nx="carousel-dots"></div>
+    </div>
+
+    <p style="font-family:var(--nx-font-mono);font-size:11px;color:var(--nx-color-text-3);margin:28px 0 16px">Multi-slide — per-view="3":</p>
+    <div nx="carousel" per-view="3">
+      <div nx="carousel-track">
+        <div nx="carousel-slide"><div class="slide-card" style="height:120px"><div class="slide-num" style="font-size:1.8rem">A</div><p style="margin:4px 0 0;font-size:12px;color:var(--nx-color-text-3)">Drag me</p></div></div>
+        <div nx="carousel-slide"><div class="slide-card" style="height:120px"><div class="slide-num" style="font-size:1.8rem">B</div><p style="margin:4px 0 0;font-size:12px;color:var(--nx-color-text-3)">or use arrows</p></div></div>
+        <div nx="carousel-slide"><div class="slide-card" style="height:120px"><div class="slide-num" style="font-size:1.8rem">C</div><p style="margin:4px 0 0;font-size:12px;color:var(--nx-color-text-3)">responsive</p></div></div>
+        <div nx="carousel-slide"><div class="slide-card" style="height:120px"><div class="slide-num" style="font-size:1.8rem">D</div><p style="margin:4px 0 0;font-size:12px;color:var(--nx-color-text-3)">on mobile</p></div></div>
+        <div nx="carousel-slide"><div class="slide-card" style="height:120px"><div class="slide-num" style="font-size:1.8rem">E</div><p style="margin:4px 0 0;font-size:12px;color:var(--nx-color-text-3)">2 cols</p></div></div>
+      </div>
+      <button nx="carousel-prev">‹</button>
+      <button nx="carousel-next">›</button>
+      <div nx="carousel-dots"></div>
+    </div>
+  </div>
+
+  <div class="code"><span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"carousel"</span> <span class="a">per-view</span>=<span class="v">"3"</span> <span class="a">autoplay</span>=<span class="v">"3000"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"carousel-track"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"carousel-slide"</span><span class="t">&gt;</span>Slide 1<span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"carousel-slide"</span><span class="t">&gt;</span>Slide 2<span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;button</span> <span class="a">nx</span>=<span class="v">"carousel-prev"</span><span class="t">&gt;</span>‹<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;button</span> <span class="a">nx</span>=<span class="v">"carousel-next"</span><span class="t">&gt;</span>›<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"carousel-dots"</span><span class="t">&gt;&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">// Attributes</span>
+per-view="1|2|3|4"   <span class="c">auto-responsive at breakpoints</span>
+autoplay="3000"      <span class="c">ms interval, pauses on hover</span></div>
+
+  <!-- ════════════════════════════════
+       FEATURE 4 — CONTAINER QUERIES
+  ════════════════════════════════ -->
+  <div class="section-head">
+    <span class="feat-badge">Feature 4 of 5</span>
+    <h2>nx-container — Container Queries</h2>
+    <p>Components respond to their own container size — not the viewport. The future of responsive design.</p>
+  </div>
+
+  <div class="demo-box">
+    <p style="font-family:var(--nx-font-mono);font-size:11px;color:var(--nx-color-text-3);margin:0 0 12px">Drag the resize handle → the card reflows based on its own width, not the page:</p>
+    <div style="resize:horizontal;overflow:hidden;min-width:200px;max-width:100%;border:1px dashed var(--nx-color-border-2);border-radius:var(--nx-radius-md);padding:4px">
+      <div nx-container="card-demo">
+        <div nx="card" no-hover style="margin:0">
+          <div nx="card-header">
+            <strong>Container-Aware Card</strong>
+            <span nx="badge" tone="ok">Responds to container</span>
+          </div>
+          <div nx-cq="stack-sm" style="gap:16px">
+            <div style="flex:0 0 80px;height:80px;border-radius:var(--nx-radius-md);background:var(--nx-color-accent-lo);border:1px solid var(--nx-color-border-2);display:flex;align-items:center;justify-content:center;font-size:28px">◎</div>
+            <div nx="stack" gap="xs">
+              <strong>Noxen Sphere X1</strong>
+              <p style="margin:0;font-size:13px">Stacks vertically when container is narrow. Stays horizontal when wide.</p>
+              <div nx="row" gap="sm"><span nx="badge" tone="ok">In Stock</span><span nx="badge">New</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code"><span class="c">&lt;!-- Wrap in a container --&gt;</span>
+<span class="t">&lt;div</span> <span class="a">nx-container</span>=<span class="v">"my-widget"</span><span class="t">&gt;</span>
+
+  <span class="c">&lt;!-- Layout changes based on container, not viewport --&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx-cq</span>=<span class="v">"stack-sm"</span><span class="t">&gt;</span>
+    <span class="c">&lt;!-- row on wide, column on narrow container --&gt;</span>
+    <span class="t">&lt;img&gt;</span>
+    <span class="t">&lt;p&gt;</span>Description<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">// nx-cq utility values</span>
+nx-cq="stack-sm"    <span class="c">row → column when container &lt; 480px</span>
+nx-cq="hide-sm"     <span class="c">hidden when container &lt; 480px</span>
+nx-cq="show-sm"     <span class="c">visible only when container &lt; 480px</span></div>
+
+  <!-- ════════════════════════════════
+       FEATURE 5 — DATA GRID
+  ════════════════════════════════ -->
+  <div class="section-head">
+    <span class="feat-badge">Feature 5 of 5</span>
+    <h2>nx="data-grid" — Sortable Data Grid</h2>
+    <p>Click any column header to sort. Live search filter. Pagination. Row selection. Zero dependencies.</p>
+  </div>
+
+  <div class="demo-box" style="padding:0;overflow:hidden">
+    <div nx="data-grid" selectable>
+      <div nx="data-grid-toolbar">
+        <strong style="font-size:14px">Team Members</strong>
+        <div nx="data-grid-search"><input placeholder="Search..."></div>
+        <div nx="row" gap="sm">
+          <span nx="badge" tone="ok" id="grid-count">6 members</span>
+          <button nx="btn" size="xs" variant="ghost">+ Add</button>
+        </div>
+      </div>
+      <div nx="data-grid-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-col="name">Name</th>
+              <th data-col="role">Role</th>
+              <th data-col="status">Status</th>
+              <th data-col="joined">Joined</th>
+              <th data-col="score">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Alex Johnson</td><td>Lead Engineer</td><td><span nx="badge" tone="ok">Active</span></td><td>Jan 2024</td><td>98</td></tr>
+            <tr><td>Sam Rivera</td><td>Designer</td><td><span nx="badge" tone="ok">Active</span></td><td>Feb 2024</td><td>91</td></tr>
+            <tr><td>Jordan Lee</td><td>PM</td><td><span nx="badge" tone="warn">Pending</span></td><td>Mar 2024</td><td>85</td></tr>
+            <tr><td>Casey Morgan</td><td>DevOps</td><td><span nx="badge" tone="ok">Active</span></td><td>Apr 2024</td><td>79</td></tr>
+            <tr><td>Taylor Kim</td><td>QA Engineer</td><td><span nx="badge" tone="err">Inactive</span></td><td>May 2024</td><td>72</td></tr>
+            <tr><td>Morgan Chen</td><td>Frontend Dev</td><td><span nx="badge" tone="info">Beta</span></td><td>Jun 2024</td><td>88</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div nx="data-grid-empty">No results found</div>
+      <div nx="data-grid-pagination">
+        <div nx="data-grid-info"></div>
+        <div nx="data-grid-pages"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code"><span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"data-grid"</span> <span class="a">selectable</span> <span class="a">page-size</span>=<span class="v">"10"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"data-grid-toolbar"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"data-grid-search"</span><span class="t">&gt;</span><span class="t">&lt;input</span> <span class="a">placeholder</span>=<span class="v">"Search..."</span><span class="t">&gt;&lt;/div&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"data-grid-wrap"</span><span class="t">&gt;</span>
+    <span class="t">&lt;table&gt;</span>
+      <span class="t">&lt;thead&gt;&lt;tr&gt;</span>
+        <span class="t">&lt;th</span> <span class="a">data-col</span>=<span class="v">"name"</span><span class="t">&gt;</span>Name<span class="t">&lt;/th&gt;</span>    <span class="c">&lt;!-- data-col makes it sortable --&gt;</span>
+        <span class="t">&lt;th</span> <span class="a">data-col</span>=<span class="v">"role"</span><span class="t">&gt;</span>Role<span class="t">&lt;/th&gt;</span>
+      <span class="t">&lt;/tr&gt;&lt;/thead&gt;</span>
+      <span class="t">&lt;tbody&gt;</span>
+        <span class="t">&lt;tr&gt;&lt;td&gt;</span>Alex<span class="t">&lt;/td&gt;&lt;td&gt;</span>Engineer<span class="t">&lt;/td&gt;&lt;/tr&gt;</span>
+      <span class="t">&lt;/tbody&gt;</span>
+    <span class="t">&lt;/table&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"data-grid-pagination"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"data-grid-info"</span><span class="t">&gt;&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"data-grid-pages"</span><span class="t">&gt;&lt;/div&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span></div>
+
+  <!-- SUMMARY -->
+  <div style="margin-top:64px;padding:40px;background:var(--nx-color-surface-2);border:1px solid var(--nx-color-border-2);border-radius:var(--nx-radius-xl);text-align:center">
+    <h2 style="margin:0 0 8px">Noxen v2.1 is ready to ship</h2>
+    <p style="color:var(--nx-color-text-2);margin:0 0 24px">Update your dist files on GitHub and npm to publish v2.1.0</p>
+    <div nx="row" gap="md" style="justify-content:center;flex-wrap:wrap">
+      <a href="https://github.com/noxen-css/noxen" nx="btn" size="lg">Push to GitHub</a>
+      <button nx="btn" variant="outline" size="lg" onclick="Noxen.toast.success('Run: npm version minor && npm publish',{title:'NPM Publish'})">Publish to NPM</button>
+    </div>
+  </div>
+
+</div><!-- end .page-wrap -->
+
+
+<!-- ════════════════ DRAWERS ════════════════ -->
+<!-- Left drawer -->
+<div nx="drawer-backdrop">
+  <div nx="drawer" id="drawer-left" side="left">
+    <div nx="drawer-header">
+      <h3 style="margin:0;font-size:1rem">Left Drawer</h3>
+      <button nx="drawer-close">×</button>
+    </div>
+    <div nx="drawer-body">
+      <div nx="stack" gap="md">
+        <p>This slides in from the <strong>left</strong>. Use it for navigation, filters, or settings panels.</p>
+        <div nx="stack" gap="sm">
+          <a nx="btn" variant="ghost" full style="justify-content:flex-start">🏠 Home</a>
+          <a nx="btn" variant="ghost" full style="justify-content:flex-start">📦 Components</a>
+          <a nx="btn" variant="ghost" full style="justify-content:flex-start;color:var(--nx-color-accent)">✨ New Features</a>
+          <a nx="btn" variant="ghost" full style="justify-content:flex-start">⚙️ Settings</a>
+        </div>
+      </div>
+    </div>
+    <div nx="drawer-footer">
+      <button nx="btn" variant="ghost" size="sm" nx-drawer-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Right drawer -->
+<div nx="drawer-backdrop">
+  <div nx="drawer" id="drawer-right" side="right" size="lg">
+    <div nx="drawer-header">
+      <h3 style="margin:0;font-size:1rem">Settings Panel</h3>
+      <button nx="drawer-close">×</button>
+    </div>
+    <div nx="drawer-body">
+      <div nx="stack" gap="lg">
+        <div>
+          <span nx="label" style="margin-bottom:8px;display:block">Theme</span>
+          <div nx="grid" cols="auto-sm" gap="sm">
+            <button nx="btn" variant="ghost" size="sm" onclick="setTheme('void')">void</button>
+            <button nx="btn" variant="ghost" size="sm" onclick="setTheme('neon')">neon</button>
+            <button nx="btn" variant="ghost" size="sm" onclick="setTheme('carbon')">carbon</button>
+            <button nx="btn" variant="ghost" size="sm" onclick="setTheme('bio')">bio</button>
+            <button nx="btn" variant="ghost" size="sm" onclick="setTheme('gold')">gold</button>
+            <button nx="btn" variant="ghost" size="sm" onclick="setTheme('aurora')">aurora</button>
+          </div>
+        </div>
+        <div nx="divider"></div>
+        <div>
+          <span nx="label" style="margin-bottom:8px;display:block">Notifications</span>
+          <div nx="stack" gap="sm">
+            <div nx="row" justify="between"><span style="font-size:14px">Email alerts</span><div nx="toggle" class="on"></div></div>
+            <div nx="row" justify="between"><span style="font-size:14px">Push notifications</span><div nx="toggle"></div></div>
+            <div nx="row" justify="between"><span style="font-size:14px">Weekly digest</span><div nx="toggle" class="on"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div nx="drawer-footer">
+      <button nx="btn" variant="ghost" nx-drawer-close>Cancel</button>
+      <button nx="btn" onclick="Noxen.toast.success('Settings saved!',{title:'Saved'});Noxen.drawer.close()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom sheet -->
+<div nx="drawer-backdrop">
+  <div nx="drawer" id="drawer-bottom" side="bottom">
+    <div nx="drawer-header">
+      <h3 style="margin:0;font-size:1rem">Bottom Sheet</h3>
+      <button nx="drawer-close">×</button>
+    </div>
+    <div nx="drawer-body">
+      <div nx="grid" cols="3" gap="sm">
+        <button nx="btn" variant="ghost" full onclick="Noxen.toast.info('Share via link')">🔗 Copy Link</button>
+        <button nx="btn" variant="ghost" full onclick="Noxen.toast.info('Shared to Twitter')">𝕏 Twitter</button>
+        <button nx="btn" variant="ghost" full onclick="Noxen.toast.info('Opening email')">📧 Email</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nav drawer -->
+<div nx="drawer-backdrop">
+  <div nx="drawer" id="drawer-nav" side="left" size="lg">
+    <div nx="drawer-header">
+      <span style="font-family:var(--nx-font-display);font-weight:900;font-size:18px;color:var(--nx-color-accent);letter-spacing:3px">NOXEN</span>
+      <button nx="drawer-close">×</button>
+    </div>
+    <div nx="drawer-body">
+      <div nx="stack" gap="xs">
+        <div style="font-family:var(--nx-font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--nx-color-text-3);padding:8px 0 4px">Getting Started</div>
+        <a nx="btn" variant="ghost" full style="justify-content:flex-start">🏠 Introduction</a>
+        <a nx="btn" variant="ghost" full style="justify-content:flex-start">⚡ Installation</a>
+        <div style="font-family:var(--nx-font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--nx-color-text-3);padding:12px 0 4px">v2.1 New Features</div>
+        <a nx="btn" variant="ghost" full style="justify-content:flex-start;color:var(--nx-color-accent)">🗂 Drawer</a>
+        <a nx="btn" variant="ghost" full style="justify-content:flex-start;color:var(--nx-color-accent)">⌘ Command Palette</a>
+        <a nx="btn" variant="ghost" full style="justify-content:flex-start;color:var(--nx-color-accent)">🎠 Carousel</a>
+        <a nx="btn" variant="ghost" full style="justify-content:flex-start;color:var(--nx-color-accent)">📦 Container Queries</a>
+        <a nx="btn" variant="ghost" full style="justify-content:flex-start;color:var(--nx-color-accent)">📊 Data Grid</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════ COMMAND PALETTE ════════════════ -->
+<div nx="command-backdrop" id="cmd-main">
+  <div nx="command">
+    <div nx="command-input-wrap">
+      <input nx="command-input" placeholder="Search commands, pages, actions...">
+    </div>
+    <div nx="command-list">
+      <div nx="command-group">
+        <div nx="command-group-label">Navigation</div>
+        <div nx="command-item" onclick="Noxen.command.close();Noxen.toast.info('Going home')">
+          <span class="cmd-icon">🏠</span><span class="cmd-label">Go to Home</span><span class="cmd-shortcut">G H</span>
+        </div>
+        <div nx="command-item" onclick="Noxen.command.close();Noxen.toast.info('Opening docs')">
+          <span class="cmd-icon">📖</span><span class="cmd-label">Open Documentation</span><span class="cmd-shortcut">G D</span>
+        </div>
+        <div nx="command-item" onclick="Noxen.command.close();window.open('https://github.com/noxen-css/noxen','_blank')">
+          <span class="cmd-icon">⭐</span><span class="cmd-label">Star on GitHub</span>
+        </div>
+      </div>
+      <div nx="command-group">
+        <div nx="command-group-label">Theme</div>
+        <div nx="command-item" onclick="setTheme('void');Noxen.command.close()"><span class="cmd-icon">🌑</span><span class="cmd-label">Theme: void</span></div>
+        <div nx="command-item" onclick="setTheme('neon');Noxen.command.close()"><span class="cmd-icon">💙</span><span class="cmd-label">Theme: neon</span></div>
+        <div nx="command-item" onclick="setTheme('carbon');Noxen.command.close()"><span class="cmd-icon">🔥</span><span class="cmd-label">Theme: carbon</span></div>
+        <div nx="command-item" onclick="setTheme('bio');Noxen.command.close()"><span class="cmd-icon">🌿</span><span class="cmd-label">Theme: bio</span></div>
+        <div nx="command-item" onclick="setTheme('gold');Noxen.command.close()"><span class="cmd-icon">✨</span><span class="cmd-label">Theme: gold</span></div>
+        <div nx="command-item" onclick="setTheme('paper');Noxen.command.close()"><span class="cmd-icon">📄</span><span class="cmd-label">Theme: paper</span></div>
+        <div nx="command-item" onclick="setTheme('aurora');Noxen.command.close()"><span class="cmd-icon">🌌</span><span class="cmd-label">Theme: aurora</span></div>
+      </div>
+      <div nx="command-group">
+        <div nx="command-group-label">Actions</div>
+        <div nx="command-item" onclick="Noxen.command.close();Noxen.toast.success('npm install noxen-css',{title:'Install command'})">
+          <span class="cmd-icon">📦</span><span class="cmd-label">Copy install command</span><span class="cmd-shortcut">⌘C</span>
+        </div>
+        <div nx="command-item" onclick="Noxen.command.close();Noxen.drawer.open('drawer-nav')">
+          <span class="cmd-icon">🗂</span><span class="cmd-label">Open Navigation</span><span class="cmd-shortcut">⌘N</span>
+        </div>
+      </div>
+      <div nx="command-empty">No results for your search</div>
+    </div>
+    <div nx="command-footer">
+      <span class="cmd-hint"><kbd>↑↓</kbd> navigate</span>
+      <span class="cmd-hint"><kbd>↵</kbd> select</span>
+      <span class="cmd-hint"><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+
+<script src="../dist/noxen.min.js"></script>
+<script>
+function setTheme(name, dot) {
+  document.documentElement.setAttribute('data-nx-theme', name);
+  if (typeof Noxen !== 'undefined') Noxen.theme.set(name);
+  document.querySelectorAll('.tdot').forEach(d => d.classList.remove('on'));
+  if (dot && typeof dot === 'object') dot.classList.add('on');
+}
+
+// Patch: make drawer-close buttons inside drawers work via data attribute
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[nx-drawer-close]').forEach(btn => {
+    btn.addEventListener('click', () => Noxen.drawer.close());
+  });
+});
+
+// Save button in right drawer
+document.querySelector('[nx="drawer"][id="drawer-right"] [nx="drawer-footer"] [nx="btn"]:last-child')?.addEventListener('click', function() {
+  Noxen.toast.success('Settings saved!', { title: 'Saved' });
+  Noxen.drawer.close();
+});
+</script>
+</body>
+</html>
