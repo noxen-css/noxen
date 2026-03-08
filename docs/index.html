@@ -121,7 +121,7 @@
         <button class="theme-btn" onclick="switchTheme('aurora',this)">aurora</button>
       </div>
     </div>
-    <a nx="btn" variant="outline" size="sm" href="https://github.com/noxen-css/noxen" target="_blank" style="text-decoration:none">★ GitHub</a>
+    <span id="active-theme-label" style="font-family:var(--nx-font-mono);font-size:11px;color:var(--nx-color-text-3);margin-right:8px">void</span><a nx="btn" variant="outline" size="sm" href="https://github.com/noxen-css/noxen" target="_blank" style="text-decoration:none">★ GitHub</a>
   </div>
 
   <div class="nx-content">
@@ -388,16 +388,14 @@ Noxen.theme.set(<span class="token-val">'mybrand'</span>)</div>
       <h2>Floor (Chat UI / Bottom-Up Stack)</h2>
       <p>Items stack from the bottom up — perfect for chat UIs where new messages appear at the bottom without JavaScript scroll management.</p>
       <div class="demo-box">
-        <div nx-ag="floor" style="height:200px;overflow-y:auto;gap:8px;padding:12px;background:var(--nx-color-surface-3);border-radius:var(--nx-radius-md)">
-          <div nx="card" size="sm" no-hover style="background:var(--nx-color-accent-lo);border-color:var(--nx-color-border-2)">
-            <span style="font-size:12px">Hey! Just saw Noxen. This is incredible.</span>
-          </div>
-          <div nx="card" size="sm" no-hover>
-            <span style="font-size:12px">Thanks! Built with pure CSS 🚀</span>
-          </div>
-          <div nx="card" size="sm" no-hover style="background:var(--nx-color-accent-lo);border-color:var(--nx-color-border-2)">
-            <span style="font-size:12px">No JS for this layout?? 🤯</span>
-          </div>
+        <div nx="row" gap="sm" style="margin-bottom:10px">
+          <input id="chat-input" nx="input" placeholder="Type a message and press Enter or Send..." style="flex:1">
+          <button nx="btn" size="sm" onclick="addChat()">Send</button>
+        </div>
+        <div id="chat-demo" nx-ag="floor" style="height:200px;overflow-y:auto;display:flex;flex-direction:column-reverse;gap:6px;padding:12px;background:var(--nx-color-surface-3);border-radius:var(--nx-radius-md)">
+          <div style="padding:10px 14px;border-radius:12px;font-size:13px;max-width:80%;align-self:flex-start;background:var(--nx-color-surface-2);border:1px solid var(--nx-color-border);color:var(--nx-color-text-2)">flex-direction: column-reverse. That's literally it 🤯</div>
+          <div style="padding:10px 14px;border-radius:12px;font-size:13px;max-width:80%;align-self:flex-end;background:var(--nx-color-accent-lo);border:1px solid var(--nx-color-border-2);color:var(--nx-color-text)">How? No JS for scroll management?</div>
+          <div style="padding:10px 14px;border-radius:12px;font-size:13px;max-width:80%;align-self:flex-start;background:var(--nx-color-surface-2);border:1px solid var(--nx-color-border);color:var(--nx-color-text-2)">Built with pure CSS — nx-ag="floor" 🚀</div>
         </div>
       </div>
       <div class="code-block"><span class="token-tag">&lt;div</span> <span class="token-attr">nx-ag</span>=<span class="token-val">"floor"</span><span class="token-tag">&gt;</span>
@@ -619,10 +617,10 @@ Noxen.on(<span class="token-val">'a11y'</span>,   (data) => console.log(<span cl
       <h2>Toast System</h2>
       <div class="demo-box">
         <div nx="row" gap="sm" style="flex-wrap:wrap">
-          <button nx="btn" size="sm" onclick="Noxen.toast.success('Saved successfully!')">Success Toast</button>
-          <button nx="btn" size="sm" variant="outline" onclick="Noxen.toast.warn('Check your input')">Warning Toast</button>
-          <button nx="btn" size="sm" variant="danger" onclick="Noxen.toast.error('Something went wrong')">Error Toast</button>
-          <button nx="btn" size="sm" variant="ghost" onclick="Noxen.toast.info('New version available')">Info Toast</button>
+          <button nx="btn" size="sm" onclick="nxToast('success','Saved successfully!')">Success Toast</button>
+          <button nx="btn" size="sm" variant="outline" onclick="nxToast('warn','Check your input')">Warning Toast</button>
+          <button nx="btn" size="sm" variant="danger" onclick="nxToast('error','Something went wrong')">Error Toast</button>
+          <button nx="btn" size="sm" variant="ghost" onclick="nxToast('info','New version available')">Info Toast</button>
         </div>
       </div>
       <div class="code-block">Noxen.toast.success(<span class="token-val">'Saved!'</span>)
@@ -951,11 +949,11 @@ Noxen.toast.show(<span class="token-val">'Custom message'</span>, { tone: <span 
       </div>
       <div class="demo-box">
         <div nx="row" gap="sm" style="flex-wrap:wrap">
-          <button nx="btn" onclick="Noxen.toast.success('Saved successfully!', {title:'Success'})">Success</button>
-          <button nx="btn" variant="outline" onclick="Noxen.toast.warn('Check your inputs', {title:'Warning'})">Warning</button>
-          <button nx="btn" variant="danger" onclick="Noxen.toast.error('Something went wrong', {title:'Error'})">Error</button>
-          <button nx="btn" variant="ghost" onclick="Noxen.toast.info('Update available v2.1', {title:'Info'})">Info</button>
-          <button nx="btn" variant="ghost" size="sm" onclick="Noxen.toast.show('Custom 10s toast', {duration:10000})">Long Toast</button>
+          <button nx="btn" onclick="nxToast('success','Saved successfully!', {title:'Success'})">Success</button>
+          <button nx="btn" variant="outline" onclick="nxToast('warn','Check your inputs', {title:'Warning'})">Warning</button>
+          <button nx="btn" variant="danger" onclick="nxToast('error','Something went wrong', {title:'Error'})">Error</button>
+          <button nx="btn" variant="ghost" onclick="nxToast('info','Update available v2.1', {title:'Info'})">Info</button>
+          <button nx="btn" variant="ghost" size="sm" onclick="nxToast('show','Custom 10s toast', {duration:10000})">Long Toast</button>
         </div>
       </div>
     </div>
@@ -965,168 +963,305 @@ Noxen.toast.show(<span class="token-val">'Custom message'</span>, { tone: <span 
 
 <script src="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.js"></script>
 <script>
-// ── Page navigation ──────────────────────────────
-function showPage(id) {
-  document.querySelectorAll('.nx-page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nx-nav-link').forEach(l => l.classList.remove('active'));
-  const page = document.getElementById('page-' + id);
-  if (page) page.classList.add('active');
-  document.querySelectorAll('.nx-nav-link').forEach(l => {
-    if (l.getAttribute('onclick') && l.getAttribute('onclick').includes("'" + id + "'")) l.classList.add('active');
-  });
-  window.scrollTo(0, 0);
-  try { document.querySelector('.nx-main').scrollTo(0, 0); } catch(e) {}
+
+// ════════════════════════════════════════════════
+// SAFE NOXEN WRAPPER — queues calls until ready
+// ════════════════════════════════════════════════
+var _nxQueue = [];
+var _nxReady = false;
+
+function _nxExec(fn) {
+  if (_nxReady && typeof Noxen !== 'undefined') {
+    fn();
+  } else {
+    _nxQueue.push(fn);
+  }
 }
 
-// ── Theme switcher ───────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  // Give Noxen JS time to init (it runs on DOMContentLoaded too)
+  setTimeout(function() {
+    _nxReady = true;
+    _nxQueue.forEach(function(fn) { try { fn(); } catch(e) {} });
+    _nxQueue = [];
+  }, 100);
+});
+
+// ════════════════════════════════════════════════
+// TOAST — safe wrapper
+// ════════════════════════════════════════════════
+function nxToast(type, msg, opts) {
+  opts = opts || {};
+  _nxExec(function() {
+    if (type === 'success') Noxen.toast.success(msg, opts);
+    else if (type === 'warn')    Noxen.toast.warn(msg, opts);
+    else if (type === 'error')   Noxen.toast.error(msg, opts);
+    else if (type === 'info')    Noxen.toast.info(msg, opts);
+    else                         Noxen.toast.show(msg, opts);
+  });
+}
+
+// ════════════════════════════════════════════════
+// PAGE NAVIGATION
+// ════════════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.nx-page').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  document.querySelectorAll('.nx-nav-link').forEach(function(l) {
+    l.classList.remove('active');
+  });
+  var page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  document.querySelectorAll('.nx-nav-link').forEach(function(l) {
+    var oc = l.getAttribute('onclick') || '';
+    if (oc.indexOf("'" + id + "'") !== -1) l.classList.add('active');
+  });
+  try { window.scrollTo(0,0); } catch(e) {}
+  try { document.querySelector('.nx-main').scrollTo(0,0); } catch(e) {}
+}
+
+// ════════════════════════════════════════════════
+// THEME SWITCHER
+// ════════════════════════════════════════════════
 function switchTheme(name, btn) {
+  // Set data attribute immediately — works even before Noxen loads
   document.documentElement.setAttribute('data-nx-theme', name);
-  if (typeof Noxen !== 'undefined') Noxen.theme.set(name);
-  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  // Also call Noxen API if ready
+  if (typeof Noxen !== 'undefined') {
+    try { Noxen.theme.set(name); } catch(e) {}
+  }
+  // Update active button highlight
+  document.querySelectorAll('.theme-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
   if (btn && typeof btn === 'object') btn.classList.add('active');
-  // update label
-  const lbl = document.getElementById('active-theme-label');
+  // Update label
+  var lbl = document.getElementById('active-theme-label');
   if (lbl) lbl.textContent = name;
 }
 
-// ── Copy code blocks ─────────────────────────────
+// ════════════════════════════════════════════════
+// COPY CODE BLOCKS
+// ════════════════════════════════════════════════
 function copyCode(btn) {
-  const block = btn.closest('.code-block');
-  const text = block.innerText.replace(/^Copy\n|^Copied!\n/, '');
-  navigator.clipboard.writeText(text).then(() => {
+  var block = btn.closest('.code-block');
+  if (!block) return;
+  var text = block.innerText.replace(/^(Copy|Copied!)\n/, '').trim();
+  navigator.clipboard.writeText(text).then(function() {
     btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy', 2000);
-  }).catch(() => {
-    btn.textContent = 'Copy';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+  }).catch(function() {
+    // Fallback for older browsers
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
   });
 }
 
-// ── Motion demo ──────────────────────────────────
+// ════════════════════════════════════════════════
+// MOTION DEMO
+// ════════════════════════════════════════════════
 function demoEnter(type) {
-  const el = document.getElementById('motion-demo');
+  var el = document.getElementById('motion-demo');
   if (!el) return;
   el.removeAttribute('nx-enter');
+  // Force reflow to restart animation
   void el.offsetWidth;
   el.setAttribute('nx-enter', type);
   el.textContent = 'nx-enter="' + type + '"';
 }
 
-// ── AI Palette demo ──────────────────────────────
+// ════════════════════════════════════════════════
+// AI PALETTE ENGINE DEMO
+// ════════════════════════════════════════════════
 function applyPaletteDemo() {
-  const hex = document.getElementById('palette-color').value;
-  if (typeof Noxen === 'undefined') return;
-  const tokens = Noxen.palette.apply(hex, 'demo-palette');
-  const output = document.getElementById('palette-output');
-  const swatches = document.getElementById('palette-swatches');
-  if (!output || !swatches) return;
-  output.style.display = 'block';
-  swatches.innerHTML = '';
-  const tokenObj = tokens || {};
-  const colorEntries = Object.entries(tokenObj).filter(([k]) => k.includes('color'));
-  colorEntries.forEach(([key, val]) => {
-    if (val && !val.includes('rgba') && !val.includes('var') && val.startsWith('#')) {
-      const s = document.createElement('div');
-      s.style.cssText = 'width:52px;height:52px;border-radius:8px;background:' + val + ';border:1px solid rgba(255,255,255,0.1);cursor:pointer;';
-      s.title = key + ': ' + val;
-      swatches.appendChild(s);
+  var colorInput = document.getElementById('palette-color');
+  if (!colorInput) return;
+  var hex = colorInput.value;
+
+  _nxExec(function() {
+    // Apply the palette as a new theme
+    var result = Noxen.palette.apply(hex, 'demo-palette');
+
+    // Show the output section
+    var output = document.getElementById('palette-output');
+    var swatches = document.getElementById('palette-swatches');
+    if (output) output.style.display = 'block';
+
+    // Build swatch preview from the generated tokens
+    if (swatches && result) {
+      swatches.innerHTML = '';
+      var colors = [
+        result['--nx-color-bg'],
+        result['--nx-color-surface'],
+        result['--nx-color-surface-2'],
+        result['--nx-color-surface-3'],
+        result['--nx-color-accent'],
+        result['--nx-color-accent-2'],
+        result['--nx-color-text'],
+        result['--nx-color-text-2'],
+      ];
+      colors.forEach(function(val) {
+        if (!val || !val.startsWith('#')) return;
+        var s = document.createElement('div');
+        s.style.cssText = 'display:inline-block;width:48px;height:48px;border-radius:8px;background:' + val + ';border:1px solid rgba(255,255,255,0.15);';
+        s.title = val;
+        swatches.appendChild(s);
+      });
+
+      // Show a text summary too
+      var summary = document.createElement('div');
+      summary.style.cssText = 'margin-top:12px;font-family:var(--nx-font-mono);font-size:11px;color:var(--nx-color-text-3);line-height:1.8';
+      var lines = Object.entries(result).slice(0, 8).map(function(e) {
+        return e[0] + ': ' + e[1];
+      }).join('\n');
+      summary.textContent = lines;
+      swatches.appendChild(summary);
     }
+
+    // Remove active from theme buttons since we applied a custom palette
+    document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); });
+
+    // Show success toast
+    Noxen.toast.success('Palette applied! ' + hex, { title: 'AI Palette' });
   });
-  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-  if (typeof Noxen !== 'undefined') Noxen.toast.success('Palette applied from ' + hex);
 }
 
-// ── Token export ─────────────────────────────────
+// ════════════════════════════════════════════════
+// TOKEN EXPORT
+// ════════════════════════════════════════════════
 function exportTokens(format) {
-  if (typeof Noxen === 'undefined') return;
-  const output = document.getElementById('export-output');
-  if (!output) return;
-  const result = Noxen.tokens.export(format);
-  output.style.display = 'block';
-  output.textContent = typeof result === 'string' ? result : JSON.stringify(result, null, 2);
+  _nxExec(function() {
+    var output = document.getElementById('export-output');
+    if (!output) return;
+    var result = Noxen.tokens.export(format);
+    var text = (typeof result === 'string') ? result : JSON.stringify(result, null, 2);
+    output.style.display = 'block';
+    output.textContent = text;
+    // Highlight active export button
+    document.querySelectorAll('.export-btn').forEach(function(b) { b.classList.remove('active'); });
+    event.target.classList.add('active');
+  });
 }
 
-// ── A11y audit ───────────────────────────────────
+// ════════════════════════════════════════════════
+// A11Y AUDIT
+// ════════════════════════════════════════════════
 function runAudit() {
-  if (typeof Noxen === 'undefined') return;
-  const result = Noxen.a11y.audit();
-  const out = document.getElementById('audit-output');
-  if (!out) return;
-  out.style.display = 'block';
-  out.innerHTML = '<div nx="card" size="sm" no-hover style="margin-top:12px"><strong>' + result.errors + ' errors · ' + result.warnings + ' warnings</strong><p style="margin:4px 0 0;font-size:12px;color:var(--nx-color-text-3)">Full details in browser console (F12).</p></div>';
+  _nxExec(function() {
+    var result = Noxen.a11y.audit();
+    var out = document.getElementById('audit-output');
+    if (!out) return;
+    var color = result.errors > 0 ? 'var(--nx-color-err)' : 'var(--nx-color-ok)';
+    out.style.display = 'block';
+    out.innerHTML =
+      '<div style="margin-top:12px;padding:16px;background:var(--nx-color-surface-2);border-radius:var(--nx-radius-md);border:1px solid var(--nx-color-border)">' +
+        '<strong style="color:' + color + '">' + result.errors + ' errors · ' + result.warnings + ' warnings</strong>' +
+        '<p style="margin:4px 0 0;font-size:12px;color:var(--nx-color-text-3)">Full details in browser console (F12 → Console tab).</p>' +
+      '</div>';
+  });
 }
 
-// ── Chat demo ────────────────────────────────────
+// ════════════════════════════════════════════════
+// CHAT DEMO (Antigravity floor)
+// ════════════════════════════════════════════════
 function addChat() {
-  const input = document.getElementById('chat-input');
-  const wrap = document.getElementById('chat-demo');
+  var input = document.getElementById('chat-input');
+  var wrap = document.getElementById('chat-demo');
   if (!input || !wrap || !input.value.trim()) return;
-  const msg = document.createElement('div');
-  msg.className = 'chat-msg me';
+  var msg = document.createElement('div');
+  msg.style.cssText = 'padding:10px 14px;border-radius:12px;font-size:13px;max-width:80%;align-self:flex-end;background:var(--nx-color-accent-lo);border:1px solid var(--nx-color-border-2);color:var(--nx-color-text);margin-top:6px';
   msg.textContent = input.value.trim();
   wrap.appendChild(msg);
   input.value = '';
   input.focus();
 }
+
+// ════════════════════════════════════════════════
+// TABS (event delegation)
+// ════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  var tab = e.target.closest('[nx="tab"]');
+  if (!tab) return;
+  var tabList = tab.closest('[nx="tabs"]');
+  if (!tabList) return;
+
+  // Deactivate all tabs in this group
+  tabList.querySelectorAll('[nx="tab"]').forEach(function(t) {
+    t.classList.remove('active');
+  });
+  tab.classList.add('active');
+
+  // Switch panels
+  var target = tab.getAttribute('data-target');
+  if (!target) return;
+  var scope = tabList.parentElement;
+  scope.querySelectorAll('[data-tab-panel]').forEach(function(p) {
+    p.hidden = true;
+  });
+  var panel = scope.querySelector('[data-tab-panel="' + target + '"]');
+  if (panel) panel.hidden = false;
+});
+
+// ════════════════════════════════════════════════
+// ACCORDION (event delegation)
+// ════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  var trigger = e.target.closest('[nx="accordion-trigger"]');
+  if (!trigger) return;
+  var item = trigger.closest('[nx="accordion-item"]');
+  if (!item) return;
+  var content = item.querySelector('[nx="accordion-content"]');
+  var isOpen = trigger.classList.contains('open');
+
+  // Close all siblings
+  var accordion = item.closest('[nx="accordion"]');
+  if (accordion) {
+    accordion.querySelectorAll('[nx="accordion-trigger"]').forEach(function(t) { t.classList.remove('open'); });
+    accordion.querySelectorAll('[nx="accordion-content"]').forEach(function(c) { c.classList.remove('open'); });
+  }
+  // Open the clicked one if it was closed
+  if (!isOpen) {
+    trigger.classList.add('open');
+    if (content) content.classList.add('open');
+  }
+});
+
+// ════════════════════════════════════════════════
+// TOGGLE (event delegation)
+// ════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  var toggle = e.target.closest('[nx="toggle"]');
+  if (!toggle) return;
+  toggle.classList.toggle('on');
+});
+
+// ════════════════════════════════════════════════
+// ENTER KEY for chat input
+// ════════════════════════════════════════════════
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'chat-input') {
     addChat();
   }
 });
 
-// ── Tabs ─────────────────────────────────────────
-document.addEventListener('click', function(e) {
-  const tab = e.target.closest('[nx="tab"]');
-  if (!tab) return;
-  const container = tab.closest('[nx="tabs"]');
-  if (!container) return;
-  // deactivate all tabs in this group
-  container.querySelectorAll('[nx="tab"]').forEach(t => t.classList.remove('active'));
-  tab.classList.add('active');
-  // find tab panels in the same parent scope
-  const target = tab.getAttribute('data-target');
-  if (!target) return;
-  const scope = container.parentElement;
-  scope.querySelectorAll('[data-tab-panel]').forEach(p => p.hidden = true);
-  const panel = scope.querySelector('[data-tab-panel="' + target + '"]');
-  if (panel) panel.hidden = false;
-});
-
-// ── Accordion ────────────────────────────────────
-document.addEventListener('click', function(e) {
-  const trigger = e.target.closest('[nx="accordion-trigger"]');
-  if (!trigger) return;
-  const item = trigger.closest('[nx="accordion-item"]');
-  if (!item) return;
-  const content = item.querySelector('[nx="accordion-content"]');
-  const isOpen = trigger.classList.contains('open');
-  // close all in this accordion
-  const accordion = item.closest('[nx="accordion"]');
-  if (accordion) {
-    accordion.querySelectorAll('[nx="accordion-trigger"]').forEach(t => t.classList.remove('open'));
-    accordion.querySelectorAll('[nx="accordion-content"]').forEach(c => c.classList.remove('open'));
-  }
-  // open clicked one if it was closed
-  if (!isOpen && content) {
-    trigger.classList.add('open');
-    content.classList.add('open');
-  }
-});
-
-// ── Toggle ───────────────────────────────────────
-document.addEventListener('click', function(e) {
-  const toggle = e.target.closest('[nx="toggle"]');
-  if (!toggle) return;
-  toggle.classList.toggle('on');
-});
-
-// ── Set initial theme label ──────────────────────
+// ════════════════════════════════════════════════
+// INIT on load
+// ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function() {
-  const lbl = document.getElementById('active-theme-label');
+  // Set theme label
+  var lbl = document.getElementById('active-theme-label');
   if (lbl) {
-    const theme = document.documentElement.getAttribute('data-nx-theme') || 'void';
-    lbl.textContent = theme;
+    lbl.textContent = document.documentElement.getAttribute('data-nx-theme') || 'void';
   }
 });
+
 </script>
 </body>
 </html>
