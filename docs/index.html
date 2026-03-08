@@ -112,7 +112,7 @@
     <div style="display:flex;align-items:center;gap:12px">
       <span style="font-family:var(--nx-font-mono);font-size:12px;color:var(--nx-color-text-3)">Theme:</span>
       <div id="theme-switcher" style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="theme-btn active" onclick="switchTheme('void','this')">void</button>
+        <button class="theme-btn active" onclick="switchTheme('void',this)">void</button>
         <button class="theme-btn" onclick="switchTheme('neon',this)">neon</button>
         <button class="theme-btn" onclick="switchTheme('carbon',this)">carbon</button>
         <button class="theme-btn" onclick="switchTheme('bio',this)">bio</button>
@@ -300,25 +300,25 @@ import <span class="token-val">'noxen-css/dist/noxen.min.js'</span></div>
 
       <h2>All 7 Themes</h2>
       <div nx="grid" cols="auto-sm" gap="sm" style="margin:24px 0">
-        <div nx="card" size="sm" no-hover onclick="Noxen.theme.set('void')" style="cursor:pointer">
+        <div nx="card" size="sm" no-hover onclick="switchTheme('void',null)" style="cursor:pointer">
           <div nx="label">void</div><p style="margin:4px 0 0;font-size:12px">Default. Deep dark + cyan</p>
         </div>
-        <div nx="card" size="sm" no-hover onclick="Noxen.theme.set('neon')" style="cursor:pointer">
+        <div nx="card" size="sm" no-hover onclick="switchTheme('neon',null)" style="cursor:pointer">
           <div nx="label">neon</div><p style="margin:4px 0 0;font-size:12px">Deep space + electric blue</p>
         </div>
-        <div nx="card" size="sm" no-hover onclick="Noxen.theme.set('carbon')" style="cursor:pointer">
+        <div nx="card" size="sm" no-hover onclick="switchTheme('carbon',null)" style="cursor:pointer">
           <div nx="label">carbon</div><p style="margin:4px 0 0;font-size:12px">Industrial dark + red</p>
         </div>
-        <div nx="card" size="sm" no-hover onclick="Noxen.theme.set('bio')" style="cursor:pointer">
+        <div nx="card" size="sm" no-hover onclick="switchTheme('bio',null)" style="cursor:pointer">
           <div nx="label">bio</div><p style="margin:4px 0 0;font-size:12px">Organic dark + green</p>
         </div>
-        <div nx="card" size="sm" no-hover onclick="Noxen.theme.set('gold')" style="cursor:pointer">
+        <div nx="card" size="sm" no-hover onclick="switchTheme('gold',null)" style="cursor:pointer">
           <div nx="label">gold</div><p style="margin:4px 0 0;font-size:12px">Luxury dark + amber</p>
         </div>
-        <div nx="card" size="sm" no-hover onclick="Noxen.theme.set('paper')" style="cursor:pointer">
+        <div nx="card" size="sm" no-hover onclick="switchTheme('paper',null)" style="cursor:pointer">
           <div nx="label">paper</div><p style="margin:4px 0 0;font-size:12px">Light + warm accessible</p>
         </div>
-        <div nx="card" size="sm" no-hover onclick="Noxen.theme.set('aurora')" style="cursor:pointer">
+        <div nx="card" size="sm" no-hover onclick="switchTheme('aurora',null)" style="cursor:pointer">
           <div nx="label">aurora</div><p style="margin:4px 0 0;font-size:12px">Deep purple + pink</p>
         </div>
       </div>
@@ -451,7 +451,7 @@ Noxen.theme.set(<span class="token-val">'mybrand'</span>)</div>
             <input type="color" id="palette-color" value="#00e5ff" style="width:80px;height:44px;border:none;cursor:pointer;border-radius:var(--nx-radius-md)">
           </div>
           <button nx="btn" onclick="applyPaletteDemo()">Generate Palette →</button>
-          <button nx="btn" variant="ghost" onclick="Noxen.theme.set('void')">Reset Theme</button>
+          <button nx="btn" variant="ghost" onclick="switchTheme('void',null)">Reset Theme</button>
         </div>
         <div id="palette-output" style="margin-top:20px;display:none">
           <div nx="label" style="margin-bottom:12px">Generated Tokens Preview</div>
@@ -977,9 +977,13 @@ function showPage(id) {
 }
 
 function switchTheme(name, btn) {
-  Noxen.theme.set(name);
+  // Update the HTML attribute directly (works even before Noxen JS loads)
+  document.documentElement.setAttribute('data-nx-theme', name);
+  // Also call Noxen API if available
+  if (typeof Noxen !== 'undefined') Noxen.theme.set(name);
+  // Update active button state
   document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+  if (btn && typeof btn === 'object') btn.classList.add('active');
 }
 
 function copyCode(btn) {
