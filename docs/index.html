@@ -965,26 +965,34 @@ Noxen.toast.show(<span class="token-val">'Custom message'</span>, { tone: <span 
 <script>
 
 // ════════════════════════════════════════════════
-// SAFE NOXEN WRAPPER — queues calls until ready
+// SAFE NOXEN WRAPPER — fires when Noxen is ready
 // ════════════════════════════════════════════════
 var _nxQueue = [];
 var _nxReady = false;
 
 function _nxExec(fn) {
   if (_nxReady && typeof Noxen !== 'undefined') {
-    fn();
+    try { fn(); } catch(e) { console.warn('Noxen exec error:', e); }
   } else {
     _nxQueue.push(fn);
   }
 }
 
+function _nxFlushQueue() {
+  _nxReady = true;
+  _nxQueue.forEach(function(fn) { try { fn(); } catch(e) {} });
+  _nxQueue = [];
+}
+
+// Primary: use Noxen's own ready event
 document.addEventListener('DOMContentLoaded', function() {
-  // Give Noxen JS time to init (it runs on DOMContentLoaded too)
+  if (typeof Noxen !== 'undefined') {
+    Noxen.on('ready', _nxFlushQueue);
+  }
+  // Fallback: if Noxen fires ready before we can listen, or ready never fires
   setTimeout(function() {
-    _nxReady = true;
-    _nxQueue.forEach(function(fn) { try { fn(); } catch(e) {} });
-    _nxQueue = [];
-  }, 100);
+    if (!_nxReady) _nxFlushQueue();
+  }, 400);
 });
 
 // ════════════════════════════════════════════════
