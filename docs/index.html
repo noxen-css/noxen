@@ -965,6 +965,7 @@ Noxen.toast.show(<span class="token-val">'Custom message'</span>, { tone: <span 
 
 <script src="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.js"></script>
 <script>
+// ── Page navigation ──────────────────────────────
 function showPage(id) {
   document.querySelectorAll('.nx-page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nx-nav-link').forEach(l => l.classList.remove('active'));
@@ -973,73 +974,159 @@ function showPage(id) {
   document.querySelectorAll('.nx-nav-link').forEach(l => {
     if (l.getAttribute('onclick') && l.getAttribute('onclick').includes("'" + id + "'")) l.classList.add('active');
   });
-  document.querySelector('.nx-main').scrollTo(0, 0);
+  window.scrollTo(0, 0);
+  try { document.querySelector('.nx-main').scrollTo(0, 0); } catch(e) {}
 }
 
+// ── Theme switcher ───────────────────────────────
 function switchTheme(name, btn) {
-  // Update the HTML attribute directly (works even before Noxen JS loads)
   document.documentElement.setAttribute('data-nx-theme', name);
-  // Also call Noxen API if available
   if (typeof Noxen !== 'undefined') Noxen.theme.set(name);
-  // Update active button state
   document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
   if (btn && typeof btn === 'object') btn.classList.add('active');
+  // update label
+  const lbl = document.getElementById('active-theme-label');
+  if (lbl) lbl.textContent = name;
 }
 
+// ── Copy code blocks ─────────────────────────────
 function copyCode(btn) {
   const block = btn.closest('.code-block');
-  const text = block.innerText.replace('Copy\n', '').replace('Copied!\n','');
+  const text = block.innerText.replace(/^Copy\n|^Copied!\n/, '');
   navigator.clipboard.writeText(text).then(() => {
     btn.textContent = 'Copied!';
     setTimeout(() => btn.textContent = 'Copy', 2000);
+  }).catch(() => {
+    btn.textContent = 'Copy';
   });
 }
 
+// ── Motion demo ──────────────────────────────────
 function demoEnter(type) {
   const el = document.getElementById('motion-demo');
+  if (!el) return;
   el.removeAttribute('nx-enter');
-  void el.offsetWidth; // force reflow
+  void el.offsetWidth;
   el.setAttribute('nx-enter', type);
   el.textContent = 'nx-enter="' + type + '"';
 }
 
+// ── AI Palette demo ──────────────────────────────
 function applyPaletteDemo() {
   const hex = document.getElementById('palette-color').value;
+  if (typeof Noxen === 'undefined') return;
   const tokens = Noxen.palette.apply(hex, 'demo-palette');
   const output = document.getElementById('palette-output');
   const swatches = document.getElementById('palette-swatches');
+  if (!output || !swatches) return;
   output.style.display = 'block';
   swatches.innerHTML = '';
-  const colors = Object.entries(tokens || {}).filter(([k]) => k.includes('color'));
-  colors.forEach(([key, val]) => {
-    if (!val.includes('rgba') && !val.includes('var')) {
+  const tokenObj = tokens || {};
+  const colorEntries = Object.entries(tokenObj).filter(([k]) => k.includes('color'));
+  colorEntries.forEach(([key, val]) => {
+    if (val && !val.includes('rgba') && !val.includes('var') && val.startsWith('#')) {
       const s = document.createElement('div');
-      s.style.cssText = `width:60px;height:60px;border-radius:8px;background:${val};border:1px solid rgba(255,255,255,0.1);`;
+      s.style.cssText = 'width:52px;height:52px;border-radius:8px;background:' + val + ';border:1px solid rgba(255,255,255,0.1);cursor:pointer;';
       s.title = key + ': ' + val;
       swatches.appendChild(s);
     }
   });
   document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-  Noxen.toast.success('Palette applied from ' + hex);
+  if (typeof Noxen !== 'undefined') Noxen.toast.success('Palette applied from ' + hex);
 }
 
+// ── Token export ─────────────────────────────────
 function exportTokens(format) {
+  if (typeof Noxen === 'undefined') return;
   const output = document.getElementById('export-output');
+  if (!output) return;
   const result = Noxen.tokens.export(format);
   output.style.display = 'block';
   output.textContent = typeof result === 'string' ? result : JSON.stringify(result, null, 2);
 }
 
+// ── A11y audit ───────────────────────────────────
 function runAudit() {
+  if (typeof Noxen === 'undefined') return;
   const result = Noxen.a11y.audit();
   const out = document.getElementById('audit-output');
+  if (!out) return;
   out.style.display = 'block';
-  out.innerHTML = `
-    <div nx="card" size="sm" no-hover>
-      <strong>${result.errors} errors · ${result.warnings} warnings</strong>
-      <p style="margin:4px 0 0;font-size:12px">Check the browser console for full details.</p>
-    </div>`;
+  out.innerHTML = '<div nx="card" size="sm" no-hover style="margin-top:12px"><strong>' + result.errors + ' errors · ' + result.warnings + ' warnings</strong><p style="margin:4px 0 0;font-size:12px;color:var(--nx-color-text-3)">Full details in browser console (F12).</p></div>';
 }
+
+// ── Chat demo ────────────────────────────────────
+function addChat() {
+  const input = document.getElementById('chat-input');
+  const wrap = document.getElementById('chat-demo');
+  if (!input || !wrap || !input.value.trim()) return;
+  const msg = document.createElement('div');
+  msg.className = 'chat-msg me';
+  msg.textContent = input.value.trim();
+  wrap.appendChild(msg);
+  input.value = '';
+  input.focus();
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'chat-input') {
+    addChat();
+  }
+});
+
+// ── Tabs ─────────────────────────────────────────
+document.addEventListener('click', function(e) {
+  const tab = e.target.closest('[nx="tab"]');
+  if (!tab) return;
+  const container = tab.closest('[nx="tabs"]');
+  if (!container) return;
+  // deactivate all tabs in this group
+  container.querySelectorAll('[nx="tab"]').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  // find tab panels in the same parent scope
+  const target = tab.getAttribute('data-target');
+  if (!target) return;
+  const scope = container.parentElement;
+  scope.querySelectorAll('[data-tab-panel]').forEach(p => p.hidden = true);
+  const panel = scope.querySelector('[data-tab-panel="' + target + '"]');
+  if (panel) panel.hidden = false;
+});
+
+// ── Accordion ────────────────────────────────────
+document.addEventListener('click', function(e) {
+  const trigger = e.target.closest('[nx="accordion-trigger"]');
+  if (!trigger) return;
+  const item = trigger.closest('[nx="accordion-item"]');
+  if (!item) return;
+  const content = item.querySelector('[nx="accordion-content"]');
+  const isOpen = trigger.classList.contains('open');
+  // close all in this accordion
+  const accordion = item.closest('[nx="accordion"]');
+  if (accordion) {
+    accordion.querySelectorAll('[nx="accordion-trigger"]').forEach(t => t.classList.remove('open'));
+    accordion.querySelectorAll('[nx="accordion-content"]').forEach(c => c.classList.remove('open'));
+  }
+  // open clicked one if it was closed
+  if (!isOpen && content) {
+    trigger.classList.add('open');
+    content.classList.add('open');
+  }
+});
+
+// ── Toggle ───────────────────────────────────────
+document.addEventListener('click', function(e) {
+  const toggle = e.target.closest('[nx="toggle"]');
+  if (!toggle) return;
+  toggle.classList.toggle('on');
+});
+
+// ── Set initial theme label ──────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  const lbl = document.getElementById('active-theme-label');
+  if (lbl) {
+    const theme = document.documentElement.getAttribute('data-nx-theme') || 'void';
+    lbl.textContent = theme;
+  }
+});
 </script>
 </body>
 </html>
