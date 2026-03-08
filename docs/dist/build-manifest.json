@@ -1,0 +1,15 @@
+{
+  "name": "noxen-css",
+  "version": "2.0.0",
+  "built": "2026-03-07T17:22:05.853845Z",
+  "files": {
+    "noxen.css": "74.9KB",
+    "noxen.min.css": "45.7KB",
+    "noxen.js": "29.2KB",
+    "noxen.min.js": "18.3KB"
+  },
+  "cdn": {
+    "css": "https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css",
+    "js": "https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.js"
+  }
+}
