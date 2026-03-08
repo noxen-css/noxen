@@ -1,0 +1,44 @@
+{
+  "name": "noxen-css",
+  "version": "2.0.0",
+  "description": "The world's first intent-based CSS framework. Design intent, not class names. 7 themes, Antigravity Engine, Auto-ARIA, AI Palette, Cross-platform tokens — all in 74KB.",
+  "main": "dist/noxen.css",
+  "style": "dist/noxen.css",
+  "module": "dist/noxen.css",
+  "exports": {
+    ".": "./dist/noxen.css",
+    "./js": "./dist/noxen.js",
+    "./min": "./dist/noxen.min.css",
+    "./min/js": "./dist/noxen.min.js",
+    "./src": "./src/noxen.css"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "starter.html",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "css", "framework", "design-system", "ui", "components",
+    "antigravity", "theming", "tokens", "accessibility",
+    "intent-api", "animations", "grid", "dark-mode"
+  ],
+  "author": "Noxen Contributors",
+  "license": "MIT",
+  "homepage": "https://noxen.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noxen-css/noxen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/noxen-css/noxen/issues"
+  },
+  "cdn": "https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css",
+  "unpkg": "dist/noxen.min.css",
+  "scripts": {
+    "build": "python3 build.py",
+    "dev": "npx live-server . --open=docs/index.html",
+    "test": "open test/index.html"
+  }
+}

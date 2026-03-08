@@ -1,0 +1,182 @@
+/**
+ * NOXEN CSS FRAMEWORK v2.0
+ * Antigravity Engine — The world's first CSS gravity system
+ * nx-ag="mirror | reflect | floor | zone | pair | invert"
+ */
+
+/* ═══════════════════════════════════════
+   MIRROR  nx-ag="mirror"
+   Flips element on Y axis. Children auto-corrected.
+═══════════════════════════════════════ */
+[nx-ag="mirror"] {
+  transform: scaleY(-1);
+}
+/* Auto-correct children so text/content reads normally */
+[nx-ag="mirror"] > *,
+[nx-ag-correct] {
+  transform: scaleY(-1);
+}
+
+/* ═══════════════════════════════════════
+   REFLECT  nx-ag="reflect"
+   Ghost reflection below element with gradient fade
+═══════════════════════════════════════ */
+[nx-ag="reflect"] {
+  transform: scaleY(-1);
+  transform-origin: top center;
+  opacity: var(--nx-ag-reflect-fade, 0.45);
+  filter: blur(var(--nx-ag-reflect-blur, 1px));
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.8) 0%,
+    rgba(0,0,0,0.4) 40%,
+    transparent 85%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.8) 0%,
+    rgba(0,0,0,0.4) 40%,
+    transparent 85%
+  );
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════
+   FLOOR  nx-ag="floor"
+   Antigravity flex — items stack from the bottom
+   Perfect for: chat UIs, notification stacks
+═══════════════════════════════════════ */
+[nx-ag="floor"] {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/* ═══════════════════════════════════════
+   INVERT  nx-ag="invert"
+   Full 3D perspective flip
+═══════════════════════════════════════ */
+[nx-ag="invert"] {
+  transform: perspective(var(--nx-ag-zone-depth, 600px)) rotateX(180deg);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+[nx-ag="invert"] > * {
+  transform: rotateX(180deg);
+  backface-visibility: hidden;
+}
+
+/* ═══════════════════════════════════════
+   ZONE  nx-ag="zone"
+   Gravity zone container — children anchor to edges
+═══════════════════════════════════════ */
+[nx-ag="zone"] {
+  position: relative;
+  overflow: hidden;
+}
+[nx-ag="zone"][nx-ag-pull="top"]    { display: flex; flex-direction: column; justify-content: flex-start; }
+[nx-ag="zone"][nx-ag-pull="bottom"] { display: flex; flex-direction: column; justify-content: flex-end; }
+[nx-ag="zone"][nx-ag-pull="left"]   { display: flex; flex-direction: row; justify-content: flex-start; }
+[nx-ag="zone"][nx-ag-pull="right"]  { display: flex; flex-direction: row; justify-content: flex-end; }
+[nx-ag="zone"][nx-ag-pull="center"] { display: flex; align-items: center; justify-content: center; }
+
+/* ═══════════════════════════════════════
+   PAIR  nx-ag="pair"
+   Two sections meeting at an antigravity seam
+   Apply to: parent container
+═══════════════════════════════════════ */
+[nx-ag="pair"] {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+/* The seam — glowing line between pair halves */
+[nx-ag-seam] {
+  height: var(--nx-ag-seam-width, 1px);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0,0,0,0) 5%,
+    var(--nx-ag-seam-color) 50%,
+    rgba(0,0,0,0) 95%,
+    transparent 100%
+  );
+  box-shadow: var(--nx-ag-seam-glow);
+  position: relative;
+  z-index: 10;
+  animation: nx-ag-seam-pulse 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes nx-ag-seam-pulse {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════
+   AXIS CONTROL  nx-ag-axis=""
+═══════════════════════════════════════ */
+[nx-ag-axis="x"]    { transform: scaleX(-1); }
+[nx-ag-axis="y"]    { transform: scaleY(-1); }
+[nx-ag-axis="both"] { transform: scale(-1); }
+
+/* ═══════════════════════════════════════
+   ANTIGRAVITY ENTRY ANIMATIONS  nx-ag-enter=""
+═══════════════════════════════════════ */
+[nx-ag-enter] {
+  animation-fill-mode: both;
+  animation-duration: var(--nx-duration-slow);
+  animation-timing-function: var(--nx-ease-spring);
+}
+[nx-ag-enter="fall"]        { animation-name: nx-ag-fall; }
+[nx-ag-enter="rise"]        { animation-name: nx-ag-rise; }
+[nx-ag-enter="flip"]        { animation-name: nx-ag-flip; }
+[nx-ag-enter="slide-left"]  { animation-name: nx-ag-slide-left; }
+[nx-ag-enter="slide-right"] { animation-name: nx-ag-slide-right; }
+
+[nx-ag-enter][nx-ag-speed="fast"] { animation-duration: var(--nx-duration-base); }
+[nx-ag-enter][nx-ag-speed="slow"] { animation-duration: var(--nx-duration-glacial); }
+
+/* Stagger within antigravity containers */
+[nx-ag-stagger] > *:nth-child(1)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 1); }
+[nx-ag-stagger] > *:nth-child(2)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 2); }
+[nx-ag-stagger] > *:nth-child(3)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 3); }
+[nx-ag-stagger] > *:nth-child(4)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 4); }
+[nx-ag-stagger] > *:nth-child(5)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 5); }
+[nx-ag-stagger] > *:nth-child(6)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 6); }
+
+/* Antigravity keyframes */
+@keyframes nx-ag-fall {
+  from { opacity: 0; transform: scaleY(-1) translateY(-40px); }
+  to   { opacity: 1; transform: scaleY(-1) translateY(0); }
+}
+@keyframes nx-ag-rise {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes nx-ag-flip {
+  from { opacity: 0; transform: rotateY(-90deg); }
+  to   { opacity: 1; transform: rotateY(0); }
+}
+@keyframes nx-ag-slide-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes nx-ag-slide-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ═══════════════════════════════════════
+   FLOOR GLOW — decorative floor reflection light
+═══════════════════════════════════════ */
+[nx-ag-floor-glow]::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 60px;
+  background: radial-gradient(ellipse at center top,
+    var(--nx-color-accent-lo), transparent 70%);
+  pointer-events: none;
+}

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" data-nx-theme="void">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Noxen App</title>
+  <meta name="description" content="Built with Noxen CSS Framework">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Noxen CSS v2.0 CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div nx="navbar" sticky glass>
+    <span style="font-family:var(--nx-font-display);font-weight:800;color:var(--nx-color-accent);font-size:20px;letter-spacing:2px">BRAND</span>
+    <div nx="spacer"></div>
+    <!-- Theme Switcher -->
+    <div style="display:flex;gap:6px;align-items:center">
+      <button onclick="Noxen.theme.set('void')"   style="width:20px;height:20px;border-radius:50%;background:#00e5ff;border:2px solid rgba(255,255,255,0.2);cursor:pointer" title="void"></button>
+      <button onclick="Noxen.theme.set('neon')"   style="width:20px;height:20px;border-radius:50%;background:#4d9fff;border:2px solid rgba(255,255,255,0.2);cursor:pointer" title="neon"></button>
+      <button onclick="Noxen.theme.set('carbon')" style="width:20px;height:20px;border-radius:50%;background:#ff4422;border:2px solid rgba(255,255,255,0.2);cursor:pointer" title="carbon"></button>
+      <button onclick="Noxen.theme.set('bio')"    style="width:20px;height:20px;border-radius:50%;background:#00e87a;border:2px solid rgba(255,255,255,0.2);cursor:pointer" title="bio"></button>
+      <button onclick="Noxen.theme.set('gold')"   style="width:20px;height:20px;border-radius:50%;background:#ffd700;border:2px solid rgba(255,255,255,0.2);cursor:pointer" title="gold"></button>
+      <button onclick="Noxen.theme.set('paper')"  style="width:20px;height:20px;border-radius:50%;background:#d45500;border:2px solid rgba(255,255,255,0.2);cursor:pointer" title="paper"></button>
+      <button onclick="Noxen.theme.set('aurora')" style="width:20px;height:20px;border-radius:50%;background:#cc44ff;border:2px solid rgba(255,255,255,0.2);cursor:pointer" title="aurora"></button>
+    </div>
+    <button nx="btn" size="sm" onclick="Noxen.toast.success('Clicked!')">Get Started</button>
+  </div>
+
+  <!-- HERO SECTION -->
+  <div nx="section" size="hero" style="text-align:center">
+    <div nx="stack" align="center" gap="lg">
+      <span nx="badge" tone="ok" nx-enter="fall">✓ Framework v2.0 Ready</span>
+      <h1 style="font-size:clamp(2.5rem,6vw,5rem);max-width:700px" nx-enter="rise">
+        Build with <span style="color:var(--nx-color-accent)">Intent</span>, Not Classes.
+      </h1>
+      <p style="max-width:520px;font-size:1.1rem" nx-enter="rise">
+        Noxen is the world's first intent-based CSS framework. Describe what your elements ARE, not what they look like.
+      </p>
+      <div nx="row" gap="md" nx-enter="rise">
+        <button nx="btn" size="xl" onclick="Noxen.toast.success('Welcome to Noxen!', {title: 'Hello!'})">
+          Get Started →
+        </button>
+        <button nx="btn" variant="outline" size="xl" onclick="window.open('https://github.com/noxen-css/noxen','_blank')">
+          ★ Star on GitHub
+        </button>
+      </div>
+      <div nx="row" gap="sm" style="flex-wrap:wrap;justify-content:center" nx-enter="fade">
+        <span nx="chip">✓ 7 Themes</span>
+        <span nx="chip">✓ 25+ Components</span>
+        <span nx="chip">✓ Antigravity Engine</span>
+        <span nx="chip">✓ Auto-ARIA</span>
+        <span nx="chip">✓ AI Palette</span>
+        <span nx="chip">✓ 64KB Total</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES GRID -->
+  <div nx="section" size="lg">
+    <div nx="container">
+      <div style="text-align:center;margin-bottom:48px">
+        <div nx="label" style="margin-bottom:12px">Why Noxen</div>
+        <h2>12 World-First Features</h2>
+        <p>No other CSS framework has all of these. Together, they make Noxen impossible to replicate.</p>
+      </div>
+      <div nx="grid" cols="3" gap="md" nx-stagger>
+        <div nx="card" nx-enter="rise">
+          <div nx="label">01</div>
+          <h3 style="margin:8px 0 6px;font-size:1rem">Intent API</h3>
+          <p style="margin:0;font-size:13px">nx="" — describe what a thing IS, not how it looks. Single attribute, entire design system.</p>
+        </div>
+        <div nx="card" nx-enter="rise">
+          <div nx="label">02</div>
+          <h3 style="margin:8px 0 6px;font-size:1rem">Living Token Engine</h3>
+          <p style="margin:0;font-size:13px">Full theme switch in under 1ms. Zero rebuild. Noxen.theme.set('carbon') — done.</p>
+        </div>
+        <div nx="card" nx-enter="rise">
+          <div nx="label">03</div>
+          <h3 style="margin:8px 0 6px;font-size:1rem">Antigravity Engine</h3>
+          <p style="margin:0;font-size:13px">The world's first CSS physics layout system. Product reflections, upward-growing UIs — pure CSS.</p>
+        </div>
+        <div nx="card" nx-enter="rise">
+          <div nx="label">04</div>
+          <h3 style="margin:8px 0 6px;font-size:1rem">Auto-ARIA</h3>
+          <p style="margin:0;font-size:13px">WCAG 2.1 AA injected automatically. Audit with Noxen.a11y.audit().</p>
+        </div>
+        <div nx="card" nx-enter="rise">
+          <div nx="label">05</div>
+          <h3 style="margin:8px 0 6px;font-size:1rem">AI Palette Engine</h3>
+          <p style="margin:0;font-size:13px">Full design system from one hex. Noxen.palette.apply('#FF3366') — entire theme generated.</p>
+        </div>
+        <div nx="card" nx-enter="rise">
+          <div nx="label">06</div>
+          <h3 style="margin:8px 0 6px;font-size:1rem">Fluid Scale</h3>
+          <p style="margin:0;font-size:13px">True CSS clamp() fluid responsive. No breakpoint jumps. Ever.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANTIGRAVITY DEMO -->
+  <div nx="section">
+    <div nx="container">
+      <div nx="label" style="margin-bottom:16px">Antigravity Engine</div>
+      <h2 style="margin-bottom:8px">The world's first CSS gravity system</h2>
+      <p style="margin-bottom:40px">Normal CSS flows top-to-bottom. Noxen inverts this with semantic attributes.</p>
+
+      <div nx="grid" cols="2" gap="lg">
+        <!-- Product + Reflection -->
+        <div>
+          <div nx="label" style="margin-bottom:12px">nx-ag="reflect" — Product Reflection</div>
+          <div nx="card" variant="raised" size="lg" no-hover>
+            <div nx="row" align="center" gap="md" style="margin-bottom:16px">
+              <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--nx-color-accent),var(--nx-color-accent-2));display:flex;align-items:center;justify-content:center;font-size:24px">◎</div>
+              <div>
+                <strong style="font-size:1.1rem">Noxen Sphere X1</strong>
+                <div style="color:var(--nx-color-text-3);font-size:13px">Premium Edition</div>
+              </div>
+            </div>
+            <div nx="row" justify="between" align="center">
+              <span style="font-size:1.5rem;font-weight:800;color:var(--nx-color-accent)">$299</span>
+              <span nx="badge" tone="ok">In Stock</span>
+            </div>
+          </div>
+          <div nx-ag-seam style="margin:2px 0"></div>
+          <div nx-ag="reflect">
+            <div nx="card" variant="raised" size="lg" no-hover>
+              <div nx="row" align="center" gap="md" style="margin-bottom:16px">
+                <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--nx-color-accent),var(--nx-color-accent-2));display:flex;align-items:center;justify-content:center;font-size:24px">◎</div>
+                <div><strong style="font-size:1.1rem">Noxen Sphere X1</strong></div>
+              </div>
+              <div nx="row" justify="between" align="center">
+                <span style="font-size:1.5rem;font-weight:800;color:var(--nx-color-accent)">$299</span>
+                <span nx="badge" tone="ok">In Stock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat UI -->
+        <div>
+          <div nx="label" style="margin-bottom:12px">nx-ag="floor" — Chat UI (bottom-up, no JS)</div>
+          <div nx-ag="floor" style="height:280px;overflow-y:auto;gap:8px;padding:16px;background:var(--nx-color-surface-2);border-radius:var(--nx-radius-lg);border:1px solid var(--nx-color-border)">
+            <div style="display:flex;justify-content:flex-end">
+              <div style="background:var(--nx-color-accent-lo);border:1px solid var(--nx-color-border-2);border-radius:var(--nx-radius-lg);padding:10px 14px;max-width:80%;font-size:13px">nx="floor" 🤯 No JS!</div>
+            </div>
+            <div style="display:flex;justify-content:flex-start">
+              <div nx="card" size="sm" no-hover style="max-width:80%;font-size:13px">This is a chat UI built with pure CSS. No JavaScript scroll management needed.</div>
+            </div>
+            <div style="display:flex;justify-content:flex-end">
+              <div style="background:var(--nx-color-accent-lo);border:1px solid var(--nx-color-border-2);border-radius:var(--nx-radius-lg);padding:10px 14px;max-width:80%;font-size:13px">How?? 👀</div>
+            </div>
+            <div style="display:flex;justify-content:flex-start">
+              <div nx="card" size="sm" no-hover style="max-width:80%;font-size:13px">flex-direction: column-reverse. That's all it takes.</div>
+            </div>
+            <div style="display:flex;justify-content:flex-end">
+              <div style="background:var(--nx-color-accent-lo);border:1px solid var(--nx-color-border-2);border-radius:var(--nx-radius-lg);padding:10px 14px;max-width:80%;font-size:13px">This is incredible. I'm switching to Noxen today.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS SECTION -->
+  <div nx="section" size="lg" style="background:var(--nx-color-surface)">
+    <div nx="container">
+      <div nx="grid" cols="4" gap="md" style="text-align:center">
+        <div nx-scroll-reveal="rise">
+          <div nx="stat">
+            <div nx="stat-value">64KB</div>
+            <div nx="stat-label">Total bundle</div>
+            <div nx="stat-desc">vs Bootstrap's 156KB</div>
+          </div>
+        </div>
+        <div nx-scroll-reveal="rise">
+          <div nx="stat">
+            <div nx="stat-value">1ms</div>
+            <div nx="stat-label">Theme switch</div>
+            <div nx="stat-desc">Zero rebuild needed</div>
+          </div>
+        </div>
+        <div nx-scroll-reveal="rise">
+          <div nx="stat">
+            <div nx="stat-value">25+</div>
+            <div nx="stat-label">Components</div>
+            <div nx="stat-desc">All intent-driven</div>
+          </div>
+        </div>
+        <div nx-scroll-reveal="rise">
+          <div nx="stat">
+            <div nx="stat-value">7</div>
+            <div nx="stat-label">Built-in themes</div>
+            <div nx="stat-desc">+ unlimited custom</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTALL CTA -->
+  <div nx="section" size="lg" style="text-align:center">
+    <div nx="container" size="md">
+      <h2 style="font-size:clamp(1.8rem,4vw,3rem);margin-bottom:16px">Ready to build?</h2>
+      <p style="margin-bottom:32px">Copy one line into your HTML and you have the full framework.</p>
+      <div style="background:var(--nx-color-surface-2);border:1px solid var(--nx-color-border-2);border-radius:var(--nx-radius-lg);padding:20px;font-family:var(--nx-font-mono);font-size:13px;color:var(--nx-color-accent);text-align:left;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <span>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css"&gt;</span>
+        <button nx="btn" size="sm" variant="ghost" onclick="navigator.clipboard.writeText('&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css&quot;&gt;');Noxen.toast.success('Copied to clipboard!')">Copy</button>
+      </div>
+      <div nx="row" gap="md" style="justify-content:center;flex-wrap:wrap">
+        <button nx="btn" size="lg" onclick="window.open('https://noxen.dev/docs','_blank')">Read the Docs</button>
+        <button nx="btn" variant="outline" size="lg" onclick="window.open('https://github.com/noxen-css/noxen','_blank')">★ GitHub</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--nx-color-surface);border-top:1px solid var(--nx-color-border);padding:40px 0;text-align:center">
+    <div nx="container">
+      <div style="font-family:var(--nx-font-display);font-size:24px;font-weight:800;color:var(--nx-color-accent);letter-spacing:3px;margin-bottom:12px">NOXEN</div>
+      <p style="margin:0;font-size:13px">MIT License · Built for 2025, works for 2030.</p>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--nx-color-text-3)">"No other framework can do what Noxen does."</p>
+    </div>
+  </footer>
+
+  <!-- Noxen JS v2.0 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.js"></script>
+
+  <!-- Your app code here -->
+  <script>
+    // Example: Generate a custom palette
+    // Noxen.palette.apply('#FF3366', 'my-brand')
+
+    // Example: Token override
+    // Noxen.tokens.set('--nx-radius-lg', '4px')
+
+    // Example: Listen for theme changes
+    // Noxen.on('theme', data => console.log('Theme:', data.theme))
+  </script>
+</body>
+</html>

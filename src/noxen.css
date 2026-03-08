@@ -1,0 +1,58 @@
+/**
+ * ╔══════════════════════════════════════════════════════╗
+ * ║           NOXEN CSS FRAMEWORK v2.0.0                ║
+ * ║   The world's first intent-based CSS framework      ║
+ * ║                                                      ║
+ * ║   https://github.com/noxen-css/noxen                ║
+ * ║   https://noxen.dev                                  ║
+ * ║   MIT License © 2025 Noxen Contributors             ║
+ * ╚══════════════════════════════════════════════════════╝
+ *
+ * QUICK START:
+ *   CDN:  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css">
+ *         <script src="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.js"></script>
+ *
+ *   NPM:  npm install noxen-css
+ *         import 'noxen-css'
+ *
+ * THEMES:
+ *   <body data-nx-theme="void|neon|carbon|bio|gold|paper|aurora">
+ *   Noxen.theme.set('neon')
+ *
+ * COMPONENTS:
+ *   <div nx="card" variant="raised">
+ *   <button nx="btn" variant="accent" size="lg">
+ *   <div nx="grid" cols="3" gap="md">
+ *   <div nx-ag="reflect">  ← Antigravity!
+ *
+ * LAYERS:
+ *   L1 tokens      → Design token system (CSS custom properties)
+ *   L2 themes      → 7 built-in themes + custom theme API
+ *   L3 base        → CSS reset + typography
+ *   L4 layout      → Smart Grid + Fluid scale + Flex
+ *   L5 components  → 25+ UI components
+ *   L6 motion      → Animation system + scroll reveals
+ *   L7 antigravity → World's first CSS gravity engine
+ *   L8 intelligence→ Auto-ARIA + A11y + AI Palette (noxen.js)
+ */
+
+/* Layer 1 — Token System */
+@import './tokens/_tokens.css';
+
+/* Layer 2 — Theme Engine (7 themes) */
+@import './themes/_themes.css';
+
+/* Layer 3 — Base Reset + Typography */
+@import './components/_base.css';
+
+/* Layer 4 — Layout Engine */
+@import './layout/_layout.css';
+
+/* Layer 5 — Component System */
+@import './components/_components.css';
+
+/* Layer 6 — Motion System */
+@import './motion/_motion.css';
+
+/* Layer 7 — Antigravity Engine */
+@import './antigravity/_antigravity.css';

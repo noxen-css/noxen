@@ -1,0 +1,200 @@
+/**
+ * NOXEN CSS FRAMEWORK v2.0
+ * Layer 4 — Layout Engine
+ * Smart Grid · Fluid Layouts · Section system · Flex utilities
+ */
+
+/* ═══════════════════════════════════════
+   SECTION  nx="section"
+   Full-width page sections with intent-based sizing
+═══════════════════════════════════════ */
+[nx="section"] {
+  width: 100%;
+  padding: var(--nx-space-9) var(--nx-fluid-space-xl);
+}
+[nx="section"][size="hero"]   { padding: var(--nx-space-10) var(--nx-fluid-space-xl); min-height: 90vh; display: flex; align-items: center; }
+[nx="section"][size="full"]   { padding: var(--nx-fluid-space-xl); min-height: 100vh; display: flex; align-items: center; }
+[nx="section"][size="narrow"] { padding: var(--nx-space-7) var(--nx-fluid-space-xl); max-width: 760px; margin: 0 auto; }
+[nx="section"][size="wide"]   { padding: var(--nx-space-8) var(--nx-fluid-space-xl); max-width: 1400px; margin: 0 auto; }
+[nx="section"][size="sm"]     { padding: var(--nx-space-7) var(--nx-fluid-space-xl); }
+[nx="section"][size="lg"]     { padding: var(--nx-space-9) var(--nx-fluid-space-xl); }
+
+/* ═══════════════════════════════════════
+   CONTAINER
+═══════════════════════════════════════ */
+[nx="container"] {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--nx-fluid-space-md);
+}
+[nx="container"][size="sm"]   { max-width: 640px; }
+[nx="container"][size="md"]   { max-width: 768px; }
+[nx="container"][size="lg"]   { max-width: 1024px; }
+[nx="container"][size="xl"]   { max-width: 1280px; }
+[nx="container"][size="full"] { max-width: 100%; }
+
+/* ═══════════════════════════════════════
+   SMART GRID  nx="grid"
+   Intent-based CSS Grid system
+═══════════════════════════════════════ */
+[nx="grid"] {
+  display: grid;
+  gap: var(--nx-fluid-space-md);
+}
+
+/* Column count shortcuts */
+[nx="grid"][cols="1"] { grid-template-columns: 1fr; }
+[nx="grid"][cols="2"] { grid-template-columns: repeat(2, 1fr); }
+[nx="grid"][cols="3"] { grid-template-columns: repeat(3, 1fr); }
+[nx="grid"][cols="4"] { grid-template-columns: repeat(4, 1fr); }
+[nx="grid"][cols="5"] { grid-template-columns: repeat(5, 1fr); }
+[nx="grid"][cols="6"] { grid-template-columns: repeat(6, 1fr); }
+
+/* Auto-responsive — fills columns automatically */
+[nx="grid"][cols="auto"],
+[nx="grid"][cols="auto-sm"]  { grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+[nx="grid"][cols="auto-md"]  { grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+[nx="grid"][cols="auto-lg"]  { grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }
+[nx="grid"][cols="auto-xl"]  { grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); }
+
+/* Intent-based layouts */
+[nx="grid"][layout="sidebar-main"] { grid-template-columns: 280px 1fr; }
+[nx="grid"][layout="main-sidebar"] { grid-template-columns: 1fr 280px; }
+[nx="grid"][layout="holy-grail"]   { grid-template-columns: 220px 1fr 220px; grid-template-rows: auto 1fr auto; }
+[nx="grid"][layout="dashboard"]    { grid-template-columns: 240px 1fr; grid-template-rows: 60px 1fr auto; }
+[nx="grid"][layout="mosaic"]       { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 200px; }
+[nx="grid"][layout="magazine"]     { grid-template-columns: repeat(3, 1fr); grid-auto-rows: auto; }
+[nx="grid"][layout="masonry"]      {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-auto-rows: 8px; /* JS fills in row spans */
+  align-items: start;
+}
+
+/* Gap variants */
+[nx="grid"][gap="none"] { gap: 0; }
+[nx="grid"][gap="xs"]   { gap: var(--nx-space-2); }
+[nx="grid"][gap="sm"]   { gap: var(--nx-space-3); }
+[nx="grid"][gap="md"]   { gap: var(--nx-space-5); }
+[nx="grid"][gap="lg"]   { gap: var(--nx-space-7); }
+[nx="grid"][gap="xl"]   { gap: var(--nx-space-9); }
+
+/* Alignment */
+[nx="grid"][align="start"]   { align-items: start; }
+[nx="grid"][align="center"]  { align-items: center; }
+[nx="grid"][align="end"]     { align-items: end; }
+[nx="grid"][align="stretch"] { align-items: stretch; }
+[nx="grid"][justify="start"]   { justify-items: start; }
+[nx="grid"][justify="center"]  { justify-items: center; }
+[nx="grid"][justify="end"]     { justify-items: end; }
+
+/* Subgrid support */
+[nx="grid"][subgrid] {
+  display: subgrid;
+  grid-column: 1 / -1;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1024px) {
+  [nx="grid"][cols="4"], [nx="grid"][cols="5"], [nx="grid"][cols="6"] { grid-template-columns: repeat(3, 1fr); }
+  [nx="grid"][layout="holy-grail"] { grid-template-columns: 1fr; }
+  [nx="grid"][layout="dashboard"]  { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  [nx="grid"][cols="3"], [nx="grid"][cols="4"],
+  [nx="grid"][cols="5"], [nx="grid"][cols="6"] { grid-template-columns: repeat(2, 1fr); }
+  [nx="grid"][layout="sidebar-main"],
+  [nx="grid"][layout="main-sidebar"] { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  [nx="grid"][cols="2"], [nx="grid"][cols="3"],
+  [nx="grid"][cols="4"], [nx="grid"][cols="5"],
+  [nx="grid"][cols="6"] { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════
+   GRID ITEM SPANS
+═══════════════════════════════════════ */
+[span="2"]  { grid-column: span 2; }
+[span="3"]  { grid-column: span 3; }
+[span="4"]  { grid-column: span 4; }
+[span="full"] { grid-column: 1 / -1; }
+[row-span="2"] { grid-row: span 2; }
+[row-span="3"] { grid-row: span 3; }
+
+/* ═══════════════════════════════════════
+   FLEX ROW/WRAP
+═══════════════════════════════════════ */
+[nx="row"] {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--nx-space-4);
+  align-items: center;
+}
+[nx="row"][gap="none"] { gap: 0; }
+[nx="row"][gap="xs"]   { gap: var(--nx-space-2); }
+[nx="row"][gap="sm"]   { gap: var(--nx-space-3); }
+[nx="row"][gap="md"]   { gap: var(--nx-space-5); }
+[nx="row"][gap="lg"]   { gap: var(--nx-space-7); }
+[nx="row"][nowrap]     { flex-wrap: nowrap; }
+[nx="row"][justify="between"] { justify-content: space-between; }
+[nx="row"][justify="center"]  { justify-content: center; }
+[nx="row"][justify="end"]     { justify-content: flex-end; }
+[nx="row"][justify="around"]  { justify-content: space-around; }
+[nx="row"][align="start"]  { align-items: flex-start; }
+[nx="row"][align="end"]    { align-items: flex-end; }
+[nx="row"][align="stretch"]{ align-items: stretch; }
+
+/* ═══════════════════════════════════════
+   STACK (vertical flex column)
+═══════════════════════════════════════ */
+[nx="stack"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nx-space-4);
+}
+[nx="stack"][gap="none"] { gap: 0; }
+[nx="stack"][gap="xs"]   { gap: var(--nx-space-2); }
+[nx="stack"][gap="sm"]   { gap: var(--nx-space-3); }
+[nx="stack"][gap="md"]   { gap: var(--nx-space-5); }
+[nx="stack"][gap="lg"]   { gap: var(--nx-space-7); }
+[nx="stack"][align="center"]  { align-items: center; }
+[nx="stack"][align="end"]     { align-items: flex-end; }
+[nx="stack"][align="start"]   { align-items: flex-start; }
+[nx="stack"][align="stretch"] { align-items: stretch; }
+
+/* ═══════════════════════════════════════
+   CENTER — perfect centering utility
+═══════════════════════════════════════ */
+[nx="center"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════
+   DIVIDER  nx="divider"
+═══════════════════════════════════════ */
+[nx="divider"] {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--nx-color-border) 20%, var(--nx-color-border) 80%, transparent);
+  margin: var(--nx-space-5) 0;
+  border: none;
+}
+[nx="divider"][variant="accent"] {
+  background: linear-gradient(90deg, transparent, var(--nx-color-accent-md) 20%, var(--nx-color-accent) 50%, var(--nx-color-accent-md) 80%, transparent);
+  box-shadow: var(--nx-ag-seam-glow);
+}
+[nx="divider"][vertical] {
+  height: auto;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--nx-color-border) 20%, var(--nx-color-border) 80%, transparent);
+  margin: 0 var(--nx-space-5);
+  align-self: stretch;
+}
+
+/* ═══════════════════════════════════════
+   SPACER
+═══════════════════════════════════════ */
+[nx="spacer"] { flex: 1 1 auto; }
