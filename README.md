@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # NOXEN CSS Framework v2.1.2
-=======
-# NOXEN CSS Framework v2.1.0
->>>>>>> f1d56973dc79ade9bd6d3417fcefaedea5d6358a
 
 > **"No other framework can do what Noxen does."**
 
@@ -10,11 +6,7 @@ The world's first **intent-based** CSS framework. Describe what your elements **
 
 [![npm](https://img.shields.io/npm/v/noxen-css)](https://www.npmjs.com/package/noxen-css)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-<<<<<<< HEAD
 [![Bundle size](https://img.shields.io/badge/bundle-163KB-blue)](https://cdn.jsdelivr.net/npm/noxen-css@2.1.2/dist/)
-=======
-[![Bundle size](https://img.shields.io/badge/bundle-163KB-blue)](https://cdn.jsdelivr.net/npm/noxen-css@2.1.0/dist/)
->>>>>>> f1d56973dc79ade9bd6d3417fcefaedea5d6358a
 
 ---
 
@@ -22,13 +14,8 @@ The world's first **intent-based** CSS framework. Describe what your elements **
 
 **CDN (zero install):**
 ```html
-<<<<<<< HEAD
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2.1.2/dist/noxen.min.css">
 <script src="https://cdn.jsdelivr.net/npm/noxen-css@2.1.2/dist/noxen.min.js"></script>
-=======
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2.1.0/dist/noxen.min.css">
-<script src="https://cdn.jsdelivr.net/npm/noxen-css@2.1.0/dist/noxen.min.js"></script>
->>>>>>> f1d56973dc79ade9bd6d3417fcefaedea5d6358a
 ```
 
 **NPM:**
@@ -71,11 +58,7 @@ import 'noxen-css/dist/noxen.min.js'
 
 ---
 
-<<<<<<< HEAD
 ## What's New in v2.1.2 — Bootstrap Killer 🚀
-=======
-## What's New in v2.1.0 — Bootstrap Killer 🚀
->>>>>>> f1d56973dc79ade9bd6d3417fcefaedea5d6358a
 
 **49 total components.** Every Bootstrap gap closed, plus 13 brand-new components that Bootstrap doesn't have.
 
@@ -156,11 +139,7 @@ import 'noxen-css/dist/noxen.min.js'
 
 ---
 
-<<<<<<< HEAD
 ## v2.1.2 Components
-=======
-## v2.1 Components
->>>>>>> f1d56973dc79ade9bd6d3417fcefaedea5d6358a
 
 ### Drawer
 ```html
