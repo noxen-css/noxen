@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NOXEN CSS v2.0 — Build Script
+NOXEN CSS v2.1.2 — Build Script
 Concatenates all source layers → dist/noxen.css + noxen.min.css
 Copies JS → dist/noxen.js + noxen.min.js
 """
@@ -45,7 +45,7 @@ def minify_js(js):
     js = re.sub(r'  +', ' ', js)
     return js.strip()
 
-print('\n🔧 Building Noxen CSS v2.0.0...\n')
+print('\n🔧 Building Noxen CSS v2.1.2...\n')
 
 # ── CSS ──
 parts = []
@@ -56,7 +56,7 @@ for layer in CSS_LAYERS:
 
 full_css = '\n'.join(parts)
 mini_css = minify_css(full_css)
-css_banner = "/* Noxen CSS v2.0.0 | MIT License | https://noxen.dev | npm i noxen-css */\n"
+css_banner = "/* Noxen CSS v2.1.2 | MIT License | https://noxen.dev | npm i noxen-css */\n"
 
 write('dist/noxen.css', full_css)
 write('dist/noxen.min.css', css_banner + mini_css)
@@ -64,7 +64,7 @@ write('dist/noxen.min.css', css_banner + mini_css)
 # ── JS ──
 full_js = read('src/intelligence/noxen.js')
 mini_js = minify_js(full_js)
-js_banner  = "/* Noxen JS v2.0.0 | MIT License | https://noxen.dev */\n"
+js_banner  = "/* Noxen JS v2.1.2 | MIT License | https://noxen.dev */\n"
 
 write('dist/noxen.js', full_js)
 write('dist/noxen.min.js', js_banner + mini_js)
@@ -77,7 +77,7 @@ with open(os.path.join(ROOT, 'dist/noxen.min.js')) as f: min_js_size = len(f.rea
 
 manifest = {
     "name": "noxen-css",
-    "version": "2.0.0",
+    "version": "2.1.2",
     "built": __import__('datetime').datetime.utcnow().isoformat() + 'Z',
     "files": {
         "noxen.css":     f"{css_size/1024:.1f}KB",

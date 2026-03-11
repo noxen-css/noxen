@@ -1,5 +1,5 @@
 /**
- * NOXEN CSS FRAMEWORK v2.0
+ * NOXEN CSS FRAMEWORK v2.1.2
  * Layer 5 — Motion System
  * Entrance animations · Scroll reveals · Stagger groups · Exit animations
  * All respect prefers-reduced-motion automatically
@@ -14,19 +14,51 @@
   animation-timing-function: var(--nx-ease-spring);
 }
 
-[nx-enter="fade"]       { animation-name: nx-fade-in; }
-[nx-enter="rise"]       { animation-name: nx-rise-in; }
-[nx-enter="fall"]       { animation-name: nx-fall-in; }
-[nx-enter="slide-left"] { animation-name: nx-slide-in-left; }
-[nx-enter="slide-right"]{ animation-name: nx-slide-in-right; }
-[nx-enter="scale"]      { animation-name: nx-scale-in; }
-[nx-enter="flip"]       { animation-name: nx-flip-in; }
-[nx-enter="blur"]       { animation-name: nx-blur-in; }
-[nx-enter="bounce"]     { animation-name: nx-bounce-in; animation-timing-function: var(--nx-ease-bounce); }
+[nx-enter="fade"] {
+  animation-name: nx-fade-in;
+}
+
+[nx-enter="rise"] {
+  animation-name: nx-rise-in;
+}
+
+[nx-enter="fall"] {
+  animation-name: nx-fall-in;
+}
+
+[nx-enter="slide-left"] {
+  animation-name: nx-slide-in-left;
+}
+
+[nx-enter="slide-right"] {
+  animation-name: nx-slide-in-right;
+}
+
+[nx-enter="scale"] {
+  animation-name: nx-scale-in;
+}
+
+[nx-enter="flip"] {
+  animation-name: nx-flip-in;
+}
+
+[nx-enter="blur"] {
+  animation-name: nx-blur-in;
+}
+
+[nx-enter="bounce"] {
+  animation-name: nx-bounce-in;
+  animation-timing-function: var(--nx-ease-bounce);
+}
 
 /* Speed modifiers */
-[nx-enter][nx-speed="fast"]  { animation-duration: var(--nx-duration-base); }
-[nx-enter][nx-speed="slow"]  { animation-duration: var(--nx-duration-glacial); }
+[nx-enter][nx-speed="fast"] {
+  animation-duration: var(--nx-duration-base);
+}
+
+[nx-enter][nx-speed="slow"] {
+  animation-duration: var(--nx-duration-glacial);
+}
 
 /* ═══════════════════════════════════════
    SCROLL REVEAL  nx-scroll-reveal=""
@@ -35,15 +67,33 @@
 [nx-scroll-reveal] {
   opacity: 0;
   transition:
-    opacity   var(--nx-duration-slow)  var(--nx-ease-default),
-    transform var(--nx-duration-slow)  var(--nx-ease-spring);
+    opacity var(--nx-duration-slow) var(--nx-ease-default),
+    transform var(--nx-duration-slow) var(--nx-ease-spring);
 }
-[nx-scroll-reveal="rise"]        { transform: translateY(32px); }
-[nx-scroll-reveal="fade"]        { transform: none; }
-[nx-scroll-reveal="slide-left"]  { transform: translateX(-32px); }
-[nx-scroll-reveal="slide-right"] { transform: translateX(32px); }
-[nx-scroll-reveal="scale"]       { transform: scale(0.92); }
-[nx-scroll-reveal="blur"]        { filter: blur(8px); }
+
+[nx-scroll-reveal="rise"] {
+  transform: translateY(32px);
+}
+
+[nx-scroll-reveal="fade"] {
+  transform: none;
+}
+
+[nx-scroll-reveal="slide-left"] {
+  transform: translateX(-32px);
+}
+
+[nx-scroll-reveal="slide-right"] {
+  transform: translateX(32px);
+}
+
+[nx-scroll-reveal="scale"] {
+  transform: scale(0.92);
+}
+
+[nx-scroll-reveal="blur"] {
+  filter: blur(8px);
+}
 
 [nx-scroll-reveal].nx-visible {
   opacity: 1;
@@ -55,113 +105,337 @@
    STAGGER GROUPS  nx-stagger
    Children reveal sequentially
 ═══════════════════════════════════════ */
-[nx-stagger] > * { --nx-stagger-delay: 0ms; }
-[nx-stagger] > *:nth-child(1)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 1); }
-[nx-stagger] > *:nth-child(2)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 2); }
-[nx-stagger] > *:nth-child(3)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 3); }
-[nx-stagger] > *:nth-child(4)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 4); }
-[nx-stagger] > *:nth-child(5)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 5); }
-[nx-stagger] > *:nth-child(6)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 6); }
-[nx-stagger] > *:nth-child(7)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 7); }
-[nx-stagger] > *:nth-child(8)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 8); }
-[nx-stagger] > *:nth-child(9)  { animation-delay: calc(var(--nx-stagger-step, 80ms) * 9); }
-[nx-stagger] > *:nth-child(10) { animation-delay: calc(var(--nx-stagger-step, 80ms) * 10); }
-[nx-stagger] > *:nth-child(n+11) { animation-delay: calc(var(--nx-stagger-step, 80ms) * 11); }
+[nx-stagger]>* {
+  --nx-stagger-delay: 0ms;
+}
 
-[nx-stagger][nx-stagger-step="fast"]  { --nx-stagger-step: 40ms; }
-[nx-stagger][nx-stagger-step="slow"]  { --nx-stagger-step: 140ms; }
-[nx-stagger][nx-stagger-step="xslow"] { --nx-stagger-step: 220ms; }
+[nx-stagger]>*:nth-child(1) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 1);
+}
+
+[nx-stagger]>*:nth-child(2) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 2);
+}
+
+[nx-stagger]>*:nth-child(3) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 3);
+}
+
+[nx-stagger]>*:nth-child(4) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 4);
+}
+
+[nx-stagger]>*:nth-child(5) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 5);
+}
+
+[nx-stagger]>*:nth-child(6) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 6);
+}
+
+[nx-stagger]>*:nth-child(7) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 7);
+}
+
+[nx-stagger]>*:nth-child(8) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 8);
+}
+
+[nx-stagger]>*:nth-child(9) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 9);
+}
+
+[nx-stagger]>*:nth-child(10) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 10);
+}
+
+[nx-stagger]>*:nth-child(n+11) {
+  animation-delay: calc(var(--nx-stagger-step, 80ms) * 11);
+}
+
+[nx-stagger][nx-stagger-step="fast"] {
+  --nx-stagger-step: 40ms;
+}
+
+[nx-stagger][nx-stagger-step="slow"] {
+  --nx-stagger-step: 140ms;
+}
+
+[nx-stagger][nx-stagger-step="xslow"] {
+  --nx-stagger-step: 220ms;
+}
 
 /* ═══════════════════════════════════════
    CONTINUOUS ANIMATIONS  nx-animate=""
 ═══════════════════════════════════════ */
-[nx-animate="pulse"]    { animation: nx-pulse   2s ease-in-out infinite; }
-[nx-animate="bounce"]   { animation: nx-bounce  1.5s ease-in-out infinite; }
-[nx-animate="spin"]     { animation: nx-spin    1s linear infinite; }
-[nx-animate="spin-slow"]{ animation: nx-spin    3s linear infinite; }
-[nx-animate="float"]    { animation: nx-float   4s ease-in-out infinite; }
-[nx-animate="ping"]     { animation: nx-ping    1.5s cubic-bezier(0,0,0.2,1) infinite; }
-[nx-animate="shake"]    { animation: nx-shake   0.5s ease-in-out; }
-[nx-animate="glow"]     { animation: nx-glow    2s ease-in-out infinite; }
+[nx-animate="pulse"] {
+  animation: nx-pulse 2s ease-in-out infinite;
+}
+
+[nx-animate="bounce"] {
+  animation: nx-bounce 1.5s ease-in-out infinite;
+}
+
+[nx-animate="spin"] {
+  animation: nx-spin 1s linear infinite;
+}
+
+[nx-animate="spin-slow"] {
+  animation: nx-spin 3s linear infinite;
+}
+
+[nx-animate="float"] {
+  animation: nx-float 4s ease-in-out infinite;
+}
+
+[nx-animate="ping"] {
+  animation: nx-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+[nx-animate="shake"] {
+  animation: nx-shake 0.5s ease-in-out;
+}
+
+[nx-animate="glow"] {
+  animation: nx-glow 2s ease-in-out infinite;
+}
 
 /* ═══════════════════════════════════════
    HOVER TRANSITIONS
 ═══════════════════════════════════════ */
-[nx-hover="lift"]:hover   { transform: translateY(-4px); transition: transform var(--nx-duration-base) var(--nx-ease-spring); }
-[nx-hover="scale"]:hover  { transform: scale(1.04); transition: transform var(--nx-duration-fast) var(--nx-ease-spring); }
-[nx-hover="glow"]:hover   { box-shadow: var(--nx-shadow-glow); transition: box-shadow var(--nx-duration-base); }
-[nx-hover="dim"]:hover    { opacity: 0.7; transition: opacity var(--nx-duration-fast); }
-[nx-hover="bright"]:hover { filter: brightness(1.15); transition: filter var(--nx-duration-fast); }
+[nx-hover="lift"]:hover {
+  transform: translateY(-4px);
+  transition: transform var(--nx-duration-base) var(--nx-ease-spring);
+}
+
+[nx-hover="scale"]:hover {
+  transform: scale(1.04);
+  transition: transform var(--nx-duration-fast) var(--nx-ease-spring);
+}
+
+[nx-hover="glow"]:hover {
+  box-shadow: var(--nx-shadow-glow);
+  transition: box-shadow var(--nx-duration-base);
+}
+
+[nx-hover="dim"]:hover {
+  opacity: 0.7;
+  transition: opacity var(--nx-duration-fast);
+}
+
+[nx-hover="bright"]:hover {
+  filter: brightness(1.15);
+  transition: filter var(--nx-duration-fast);
+}
 
 /* ═══════════════════════════════════════
    KEYFRAMES
 ═══════════════════════════════════════ */
 @keyframes nx-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
+
 @keyframes nx-rise-in {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 @keyframes nx-fall-in {
-  from { opacity: 0; transform: translateY(-24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 @keyframes nx-slide-in-left {
-  from { opacity: 0; transform: translateX(-32px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
+
 @keyframes nx-slide-in-right {
-  from { opacity: 0; transform: translateX(32px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
+
 @keyframes nx-scale-in {
-  from { opacity: 0; transform: scale(0.88); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
+
 @keyframes nx-flip-in {
-  from { opacity: 0; transform: rotateX(-25deg) translateY(16px); }
-  to   { opacity: 1; transform: rotateX(0) translateY(0); }
+  from {
+    opacity: 0;
+    transform: rotateX(-25deg) translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotateX(0) translateY(0);
+  }
 }
+
 @keyframes nx-blur-in {
-  from { opacity: 0; filter: blur(10px); }
-  to   { opacity: 1; filter: blur(0); }
+  from {
+    opacity: 0;
+    filter: blur(10px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
 }
+
 @keyframes nx-bounce-in {
-  0%   { opacity: 0; transform: scale(0.4); }
-  55%  { opacity: 1; transform: scale(1.08); }
-  75%  { transform: scale(0.96); }
-  90%  { transform: scale(1.02); }
-  100% { transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  55% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  75% {
+    transform: scale(0.96);
+  }
+
+  90% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
+
 @keyframes nx-float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
+
 @keyframes nx-glow {
-  0%, 100% { box-shadow: 0 0 8px var(--nx-color-accent-md); }
-  50%       { box-shadow: 0 0 24px var(--nx-color-accent-hi); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--nx-color-accent-md);
+  }
+
+  50% {
+    box-shadow: 0 0 24px var(--nx-color-accent-hi);
+  }
 }
+
 @keyframes nx-ping {
-  0%    { transform: scale(1); opacity: 1; }
-  75%, 100% { transform: scale(2); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
+
 @keyframes nx-shake {
-  0%, 100% { transform: translateX(0); }
-  20%       { transform: translateX(-6px); }
-  40%       { transform: translateX(6px); }
-  60%       { transform: translateX(-4px); }
-  80%       { transform: translateX(4px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px);
+  }
+
+  40% {
+    transform: translateX(6px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
 }
+
 @keyframes nx-pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
 }
+
 @keyframes nx-bounce {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
+
 @keyframes nx-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }

@@ -1,5 +1,5 @@
 /**
- * NOXEN CSS FRAMEWORK v2.0
+ * NOXEN CSS FRAMEWORK v2.1.2
  * Layer 1 — Token System
  * All design decisions live here as CSS custom properties.
  * Every token is overridable. Every theme extends this.
@@ -7,196 +7,207 @@
 
 :root {
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      COLOR — BASE PALETTE
   ═══════════════════════════════════════ */
-  --nx-color-bg:          #03030a;
-  --nx-color-surface:     #08080f;
-  --nx-color-surface-2:   #0d0d1a;
-  --nx-color-surface-3:   #131326;
-  --nx-color-surface-4:   #1a1a33;
-  --nx-color-overlay:     rgba(3,3,10,0.85);
+   --nx-color-bg: #03030a;
+   --nx-color-surface: #08080f;
+   --nx-color-surface-2: #0d0d1a;
+   --nx-color-surface-3: #131326;
+   --nx-color-surface-4: #1a1a33;
+   --nx-color-overlay: rgba(3, 3, 10, 0.85);
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      COLOR — TEXT
   ═══════════════════════════════════════ */
-  --nx-color-text:        #eeeef8;
-  --nx-color-text-2:      #8888b0;
-  --nx-color-text-3:      #44446a;
-  --nx-color-text-inv:    #03030a;
+   --nx-color-text: #eeeef8;
+   --nx-color-text-2: #8888b0;
+   --nx-color-text-3: #44446a;
+   --nx-color-text-inv: #03030a;
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      COLOR — ACCENT (primary brand color)
   ═══════════════════════════════════════ */
-  --nx-color-accent:      #00e5ff;
-  --nx-color-accent-lo:   rgba(0,229,255,0.08);
-  --nx-color-accent-md:   rgba(0,229,255,0.20);
-  --nx-color-accent-hi:   rgba(0,229,255,0.45);
-  --nx-color-accent-2:    #7b4fff;
+   --nx-color-accent: #00e5ff;
+   --nx-color-accent-lo: rgba(0, 229, 255, 0.08);
+   --nx-color-accent-md: rgba(0, 229, 255, 0.20);
+   --nx-color-accent-hi: rgba(0, 229, 255, 0.45);
+   --nx-color-accent-2: #7b4fff;
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      COLOR — SEMANTIC
   ═══════════════════════════════════════ */
-  --nx-color-ok:          #00ff88;
-  --nx-color-ok-lo:       rgba(0,255,136,0.08);
-  --nx-color-ok-md:       rgba(0,255,136,0.20);
-  --nx-color-warn:        #ffcc00;
-  --nx-color-warn-lo:     rgba(255,204,0,0.08);
-  --nx-color-warn-md:     rgba(255,204,0,0.20);
-  --nx-color-err:         #ff3c3c;
-  --nx-color-err-lo:      rgba(255,60,60,0.08);
-  --nx-color-err-md:      rgba(255,60,60,0.20);
-  --nx-color-info:        #bf5fff;
-  --nx-color-info-lo:     rgba(191,95,255,0.08);
-  --nx-color-info-md:     rgba(191,95,255,0.20);
+   --nx-color-ok: #00ff88;
+   --nx-color-ok-lo: rgba(0, 255, 136, 0.08);
+   --nx-color-ok-md: rgba(0, 255, 136, 0.20);
+   --nx-color-warn: #ffcc00;
+   --nx-color-warn-lo: rgba(255, 204, 0, 0.08);
+   --nx-color-warn-md: rgba(255, 204, 0, 0.20);
+   --nx-color-err: #ff3c3c;
+   --nx-color-err-lo: rgba(255, 60, 60, 0.08);
+   --nx-color-err-md: rgba(255, 60, 60, 0.20);
+   --nx-color-info: #bf5fff;
+   --nx-color-info-lo: rgba(191, 95, 255, 0.08);
+   --nx-color-info-md: rgba(191, 95, 255, 0.20);
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      COLOR — BORDERS
   ═══════════════════════════════════════ */
-  --nx-color-border:      rgba(255,255,255,0.06);
-  --nx-color-border-2:    rgba(0,229,255,0.15);
-  --nx-color-border-3:    rgba(0,229,255,0.30);
+   --nx-color-border: rgba(255, 255, 255, 0.06);
+   --nx-color-border-2: rgba(0, 229, 255, 0.15);
+   --nx-color-border-3: rgba(0, 229, 255, 0.30);
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      SPACING — 4px base scale
   ═══════════════════════════════════════ */
-  --nx-space-1:    4px;
-  --nx-space-2:    8px;
-  --nx-space-3:    12px;
-  --nx-space-4:    16px;
-  --nx-space-5:    24px;
-  --nx-space-6:    32px;
-  --nx-space-7:    48px;
-  --nx-space-8:    64px;
-  --nx-space-9:    96px;
-  --nx-space-10:  128px;
+   --nx-space-1: 4px;
+   --nx-space-2: 8px;
+   --nx-space-3: 12px;
+   --nx-space-4: 16px;
+   --nx-space-5: 24px;
+   --nx-space-6: 32px;
+   --nx-space-7: 48px;
+   --nx-space-8: 64px;
+   --nx-space-9: 96px;
+   --nx-space-10: 128px;
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      TYPOGRAPHY
   ═══════════════════════════════════════ */
-  --nx-font-display: 'Oxanium', 'Segoe UI', system-ui, sans-serif;
-  --nx-font-body:    'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
-  --nx-font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+   --nx-font-display: 'Oxanium', 'Segoe UI', system-ui, sans-serif;
+   --nx-font-body: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+   --nx-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  --nx-text-xs:    0.70rem;   /* 11px */
-  --nx-text-sm:    0.80rem;   /* 13px */
-  --nx-text-base:  0.875rem;  /* 14px */
-  --nx-text-md:    1rem;      /* 16px */
-  --nx-text-lg:    1.125rem;  /* 18px */
-  --nx-text-xl:    1.25rem;   /* 20px */
-  --nx-text-2xl:   1.5rem;    /* 24px */
-  --nx-text-3xl:   1.875rem;  /* 30px */
-  --nx-text-4xl:   2.25rem;   /* 36px */
-  --nx-text-5xl:   3rem;      /* 48px */
-  --nx-text-6xl:   4rem;      /* 64px */
+   --nx-text-xs: 0.70rem;
+   /* 11px */
+   --nx-text-sm: 0.80rem;
+   /* 13px */
+   --nx-text-base: 0.875rem;
+   /* 14px */
+   --nx-text-md: 1rem;
+   /* 16px */
+   --nx-text-lg: 1.125rem;
+   /* 18px */
+   --nx-text-xl: 1.25rem;
+   /* 20px */
+   --nx-text-2xl: 1.5rem;
+   /* 24px */
+   --nx-text-3xl: 1.875rem;
+   /* 30px */
+   --nx-text-4xl: 2.25rem;
+   /* 36px */
+   --nx-text-5xl: 3rem;
+   /* 48px */
+   --nx-text-6xl: 4rem;
+   /* 64px */
 
-  /* Fluid typography — scales between viewport widths */
-  --nx-fluid-sm:   clamp(0.80rem, 0.65rem + 0.5vw,  1rem);
-  --nx-fluid-base: clamp(0.875rem, 0.75rem + 0.5vw, 1.125rem);
-  --nx-fluid-lg:   clamp(1rem,     0.8rem  + 1vw,   1.5rem);
-  --nx-fluid-xl:   clamp(1.25rem,  1rem    + 1.5vw, 2rem);
-  --nx-fluid-2xl:  clamp(1.5rem,   1.2rem  + 2vw,   2.5rem);
-  --nx-fluid-3xl:  clamp(2rem,     1.5rem  + 3vw,   4rem);
-  --nx-fluid-hero: clamp(2.5rem,   1.8rem  + 4vw,   6rem);
+   /* Fluid typography — scales between viewport widths */
+   --nx-fluid-sm: clamp(0.80rem, 0.65rem + 0.5vw, 1rem);
+   --nx-fluid-base: clamp(0.875rem, 0.75rem + 0.5vw, 1.125rem);
+   --nx-fluid-lg: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+   --nx-fluid-xl: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+   --nx-fluid-2xl: clamp(1.5rem, 1.2rem + 2vw, 2.5rem);
+   --nx-fluid-3xl: clamp(2rem, 1.5rem + 3vw, 4rem);
+   --nx-fluid-hero: clamp(2.5rem, 1.8rem + 4vw, 6rem);
 
-  --nx-leading-tight:   1.25;
-  --nx-leading-snug:    1.375;
-  --nx-leading-normal:  1.5;
-  --nx-leading-relaxed: 1.625;
-  --nx-leading-loose:   2;
+   --nx-leading-tight: 1.25;
+   --nx-leading-snug: 1.375;
+   --nx-leading-normal: 1.5;
+   --nx-leading-relaxed: 1.625;
+   --nx-leading-loose: 2;
 
-  --nx-tracking-tight:   -0.04em;
-  --nx-tracking-snug:    -0.02em;
-  --nx-tracking-normal:   0;
-  --nx-tracking-wide:     0.05em;
-  --nx-tracking-wider:    0.1em;
-  --nx-tracking-widest:   0.2em;
+   --nx-tracking-tight: -0.04em;
+   --nx-tracking-snug: -0.02em;
+   --nx-tracking-normal: 0;
+   --nx-tracking-wide: 0.05em;
+   --nx-tracking-wider: 0.1em;
+   --nx-tracking-widest: 0.2em;
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      BORDER RADIUS
   ═══════════════════════════════════════ */
-  --nx-radius-xs:   4px;
-  --nx-radius-sm:   6px;
-  --nx-radius-md:   10px;
-  --nx-radius-lg:   16px;
-  --nx-radius-xl:   24px;
-  --nx-radius-2xl:  32px;
-  --nx-radius-full: 9999px;
+   --nx-radius-xs: 4px;
+   --nx-radius-sm: 6px;
+   --nx-radius-md: 10px;
+   --nx-radius-lg: 16px;
+   --nx-radius-xl: 24px;
+   --nx-radius-2xl: 32px;
+   --nx-radius-full: 9999px;
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      ELEVATION — Box shadows
   ═══════════════════════════════════════ */
-  --nx-shadow-xs:  0 1px 3px rgba(0,0,0,0.3);
-  --nx-shadow-sm:  0 2px 8px rgba(0,0,0,0.4);
-  --nx-shadow-md:  0 4px 20px rgba(0,0,0,0.5);
-  --nx-shadow-lg:  0 8px 40px rgba(0,0,0,0.6);
-  --nx-shadow-xl:  0 16px 80px rgba(0,0,0,0.7);
-  --nx-shadow-glow: 0 0 24px var(--nx-color-accent-md);
-  --nx-shadow-glow-lg: 0 0 60px var(--nx-color-accent-lo);
+   --nx-shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.3);
+   --nx-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+   --nx-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.5);
+   --nx-shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6);
+   --nx-shadow-xl: 0 16px 80px rgba(0, 0, 0, 0.7);
+   --nx-shadow-glow: 0 0 24px var(--nx-color-accent-md);
+   --nx-shadow-glow-lg: 0 0 60px var(--nx-color-accent-lo);
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      MOTION
   ═══════════════════════════════════════ */
-  --nx-ease-linear:  linear;
-  --nx-ease-in:      cubic-bezier(0.4, 0, 1, 1);
-  --nx-ease-out:     cubic-bezier(0, 0, 0.2, 1);
-  --nx-ease-default: cubic-bezier(0.22, 1, 0.36, 1);
-  --nx-ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
-  --nx-ease-bounce:  cubic-bezier(0.68, -0.55, 0.27, 1.55);
+   --nx-ease-linear: linear;
+   --nx-ease-in: cubic-bezier(0.4, 0, 1, 1);
+   --nx-ease-out: cubic-bezier(0, 0, 0.2, 1);
+   --nx-ease-default: cubic-bezier(0.22, 1, 0.36, 1);
+   --nx-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+   --nx-ease-bounce: cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
-  --nx-duration-instant:  50ms;
-  --nx-duration-fast:    150ms;
-  --nx-duration-base:    250ms;
-  --nx-duration-slow:    400ms;
-  --nx-duration-slower:  600ms;
-  --nx-duration-glacial: 800ms;
+   --nx-duration-instant: 50ms;
+   --nx-duration-fast: 150ms;
+   --nx-duration-base: 250ms;
+   --nx-duration-slow: 400ms;
+   --nx-duration-slower: 600ms;
+   --nx-duration-glacial: 800ms;
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      Z-INDEX SCALE
   ═══════════════════════════════════════ */
-  --nx-z-below:    -1;
-  --nx-z-base:      0;
-  --nx-z-raised:   10;
-  --nx-z-dropdown: 100;
-  --nx-z-sticky:   200;
-  --nx-z-overlay:  300;
-  --nx-z-modal:    400;
-  --nx-z-toast:    500;
-  --nx-z-top:      999;
+   --nx-z-below: -1;
+   --nx-z-base: 0;
+   --nx-z-raised: 10;
+   --nx-z-dropdown: 100;
+   --nx-z-sticky: 200;
+   --nx-z-overlay: 300;
+   --nx-z-modal: 400;
+   --nx-z-toast: 500;
+   --nx-z-top: 999;
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      ANTIGRAVITY ENGINE TOKENS
   ═══════════════════════════════════════ */
-  --nx-ag-seam-color:    var(--nx-color-accent);
-  --nx-ag-seam-width:    1px;
-  --nx-ag-seam-glow:     0 0 20px var(--nx-color-accent-md), 0 0 60px var(--nx-color-accent-lo);
-  --nx-ag-reflect-blur:  1px;
-  --nx-ag-reflect-fade:  0.45;
-  --nx-ag-zone-depth:    600px;
+   --nx-ag-seam-color: var(--nx-color-accent);
+   --nx-ag-seam-width: 1px;
+   --nx-ag-seam-glow: 0 0 20px var(--nx-color-accent-md), 0 0 60px var(--nx-color-accent-lo);
+   --nx-ag-reflect-blur: 1px;
+   --nx-ag-reflect-fade: 0.45;
+   --nx-ag-zone-depth: 600px;
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      FLUID SPACING (clamp-based)
   ═══════════════════════════════════════ */
-  --nx-fluid-space-xs:  clamp(4px,  0.5vw, 8px);
-  --nx-fluid-space-sm:  clamp(8px,  1vw,   16px);
-  --nx-fluid-space-md:  clamp(16px, 2vw,   32px);
-  --nx-fluid-space-lg:  clamp(32px, 4vw,   64px);
-  --nx-fluid-space-xl:  clamp(48px, 6vw,   96px);
+   --nx-fluid-space-xs: clamp(4px, 0.5vw, 8px);
+   --nx-fluid-space-sm: clamp(8px, 1vw, 16px);
+   --nx-fluid-space-md: clamp(16px, 2vw, 32px);
+   --nx-fluid-space-lg: clamp(32px, 4vw, 64px);
+   --nx-fluid-space-xl: clamp(48px, 6vw, 96px);
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      BRAND OVERRIDE ZONE
      (override these for your brand)
   ═══════════════════════════════════════ */
-  --nx-brand-primary:   var(--nx-color-accent);
-  --nx-brand-secondary: var(--nx-color-accent-2);
-  --nx-brand-font:      var(--nx-font-display);
+   --nx-brand-primary: var(--nx-color-accent);
+   --nx-brand-secondary: var(--nx-color-accent-2);
+   --nx-brand-font: var(--nx-font-display);
 
-  /* ═══════════════════════════════════════
+   /* ═══════════════════════════════════════
      PRINT TOKENS
   ═══════════════════════════════════════ */
-  --nx-print-bg:       #ffffff;
-  --nx-print-text:     #111111;
-  --nx-print-border:   #cccccc;
-  --nx-print-accent:   #007a8c;
+   --nx-print-bg: #ffffff;
+   --nx-print-text: #111111;
+   --nx-print-border: #cccccc;
+   --nx-print-accent: #007a8c;
 
 }

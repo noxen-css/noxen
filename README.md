@@ -1,4 +1,4 @@
-# NOXEN CSS Framework v2.0
+# NOXEN CSS Framework v2.1.2
 
 > **"No other framework can do what Noxen does."**
 
@@ -6,7 +6,7 @@ The world's first **intent-based** CSS framework. Describe what your elements **
 
 [![npm](https://img.shields.io/npm/v/noxen-css)](https://www.npmjs.com/package/noxen-css)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Bundle size](https://img.shields.io/badge/bundle-64KB-blue)](https://cdn.jsdelivr.net/npm/noxen-css@2/dist/)
+[![Bundle size](https://img.shields.io/badge/bundle-163KB-blue)](https://cdn.jsdelivr.net/npm/noxen-css@2.1.2/dist/)
 
 ---
 
@@ -14,8 +14,8 @@ The world's first **intent-based** CSS framework. Describe what your elements **
 
 **CDN (zero install):**
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css">
-<script src="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2.1.2/dist/noxen.min.css">
+<script src="https://cdn.jsdelivr.net/npm/noxen-css@2.1.2/dist/noxen.min.js"></script>
 ```
 
 **NPM:**
@@ -58,14 +58,49 @@ import 'noxen-css/dist/noxen.min.js'
 
 ---
 
+## What's New in v2.1.2 — Bootstrap Killer 🚀
+
+**49 total components.** Every Bootstrap gap closed, plus 13 brand-new components that Bootstrap doesn't have.
+
+### 13 New Components
+
+| Component | Usage | Description |
+|-----------|-------|-------------|
+| **Drawer** | `nx="drawer"` | Slide-in panel, 4 sides |
+| **Command Palette** | `nx="command"` | Cmd+K spotlight search |
+| **Carousel** | `nx="carousel"` | Touch/drag, autoplay |
+| **Data Grid** | `nx="data-grid"` | Sort, search, paginate |
+| **Tooltip** | `nx-tip=""` | Pure CSS, 4 directions |
+| **Rating** | `nx="rating"` | Star rating, hover + click |
+| **Timeline** | `nx="timeline"` | Tone dots, pulse animation |
+| **Stepper** | `nx="stepper"` | Multi-step wizard |
+| **Date Picker** | `nx="date-picker"` | Custom calendar, no deps |
+| **File Upload** | `nx="file-upload"` | Drag & drop zone |
+| **Color Picker** | `nx="color-picker"` | 20 swatches + hex input |
+| **Kanban** | `nx="kanban"` | Drag & drop board |
+| **Container Queries** | `nx-container` | True container-aware layouts |
+
+### Bootstrap Parity (all gaps closed)
+
+| Category | Components Added |
+|----------|-----------------|
+| Forms | `nx="form"` · `nx="field"` · `nx="input-group"` · `nx="checkbox"` · `nx="radio"` · `nx="range"` |
+| Navigation | `nx="breadcrumb"` · `nx="pagination"` · `nx="tabs" variant="pills"` · `nx="navbar-toggler"` · `nx="scrollspy-nav"` |
+| Content | `nx="blockquote"` · `nx="list-group"` · `nx="figure"` · `nx="display-1"` → `nx="display-6"` · `nx="lead"` · `nx="mark"` · `nx="kbd"` · `nx="code"` · `nx="dl"` |
+| Feedback | `nx="spinner"` (3 variants, 5 sizes, 3 tones) · `nx="popover-wrap"` |
+
+---
+
 ## Core Components
 
 ```html
 <!-- Card -->
 <div nx="card" variant="raised">Content</div>
 
-<!-- Button -->
-<button nx="btn" variant="outline" size="lg">Click Me</button>
+<!-- Button — all variants -->
+<button nx="btn">Default</button>
+<button nx="btn" variant="outline" size="lg">Outline</button>
+<button nx="btn" variant="danger">Danger</button>
 
 <!-- Grid -->
 <div nx="grid" cols="3" gap="md">
@@ -76,23 +111,21 @@ import 'noxen-css/dist/noxen.min.js'
 
 <!-- Smart Grid layouts -->
 <div nx="grid" layout="sidebar-main">
-  <div>Sidebar</div>
-  <div>Main</div>
+  <aside>Sidebar</aside>
+  <main>Content</main>
 </div>
 
 <!-- Alert -->
 <div nx="alert" tone="ok">Operation successful!</div>
+<div nx="alert" tone="err">Something went wrong</div>
 
 <!-- Badge -->
 <span nx="badge" tone="warn">Pending</span>
 
-<!-- Progress (set via CSS var) -->
+<!-- Progress -->
 <div nx="progress" style="--nx-progress: 72"></div>
 
-<!-- Toggle -->
-<div nx="toggle" class="on"></div>
-
-<!-- Stack / Row layout -->
+<!-- Stack / Row -->
 <div nx="stack" gap="md">...</div>
 <div nx="row" justify="between">...</div>
 
@@ -102,6 +135,246 @@ import 'noxen-css/dist/noxen.min.js'
   <div nx="spacer"></div>
   <button nx="btn" size="sm">Sign In</button>
 </div>
+```
+
+---
+
+## v2.1.2 Components
+
+### Drawer
+```html
+<!-- Trigger -->
+<button data-drawer-open="my-drawer">Open Drawer</button>
+
+<!-- Drawer -->
+<div nx="drawer" id="my-drawer" side="right">
+  <div nx="drawer-header">
+    <span>Title</span>
+    <button data-drawer-close="my-drawer">✕</button>
+  </div>
+  <div nx="drawer-body">Content here</div>
+  <div nx="drawer-footer">
+    <button nx="btn">Save</button>
+  </div>
+</div>
+```
+```js
+Noxen.drawer.open('my-drawer')
+Noxen.drawer.close('my-drawer')
+Noxen.drawer.toggle('my-drawer')
+```
+
+### Command Palette
+```html
+<!-- Opens on Cmd+K automatically -->
+<div nx="command-backdrop" data-command-close="cmd">
+  <div nx="command" id="cmd">
+    <div nx="command-input-wrap">
+      <input nx="command-input" placeholder="Search…">
+    </div>
+    <div nx="command-list">
+      <div nx="command-group">
+        <div nx="command-group-label">Actions</div>
+        <div nx="command-item">New Document</div>
+        <div nx="command-item">Open Settings</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+```js
+Noxen.command.open('cmd')
+Noxen.command.close('cmd')
+```
+
+### Carousel
+```html
+<div nx="carousel" per-view="3" autoplay="3000">
+  <div nx="carousel-track">
+    <div nx="carousel-slide"><div nx="card">Slide 1</div></div>
+    <div nx="carousel-slide"><div nx="card">Slide 2</div></div>
+    <div nx="carousel-slide"><div nx="card">Slide 3</div></div>
+  </div>
+  <button nx="carousel-prev">‹</button>
+  <button nx="carousel-next">›</button>
+  <div nx="carousel-dots"></div>
+</div>
+```
+
+### Data Grid
+```html
+<div nx="data-grid" page-size="10" selectable>
+  <div nx="data-grid-toolbar">
+    <div nx="data-grid-search"><input placeholder="Search…"></div>
+  </div>
+  <div nx="data-grid-wrap">
+    <table nx="table">
+      <thead><tr>
+        <th data-col="0">Name</th>
+        <th data-col="1">Status</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>Item A</td><td>Active</td></tr>
+        <tr><td>Item B</td><td>Pending</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div nx="data-grid-pagination">
+    <span nx="data-grid-info"></span>
+    <div nx="data-grid-pages"></div>
+  </div>
+</div>
+```
+
+### Tooltip
+```html
+<!-- Pure CSS, no JS needed -->
+<button nx-tip="Saves your work">Save</button>
+<button nx-tip="Opens below" tip-side="bottom">Bottom</button>
+<span nx-tip="Error occurred" tip-tone="err">Hover me</span>
+```
+
+### Rating
+```html
+<div nx="rating" value="4">
+  <div nx="rating-star"></div>
+  <div nx="rating-star"></div>
+  <div nx="rating-star"></div>
+  <div nx="rating-star"></div>
+  <div nx="rating-star"></div>
+  <span nx="rating-value"></span>
+</div>
+```
+
+### Stepper
+```html
+<div data-stepper>
+  <div nx="stepper">
+    <div nx="step" current>
+      <div nx="step-dot">1</div>
+      <div nx="step-label">Details</div>
+      <div nx="step-line"></div>
+    </div>
+    <div nx="step">
+      <div nx="step-dot">2</div>
+      <div nx="step-label">Payment</div>
+      <div nx="step-line"></div>
+    </div>
+    <div nx="step">
+      <div nx="step-dot">3</div>
+      <div nx="step-label">Confirm</div>
+    </div>
+  </div>
+  <div nx="step-panel" active>Step 1 content</div>
+  <div nx="step-panel">Step 2 content</div>
+  <div nx="step-panel">Step 3 content</div>
+  <div nx="step-nav">
+    <button data-step-prev disabled>Back</button>
+    <button data-step-next>Next</button>
+  </div>
+</div>
+```
+```js
+Noxen.stepper.next(stepperEl)
+Noxen.stepper.prev(stepperEl)
+Noxen.stepper.goTo(stepperEl, 2)
+```
+
+### Date Picker
+```html
+<div nx="date-picker">
+  <div nx="date-input" tabindex="0">
+    <span class="nx-date-text">Select a date…</span>
+  </div>
+  <div nx="date-calendar">
+    <div nx="date-nav">
+      <button>‹</button>
+      <span nx="date-month-label"></span>
+      <button>›</button>
+    </div>
+    <div nx="date-weekdays">
+      <span>Su</span><span>Mo</span><span>Tu</span><span>We</span>
+      <span>Th</span><span>Fr</span><span>Sa</span>
+    </div>
+    <div nx="date-grid"></div>
+  </div>
+</div>
+```
+```js
+Noxen.on('datepicker:change', ({ el, date, formatted }) => {
+  console.log('Selected:', formatted)
+})
+```
+
+### File Upload
+```html
+<div nx="file-upload">
+  <input type="file" multiple>
+  <div nx="file-upload-icon">📂</div>
+  <div nx="file-upload-label">Drop files here or click to browse</div>
+  <div nx="file-upload-hint">PNG, PDF, ZIP — max 10MB</div>
+</div>
+```
+```js
+Noxen.on('fileupload:change', ({ el, files }) => {
+  console.log('Files:', files)
+})
+```
+
+### Color Picker
+```html
+<div nx="color-picker" value="#00e5ff">
+  <div nx="color-trigger" tabindex="0">
+    <div nx="color-swatch-preview"></div>
+    <span class="nx-cp-text">#00E5FF</span>
+  </div>
+  <div nx="color-panel">
+    <div nx="color-swatches"></div>
+    <div nx="color-hex-input"><input maxlength="6" placeholder="00E5FF"></div>
+    <input nx="color-native" type="color" value="#00e5ff">
+  </div>
+</div>
+```
+```js
+Noxen.on('colorpicker:change', ({ el, color }) => {
+  console.log('Color:', color) // '#ff3366'
+})
+Noxen.colorPicker.get(el)       // → '#00e5ff'
+Noxen.colorPicker.set(el, '#ff3366')
+```
+
+### Kanban
+```html
+<div nx="kanban">
+  <div nx="kanban-col">
+    <div nx="kanban-col-header">
+      <span nx="kanban-col-title">Backlog</span>
+      <span nx="kanban-col-count"></span>
+    </div>
+    <div nx="kanban-cards">
+      <div nx="kanban-card">
+        <div nx="kanban-card-title">Design new dashboard</div>
+        <div nx="kanban-card-desc">Update the analytics page</div>
+        <div nx="kanban-card-meta">
+          <span nx="badge">UI</span>
+        </div>
+      </div>
+    </div>
+    <button nx="kanban-add">+ Add card</button>
+  </div>
+  <div nx="kanban-col" tone="warn">...</div>
+  <div nx="kanban-col" tone="ok">...</div>
+</div>
+```
+```js
+Noxen.kanban.addCard(boardEl, 0, {
+  title: 'New task',
+  desc: 'Description',
+  tags: ['Feature']
+})
+Noxen.on('kanban:drop', ({ card, fromCol, toCol }) => {
+  console.log('Moved card to column', toCol)
+})
 ```
 
 ---
@@ -124,7 +397,7 @@ import 'noxen-css/dist/noxen.min.js'
 <div nx-ag="pair">
   <section>Top half</section>
   <div nx-ag-seam></div>
-  <section nx-ag="reflect">Bottom half (reflected)</section>
+  <section nx-ag="reflect">Bottom half</section>
 </div>
 
 <!-- Entry animations -->
@@ -140,18 +413,18 @@ import 'noxen-css/dist/noxen.min.js'
 ## Themes
 
 ```html
-<!-- Apply theme via HTML -->
+<!-- Apply via HTML attribute -->
 <html data-nx-theme="carbon">
 
-<!-- Available themes -->
-void | neon | carbon | bio | gold | paper | aurora
+<!-- Available: void | neon | carbon | bio | gold | paper | aurora -->
 ```
 
 ```js
-// Switch theme in 1ms
 Noxen.theme.set('neon')
+Noxen.theme.get()        // → 'neon'
+Noxen.theme.list()       // → ['void', 'neon', 'carbon', 'bio', 'gold', 'paper', 'aurora']
 
-// Create custom brand theme
+// Custom brand theme
 Noxen.theme.create('mybrand', {
   '--nx-color-accent':    '#FF3366',
   '--nx-color-accent-lo': 'rgba(255,51,102,0.08)',
@@ -160,7 +433,7 @@ Noxen.theme.create('mybrand', {
 Noxen.theme.set('mybrand')
 
 // AI-generated palette from one hex
-Noxen.palette.apply('#FF3366', 'my-palette')
+Noxen.palette.apply('#FF3366', 'brand')
 ```
 
 ---
@@ -168,9 +441,10 @@ Noxen.palette.apply('#FF3366', 'my-palette')
 ## Motion System
 
 ```html
-<!-- Entrance animation on load -->
+<!-- Entrance animations -->
 <div nx-enter="rise">Animates on load</div>
 <div nx-enter="fade" nx-speed="fast">Fast fade</div>
+<div nx-enter="bounce">Bouncy entrance</div>
 
 <!-- Scroll reveal -->
 <div nx-scroll-reveal="rise">Reveals when scrolled into view</div>
@@ -183,9 +457,9 @@ Noxen.palette.apply('#FF3366', 'my-palette')
 </div>
 
 <!-- Continuous animations -->
-<div nx-animate="float">Floating element</div>
-<div nx-animate="pulse">Pulsing element</div>
-<div nx-animate="glow">Glowing element</div>
+<div nx-animate="float">Floating</div>
+<div nx-animate="pulse">Pulsing</div>
+<div nx-animate="glow">Glowing</div>
 ```
 
 ---
@@ -195,22 +469,22 @@ Noxen.palette.apply('#FF3366', 'my-palette')
 ```js
 // Theme
 Noxen.theme.set('carbon')
-Noxen.theme.get()           // → 'carbon'
-Noxen.theme.list()          // → ['void', 'neon', ...]
+Noxen.theme.get()
+Noxen.theme.list()
 Noxen.theme.create('name', tokens)
 
 // Tokens
 Noxen.tokens.set('--nx-color-accent', '#FF3366')
-Noxen.tokens.get('--nx-color-accent') // → '#FF3366'
-Noxen.tokens.export('css')   // CSS, JSON, SCSS, Figma, Swift, Kotlin
+Noxen.tokens.get('--nx-color-accent')
+Noxen.tokens.export('css')   // css | json | scss | figma | swift | kotlin
 
 // AI Palette
-Noxen.palette.apply('#FF3366', 'brand')  // Apply instantly
-Noxen.palette.fromHex('#FF3366')         // Get token map
+Noxen.palette.apply('#FF3366', 'brand')
+Noxen.palette.fromHex('#FF3366')
 
 // Accessibility
-Noxen.a11y.audit()     // Full WCAG audit in console
-Noxen.a11y.init()      // Re-run auto-ARIA injection
+Noxen.a11y.audit()
+Noxen.a11y.init()
 
 // Antigravity
 Noxen.ag.mirror(el)
@@ -220,38 +494,138 @@ Noxen.ag.enter(el, 'rise')
 
 // Toast
 Noxen.toast.success('Saved!')
-Noxen.toast.error('Something failed')
-Noxen.toast.info('Update available')
+Noxen.toast.error('Failed')
 Noxen.toast.warn('Check input')
+Noxen.toast.info('Update available')
+
+// Drawer
+Noxen.drawer.open('drawer-id')
+Noxen.drawer.close('drawer-id')
+Noxen.drawer.toggle('drawer-id')
+
+// Command Palette
+Noxen.command.open('cmd-id')
+Noxen.command.close('cmd-id')
+
+// Carousel
+Noxen.carousel.init(el)
+
+// Data Grid
+Noxen.dataGrid.init(el)
+
+// Rating
+Noxen.rating.init(el)
+
+// Stepper
+Noxen.stepper.next(el)
+Noxen.stepper.prev(el)
+Noxen.stepper.goTo(el, stepIndex)
+
+// Date Picker
+Noxen.datePicker.init(el)
+
+// File Upload
+Noxen.fileUpload.init(el)
+
+// Color Picker
+Noxen.colorPicker.init(el)
+Noxen.colorPicker.get(el)       // → '#00e5ff'
+Noxen.colorPicker.set(el, hex)
+
+// Kanban
+Noxen.kanban.init(el)
+Noxen.kanban.addCard(boardEl, colIndex, { title, desc, tags })
+
+// Form
+Noxen.form.validate(formEl)
+Noxen.form.reset(formEl)
+Noxen.form.setError(fieldEl, message)
+Noxen.form.setValid(fieldEl)
+
+// Popover
+Noxen.popover.open(el)
+Noxen.popover.close(el)
+
+// Pagination
+Noxen.pagination.create(containerEl, { total, page, pageSize, onChange })
 
 // Print
-Noxen.print.enable()   // Preview in print mode
-Noxen.print.open()     // Trigger print dialog
+Noxen.print.enable()
+Noxen.print.disable()
+Noxen.print.open()
 
 // Events
-Noxen.on('ready', ({ version }) => console.log('Noxen', version))
-Noxen.on('theme', ({ theme }) => console.log('Theme:', theme))
-Noxen.on('token', ({ key, value }) => console.log(key, '=', value))
+Noxen.on('ready',              ({ version }) => {})
+Noxen.on('theme',              ({ theme }) => {})
+Noxen.on('token',              ({ key, value }) => {})
+Noxen.on('rating:change',      ({ el, value }) => {})
+Noxen.on('kanban:drop',        ({ card, fromCol, toCol }) => {})
+Noxen.on('fileupload:change',  ({ el, files }) => {})
+Noxen.on('colorpicker:change', ({ el, color }) => {})
+Noxen.on('datepicker:change',  ({ el, date, formatted }) => {})
+Noxen.on('form:submit',        ({ el, data }) => {})
+Noxen.on('form:validate',      ({ el, valid }) => {})
+Noxen.on('range:change',       ({ el, value }) => {})
 ```
 
 ---
 
 ## Token System
 
-All tokens follow: `--nx-[category]-[role]-[modifier]`
+All tokens: `--nx-[category]-[role]-[modifier]`
 
 ```css
-/* Override any token globally */
+/* Override globally */
 :root {
-  --nx-color-accent: #FF3366;
-  --nx-radius-lg: 4px;        /* sharper corners */
-  --nx-font-display: 'Your Font', sans-serif;
+  --nx-color-accent:   #FF3366;
+  --nx-radius-lg:      4px;
+  --nx-font-display:   'Your Font', sans-serif;
 }
 
-/* Or scope to a component */
+/* Scope to a component */
 [nx="card"] {
-  --nx-radius-lg: 0;           /* square cards only */
+  --nx-radius-lg: 0;
 }
+```
+
+---
+
+## Utility Layer
+
+```html
+<!-- Display -->
+<div nx-d="flex">...</div>
+<div nx-d="grid">...</div>
+
+<!-- Flex shortcuts -->
+<div nx-flex="between">...</div>   <!-- space-between -->
+<div nx-flex="center">...</div>    <!-- centered -->
+<div nx-flex="col">...</div>       <!-- column -->
+
+<!-- Spacing -->
+<div nx-p="md">...</div>
+<div nx-px="lg">...</div>
+<div nx-mb="sm">...</div>
+
+<!-- Typography -->
+<p nx-text="accent">Accented text</p>
+<p nx-text="bold">Bold</p>
+<p nx-text="mono">Monospace</p>
+<p nx-text="upper">Uppercase</p>
+
+<!-- Background + Border -->
+<div nx-bg="accent-lo" nx-border="accent">...</div>
+
+<!-- Shadow + Radius -->
+<div nx-shadow="glow" nx-radius="xl">...</div>
+
+<!-- Visibility (responsive) -->
+<div nx-hide="sm">Hidden on mobile</div>
+<div nx-show="sm">Visible on mobile only</div>
+
+<!-- Hover effects -->
+<div nx-hover="lift">Lifts on hover</div>
+<div nx-hover="glow">Glows on hover</div>
 ```
 
 ---
@@ -260,13 +634,13 @@ All tokens follow: `--nx-[category]-[role]-[modifier]`
 
 | File | Size |
 |------|------|
-| `noxen.css` | 74.9 KB |
-| `noxen.min.css` | 45.7 KB |
-| `noxen.js` | 29.2 KB |
-| `noxen.min.js` | 18.3 KB |
-| **Total minified** | **64.0 KB** |
+| `noxen.css` | 152 KB |
+| `noxen.min.css` | 103 KB |
+| `noxen.js` | 73 KB |
+| `noxen.min.js` | 60 KB |
+| **Total minified** | **163 KB** |
 
-vs. Bootstrap 5: **156 KB** · Tailwind typical build: **20–80 KB** (no JS API)
+> Bootstrap 5: 156 KB CSS + 79 KB JS = **235 KB** — no drag & drop, no command palette, no AI palette, no date picker.
 
 ---
 
@@ -275,22 +649,19 @@ vs. Bootstrap 5: **156 KB** · Tailwind typical build: **20–80 KB** (no JS API
 ```
 noxen-css/
 ├── dist/
-│   ├── noxen.css          # Full CSS source
-│   ├── noxen.min.css      # Minified CSS (45.7 KB)
-│   ├── noxen.js           # Full JS source
-│   ├── noxen.min.js       # Minified JS (18.3 KB)
-│   └── build-manifest.json
+│   ├── noxen.css          # Full CSS
+│   ├── noxen.min.css      # Minified CSS (103 KB)
+│   ├── noxen.js           # Full JS
+│   └── noxen.min.js       # Minified JS (60 KB)
 ├── src/
-│   ├── tokens/            # L1: Design token system
-│   ├── themes/            # L2: 7 themes
-│   ├── components/        # L3: Base reset + 25+ components
-│   ├── layout/            # L4: Smart Grid + Flex
-│   ├── motion/            # L5: Animation system
-│   ├── antigravity/       # L6: Physics layout engine
-│   └── intelligence/      # L7: JS API + Auto-ARIA + AI Palette
-├── docs/                  # Full documentation site
-├── starter.html           # Copy-paste starter template
-├── build.py               # Build script
+│   ├── tokens/            # Design token system
+│   ├── themes/            # 7 built-in themes
+│   ├── components/        # 49 components
+│   ├── layout/            # Smart Grid + Flex
+│   ├── motion/            # Animation system
+│   ├── antigravity/       # Physics layout engine
+│   └── intelligence/      # JS API layer
+├── docs/                  # Documentation site (GitHub Pages)
 └── package.json
 ```
 
