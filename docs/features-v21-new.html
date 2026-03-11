@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en" data-nx-theme="void">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noxen v2.1 — 8 New Features Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dist/noxen.min.css">
+<style>
+body { margin: 0; }
+.topbar { position: sticky; top: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 56px; background: rgba(3,3,10,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--nx-color-border); }
+.logo  { font-family: var(--nx-font-display); font-size: 18px; font-weight: 900; color: var(--nx-color-accent); letter-spacing: 4px; }
+.v21   { font-family: var(--nx-font-mono); font-size: 11px; color: var(--nx-color-ok); background: var(--nx-color-ok-lo); border: 1px solid rgba(0,255,136,0.25); border-radius: 99px; padding: 2px 10px; }
+.wrap  { max-width: 960px; margin: 0 auto; padding: 48px 32px 120px; }
+.sh    { margin: 72px 0 28px; padding-bottom: 18px; border-bottom: 1px solid var(--nx-color-border); }
+.sh h2 { margin: 0 0 6px; font-size: clamp(1.5rem,2.5vw,2rem); }
+.sh p  { margin: 0; color: var(--nx-color-text-2); font-size: 14px; }
+.fb    { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; background: var(--nx-color-ok-lo); border: 1px solid rgba(0,255,136,0.3); border-radius: 99px; font-family: var(--nx-font-mono); font-size: 10px; color: var(--nx-color-ok); margin-bottom: 10px; }
+.demo  { background: var(--nx-color-surface-2); border: 1px solid var(--nx-color-border); border-radius: var(--nx-radius-lg); padding: 28px; margin: 16px 0; }
+.code  { background: var(--nx-color-surface); border: 1px solid var(--nx-color-border); border-radius: var(--nx-radius-md); padding: 18px 20px; font-family: var(--nx-font-mono); font-size: 12px; line-height: 1.8; color: var(--nx-color-text-2); overflow-x: auto; margin: 14px 0; white-space: pre; }
+.t{color:#7ec8a4} .a{color:var(--nx-color-accent)} .v{color:#ffd369} .c{color:var(--nx-color-text-3);font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="logo">NOXEN</span>
+    <span class="v21">v2.1.0 — 8 New Features</span>
+  </div>
+  <div style="display:flex;gap:6px">
+    <button nx="btn" size="xs" variant="ghost" onclick="setTheme('void')">void</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setTheme('neon')">neon</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setTheme('carbon')">carbon</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setTheme('bio')">bio</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setTheme('gold')">gold</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setTheme('aurora')">aurora</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div style="text-align:center;padding:40px 0 32px;border-bottom:1px solid var(--nx-color-border);margin-bottom:48px">
+    <span class="fb">✦ 8 New Components — CSS + JS + Full API</span>
+    <h1 style="font-size:clamp(1.8rem,4vw,3rem);margin:10px 0;background:linear-gradient(135deg,var(--nx-color-text) 40%,var(--nx-color-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">New for v2.1.0</h1>
+    <p style="color:var(--nx-color-text-2);max-width:520px;margin:0 auto">Tooltip · Rating · Timeline · Stepper · Date Picker · File Upload · Color Picker · Kanban</p>
+  </div>
+
+
+  <!-- ═══ 1. TOOLTIP ═══ -->
+  <div class="sh">
+    <span class="fb">1 of 8</span>
+    <h2>Tooltip — <code style="font-size:0.8em">nx-tip=""</code></h2>
+    <p>Pure CSS tooltip. No JS needed. Any element, any side, tone variants. Just add <code>nx-tip="text"</code>.</p>
+  </div>
+  <div class="demo">
+    <div nx="row" gap="lg" style="flex-wrap:wrap;align-items:center;padding:20px 0">
+      <button nx="btn" nx-tip="Default top tooltip">Hover me</button>
+      <button nx="btn" variant="outline" nx-tip="Bottom tooltip" tip-side="bottom">Bottom</button>
+      <button nx="btn" variant="ghost" nx-tip="Left side" tip-side="left">Left</button>
+      <button nx="btn" nx-tip="Right side" tip-side="right">Right</button>
+      <span nx="badge" tone="ok" nx-tip="Component is healthy ✓" tip-tone="ok" style="cursor:default">OK Status</span>
+      <span nx="badge" tone="err" nx-tip="Something went wrong!" tip-tone="err" style="cursor:default">Error</span>
+      <span nx="badge" tone="warn" nx-tip="Review required" tip-tone="warn" style="cursor:default">Warning</span>
+      <span style="color:var(--nx-color-accent);cursor:help;border-bottom:1px dashed" nx-tip="This works on any HTML element — not just buttons">Any element ℹ</span>
+    </div>
+  </div>
+  <div class="code"><span class="c">&lt;!-- Just add nx-tip to any element --&gt;</span>
+<span class="t">&lt;button</span> <span class="a">nx-tip</span>=<span class="v">"Saves your changes"</span><span class="t">&gt;</span>Save<span class="t">&lt;/button&gt;</span>
+
+<span class="c">&lt;!-- Side variants: top (default), bottom, left, right --&gt;</span>
+<span class="t">&lt;button</span> <span class="a">nx-tip</span>=<span class="v">"Opens below"</span> <span class="a">tip-side</span>=<span class="v">"bottom"</span><span class="t">&gt;</span>...<span class="t">&lt;/button&gt;</span>
+
+<span class="c">&lt;!-- Tone variants: ok, err, warn, accent --&gt;</span>
+<span class="t">&lt;span</span> <span class="a">nx-tip</span>=<span class="v">"All systems go!"</span> <span class="a">tip-tone</span>=<span class="v">"ok"</span><span class="t">&gt;</span>Status<span class="t">&lt;/span&gt;</span>
+
+<span class="c">// JavaScript API</span>
+Noxen.tooltip.set(el, 'Dynamic tooltip', { side: 'right', tone: 'accent' })
+Noxen.tooltip.remove(el)</div>
+
+
+  <!-- ═══ 2. RATING ═══ -->
+  <div class="sh">
+    <span class="fb">2 of 8</span>
+    <h2>Rating — <code style="font-size:0.8em">nx="rating"</code></h2>
+    <p>Interactive star rating. Hover preview, click to set, readonly mode, size variants.</p>
+  </div>
+  <div class="demo">
+    <div nx="stack" gap="lg">
+      <div>
+        <div nx="label" style="margin-bottom:10px">Interactive (click to rate)</div>
+        <div nx="row" gap="xl" style="flex-wrap:wrap">
+          <div nx="rating" value="3" id="rating-demo">
+            <div nx="rating-star"></div>
+            <div nx="rating-star"></div>
+            <div nx="rating-star"></div>
+            <div nx="rating-star"></div>
+            <div nx="rating-star"></div>
+            <span nx="rating-value"></span>
+          </div>
+          <div nx="rating" size="sm" value="4">
+            <div nx="rating-star"></div><div nx="rating-star"></div><div nx="rating-star"></div><div nx="rating-star"></div><div nx="rating-star"></div>
+            <span nx="rating-value"></span>
+          </div>
+          <div nx="rating" size="lg" value="2">
+            <div nx="rating-star"></div><div nx="rating-star"></div><div nx="rating-star"></div><div nx="rating-star"></div><div nx="rating-star"></div>
+            <span nx="rating-value"></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div nx="label" style="margin-bottom:10px">Readonly</div>
+        <div nx="rating" value="4" readonly>
+          <div nx="rating-star"></div><div nx="rating-star"></div><div nx="rating-star"></div><div nx="rating-star"></div><div nx="rating-star"></div>
+          <span nx="rating-value"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="code"><span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"rating"</span> <span class="a">value</span>=<span class="v">"3"</span> <span class="a">size</span>=<span class="v">"lg"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"rating-star"</span><span class="t">&gt;&lt;/div&gt;</span>  <span class="c">&lt;!-- repeat 5 --&gt;</span>
+  <span class="t">&lt;span</span> <span class="a">nx</span>=<span class="v">"rating-value"</span><span class="t">&gt;&lt;/span&gt;</span>  <span class="c">&lt;!-- shows "3/5" --&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+size="sm|lg|xl"    <span class="c">size variants</span>
+readonly           <span class="c">display only, no interaction</span>
+value="0-5"        <span class="c">initial value</span></div>
+
+
+  <!-- ═══ 3. TIMELINE ═══ -->
+  <div class="sh">
+    <span class="fb">3 of 8</span>
+    <h2>Timeline — <code style="font-size:0.8em">nx="timeline"</code></h2>
+    <p>Vertical event timeline. Tone-colored dots. Animated current step pulse. Scroll-reveal ready.</p>
+  </div>
+  <div class="demo">
+    <div nx="grid" cols="2" gap="lg">
+      <div nx="timeline">
+        <div nx="timeline-item" tone="ok">
+          <div nx="timeline-time">Jan 15, 2024</div>
+          <div nx="timeline-title">Project Kickoff</div>
+          <div nx="timeline-body">Team assembled, repository created, initial planning complete.</div>
+        </div>
+        <div nx="timeline-item" tone="ok">
+          <div nx="timeline-time">Feb 3, 2024</div>
+          <div nx="timeline-title">v1.0 Released</div>
+          <div nx="timeline-body">First public release. Core components shipped.</div>
+        </div>
+        <div nx="timeline-item" current>
+          <div nx="timeline-time">Mar 8, 2024 · Now</div>
+          <div nx="timeline-title">v2.1.0 Feature Drop</div>
+          <div nx="timeline-body">13 new components including Kanban, Date Picker, and Command Palette.</div>
+        </div>
+        <div nx="timeline-item" tone="info" style="opacity:0.5">
+          <div nx="timeline-time">Q2 2025</div>
+          <div nx="timeline-title">VS Code Extension</div>
+          <div nx="timeline-body">nx="" autocomplete, snippets, and live preview.</div>
+        </div>
+      </div>
+
+      <div nx="timeline">
+        <div nx="timeline-item" tone="ok">
+          <div nx="timeline-time">Step 1</div>
+          <div nx="timeline-title">Order Placed</div>
+          <div nx="timeline-body">Your order has been confirmed.</div>
+        </div>
+        <div nx="timeline-item" tone="ok">
+          <div nx="timeline-time">Step 2</div>
+          <div nx="timeline-title">Processing</div>
+          <div nx="timeline-body">Payment verified and packed.</div>
+        </div>
+        <div nx="timeline-item" current>
+          <div nx="timeline-time">Step 3 · Active</div>
+          <div nx="timeline-title">In Transit</div>
+          <div nx="timeline-body">Your package is on the way!</div>
+        </div>
+        <div nx="timeline-item">
+          <div nx="timeline-time">Step 4</div>
+          <div nx="timeline-title">Delivered</div>
+          <div nx="timeline-body">Estimated: Tomorrow by 5pm.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="code"><span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"timeline"</span><span class="t">&gt;</span>
+
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"timeline-item"</span> <span class="a">tone</span>=<span class="v">"ok"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"timeline-time"</span><span class="t">&gt;</span>Jan 2024<span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"timeline-title"</span><span class="t">&gt;</span>Launched<span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"timeline-body"</span><span class="t">&gt;</span>Description here<span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"timeline-item"</span> <span class="a">current</span><span class="t">&gt;</span>   <span class="c">&lt;!-- pulses --&gt;</span>
+    ...
+  <span class="t">&lt;/div&gt;</span>
+
+<span class="t">&lt;/div&gt;</span>
+
+tone="ok|warn|err|info"   <span class="c">dot color</span>
+current                   <span class="c">pulsing active dot</span></div>
+
+
+  <!-- ═══ 4. STEPPER ═══ -->
+  <div class="sh">
+    <span class="fb">4 of 8</span>
+    <h2>Stepper — <code style="font-size:0.8em">nx="stepper"</code></h2>
+    <p>Multi-step form wizard. Animated progress line. Automatic step tracking. Full JS API.</p>
+  </div>
+  <div class="demo">
+    <div data-stepper>
+      <div nx="stepper">
+        <div nx="step" current>
+          <div nx="step-dot">1</div>
+          <div nx="step-label">Account</div>
+          <div nx="step-line"></div>
+        </div>
+        <div nx="step">
+          <div nx="step-dot">2</div>
+          <div nx="step-label">Profile</div>
+          <div nx="step-line"></div>
+        </div>
+        <div nx="step">
+          <div nx="step-dot">3</div>
+          <div nx="step-label">Plan</div>
+          <div nx="step-line"></div>
+        </div>
+        <div nx="step">
+          <div nx="step-dot">4</div>
+          <div nx="step-label">Done</div>
+        </div>
+      </div>
+
+      <div style="margin-top:40px">
+        <div nx="step-panel" active>
+          <div nx="card" no-hover>
+            <h3 style="margin:0 0 16px">Create Account</h3>
+            <div nx="stack" gap="md">
+              <div><div nx="label" style="margin-bottom:6px">Email</div><input nx="input" type="email" placeholder="you@example.com"></div>
+              <div><div nx="label" style="margin-bottom:6px">Password</div><input nx="input" type="password" placeholder="Minimum 8 characters"></div>
+            </div>
+          </div>
+        </div>
+        <div nx="step-panel">
+          <div nx="card" no-hover>
+            <h3 style="margin:0 0 16px">Your Profile</h3>
+            <div nx="stack" gap="md">
+              <div><div nx="label" style="margin-bottom:6px">Full Name</div><input nx="input" placeholder="Alex Johnson"></div>
+              <div><div nx="label" style="margin-bottom:6px">Role</div>
+                <select nx="select"><option>Developer</option><option>Designer</option><option>PM</option></select></div>
+            </div>
+          </div>
+        </div>
+        <div nx="step-panel">
+          <div nx="card" no-hover>
+            <h3 style="margin:0 0 16px">Choose a Plan</h3>
+            <div nx="grid" cols="3" gap="sm">
+              <div nx="card" size="sm" style="cursor:pointer;border-color:var(--nx-color-accent)"><strong>Free</strong><p style="margin:4px 0 0;font-size:12px">$0/mo</p></div>
+              <div nx="card" size="sm" style="cursor:pointer"><strong>Pro</strong><p style="margin:4px 0 0;font-size:12px">$12/mo</p></div>
+              <div nx="card" size="sm" style="cursor:pointer"><strong>Team</strong><p style="margin:4px 0 0;font-size:12px">$49/mo</p></div>
+            </div>
+          </div>
+        </div>
+        <div nx="step-panel">
+          <div nx="card" no-hover style="text-align:center;padding:40px">
+            <div style="font-size:48px;margin-bottom:16px">🎉</div>
+            <h3 style="margin:0 0 8px">You're all set!</h3>
+            <p style="margin:0;color:var(--nx-color-text-2)">Your account has been created successfully.</p>
+          </div>
+        </div>
+      </div>
+
+      <div nx="step-nav">
+        <button nx="btn" variant="ghost" data-step-prev disabled>← Back</button>
+        <button nx="btn" data-step-next>Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="code"><span class="t">&lt;div</span> <span class="a">data-stepper</span><span class="t">&gt;</span>   <span class="c">&lt;!-- wrapper --&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"stepper"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"step"</span> <span class="a">current</span><span class="t">&gt;</span>
+      <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"step-dot"</span><span class="t">&gt;</span>1<span class="t">&lt;/div&gt;</span>
+      <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"step-label"</span><span class="t">&gt;</span>Account<span class="t">&lt;/div&gt;</span>
+      <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"step-line"</span><span class="t">&gt;&lt;/div&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"step-panel"</span> <span class="a">active</span><span class="t">&gt;</span>Step 1 content<span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"step-nav"</span><span class="t">&gt;</span>
+    <span class="t">&lt;button</span> <span class="a">data-step-prev</span><span class="t">&gt;</span>Back<span class="t">&lt;/button&gt;</span>
+    <span class="t">&lt;button</span> <span class="a">data-step-next</span><span class="t">&gt;</span>Next<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span></div>
+
+
+  <!-- ═══ 5. DATE PICKER ═══ -->
+  <div class="sh">
+    <span class="fb">5 of 8</span>
+    <h2>Date Picker — <code style="font-size:0.8em">nx="date-picker"</code></h2>
+    <p>Fully custom calendar. Month navigation, today highlight, selected state. No native input styling hacks.</p>
+  </div>
+  <div class="demo">
+    <div nx="row" gap="xl" style="flex-wrap:wrap;align-items:flex-start">
+      <div>
+        <div nx="label" style="margin-bottom:8px">Pick a date</div>
+        <div nx="date-picker">
+          <div nx="date-input" tabindex="0">
+            <span class="nx-date-text" style="flex:1">Select a date...</span>
+            <span style="color:var(--nx-color-text-3);font-size:12px">▾</span>
+          </div>
+          <div nx="date-calendar">
+            <div nx="date-nav">
+              <button>‹</button>
+              <span nx="date-month-label">March 2025</span>
+              <button>›</button>
+            </div>
+            <div nx="date-weekdays">
+              <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+            </div>
+            <div nx="date-grid"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div nx="label" style="margin-bottom:8px">Another picker</div>
+        <div nx="date-picker">
+          <div nx="date-input" tabindex="0">
+            <span class="nx-date-text" style="flex:1">End date...</span>
+            <span style="color:var(--nx-color-text-3);font-size:12px">▾</span>
+          </div>
+          <div nx="date-calendar">
+            <div nx="date-nav">
+              <button>‹</button>
+              <span nx="date-month-label">March 2025</span>
+              <button>›</button>
+            </div>
+            <div nx="date-weekdays">
+              <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+            </div>
+            <div nx="date-grid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="code"><span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"date-picker"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"date-input"</span> <span class="a">tabindex</span>=<span class="v">"0"</span><span class="t">&gt;</span>
+    <span class="t">&lt;span</span> <span class="a">class</span>=<span class="v">"nx-date-text"</span><span class="t">&gt;</span>Select date...<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"date-calendar"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"date-nav"</span><span class="t">&gt;</span>
+      <span class="t">&lt;button&gt;</span>‹<span class="t">&lt;/button&gt;</span>
+      <span class="t">&lt;span</span> <span class="a">nx</span>=<span class="v">"date-month-label"</span><span class="t">&gt;&lt;/span&gt;</span>
+      <span class="t">&lt;button&gt;</span>›<span class="t">&lt;/button&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"date-weekdays"</span><span class="t">&gt;</span><span class="c">&lt;!-- Su Mo Tu We Th Fr Sa --&gt;</span><span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"date-grid"</span><span class="t">&gt;&lt;/div&gt;</span>  <span class="c">&lt;!-- JS fills this --&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">// Read selected value</span>
+el.getAttribute('data-value')  <span class="c">// → "2025-03-14"</span></div>
+
+
+  <!-- ═══ 6. FILE UPLOAD ═══ -->
+  <div class="sh">
+    <span class="fb">6 of 8</span>
+    <h2>File Upload — <code style="font-size:0.8em">nx="file-upload"</code></h2>
+    <p>Drag-and-drop zone with file type icons, size display, remove buttons. Fully styled.</p>
+  </div>
+  <div class="demo">
+    <div nx="grid" cols="2" gap="lg">
+      <div>
+        <div nx="file-upload">
+          <input type="file" multiple accept="image/*,.pdf,.doc,.zip">
+          <div nx="file-upload-icon">📂</div>
+          <div nx="file-upload-label">Drop files here</div>
+          <div nx="file-upload-hint">PNG, JPG, PDF, ZIP · Max 10MB</div>
+        </div>
+        <div nx="file-list"></div>
+      </div>
+      <div>
+        <div nx="file-upload" style="min-height:120px">
+          <input type="file" accept="image/*">
+          <div nx="file-upload-icon">🖼</div>
+          <div nx="file-upload-label">Upload avatar</div>
+          <div nx="file-upload-hint">PNG or JPG · Square recommended</div>
+        </div>
+        <div nx="file-list"></div>
+      </div>
+    </div>
+  </div>
+  <div class="code"><span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"file-upload"</span><span class="t">&gt;</span>
+  <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"file"</span> <span class="a">multiple</span> <span class="a">accept</span>=<span class="v">"image/*,.pdf"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"file-upload-icon"</span><span class="t">&gt;</span>📂<span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"file-upload-label"</span><span class="t">&gt;</span>Drop files here<span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"file-upload-hint"</span><span class="t">&gt;</span>PNG, JPG · Max 10MB<span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"file-list"</span><span class="t">&gt;&lt;/div&gt;</span>  <span class="c">&lt;!-- files appear here --&gt;</span>
+
+<span class="c">// Events</span>
+Noxen.on('fileupload:change', ({ files }) => console.log(files))</div>
+
+
+  <!-- ═══ 7. COLOR PICKER ═══ -->
+  <div class="sh">
+    <span class="fb">7 of 8</span>
+    <h2>Color Picker — <code style="font-size:0.8em">nx="color-picker"</code></h2>
+    <p>Swatch grid, hex input, native color input. Works as standalone or inline. Fires <code>colorpicker:change</code> event.</p>
+  </div>
+  <div class="demo">
+    <div nx="row" gap="xl" style="flex-wrap:wrap;align-items:flex-start">
+
+      <div>
+        <div nx="label" style="margin-bottom:8px">Accent Color</div>
+        <div nx="color-picker" value="#00e5ff">
+          <div nx="color-trigger" tabindex="0">
+            <div nx="color-swatch-preview"></div>
+            <span class="nx-cp-text">#00E5FF</span>
+            <span style="color:var(--nx-color-text-3);font-size:10px;margin-left:auto">▾</span>
+          </div>
+          <div nx="color-panel">
+            <div nx="color-swatches"></div>
+            <div nx="color-hex-input"><input maxlength="6" placeholder="00E5FF"></div>
+            <input nx="color-native" type="color" value="#00e5ff">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div nx="label" style="margin-bottom:8px">Brand Color</div>
+        <div nx="color-picker" value="#ff3366">
+          <div nx="color-trigger" tabindex="0">
+            <div nx="color-swatch-preview"></div>
+            <span class="nx-cp-text">#FF3366</span>
+            <span style="color:var(--nx-color-text-3);font-size:10px;margin-left:auto">▾</span>
+          </div>
+          <div nx="color-panel">
+            <div nx="color-swatches"></div>
+            <div nx="color-hex-input"><input maxlength="6" placeholder="FF3366"></div>
+            <input nx="color-native" type="color" value="#ff3366">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div nx="label" style="margin-bottom:8px">Live Theme</div>
+        <div nx="color-picker" value="#00e5ff" id="theme-picker">
+          <div nx="color-trigger" tabindex="0">
+            <div nx="color-swatch-preview"></div>
+            <span class="nx-cp-text">#00E5FF</span>
+            <span style="color:var(--nx-color-text-3);font-size:10px;margin-left:auto">▾</span>
+          </div>
+          <div nx="color-panel">
+            <div nx="color-swatches"></div>
+            <div nx="color-hex-input"><input maxlength="6" placeholder="00E5FF"></div>
+            <input nx="color-native" type="color" value="#00e5ff">
+          </div>
+        </div>
+        <p style="margin:8px 0 0;font-size:11px;color:var(--nx-color-text-3)">Changes page accent live ↑</p>
+      </div>
+
+    </div>
+  </div>
+  <div class="code"><span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"color-picker"</span> <span class="a">value</span>=<span class="v">"#00e5ff"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"color-trigger"</span> <span class="a">tabindex</span>=<span class="v">"0"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"color-swatch-preview"</span><span class="t">&gt;&lt;/div&gt;</span>
+    <span class="t">&lt;span</span> <span class="a">class</span>=<span class="v">"nx-cp-text"</span><span class="t">&gt;</span>#00E5FF<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"color-panel"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"color-swatches"</span><span class="t">&gt;&lt;/div&gt;</span>    <span class="c">&lt;!-- JS fills 20 presets --&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"color-hex-input"</span><span class="t">&gt;&lt;input&gt;&lt;/div&gt;</span>
+    <span class="t">&lt;input</span> <span class="a">nx</span>=<span class="v">"color-native"</span> <span class="a">type</span>=<span class="v">"color"</span><span class="t">&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">// Listen for changes</span>
+Noxen.on('colorpicker:change', ({ color }) => {
+  Noxen.tokens.set('--nx-color-accent', color)
+})</div>
+
+
+  <!-- ═══ 8. KANBAN ═══ -->
+  <div class="sh">
+    <span class="fb">8 of 8</span>
+    <h2>Kanban — <code style="font-size:0.8em">nx="kanban"</code></h2>
+    <p>Full drag-and-drop board. Column counts auto-update. Add cards with the + button. Touch support via pointer events.</p>
+  </div>
+  <div class="demo" style="padding:20px;overflow-x:auto">
+    <div nx="kanban">
+
+      <div nx="kanban-col">
+        <div nx="kanban-col-header">
+          <span nx="kanban-col-title">Backlog</span>
+          <span nx="kanban-col-count">3</span>
+        </div>
+        <div nx="kanban-cards">
+          <div nx="kanban-card">
+            <div nx="kanban-card-title">Add dark mode toggle</div>
+            <div nx="kanban-card-desc">Persist preference in localStorage</div>
+            <div nx="kanban-card-meta"><span nx="badge">UI</span><span nx="badge">Feature</span></div>
+          </div>
+          <div nx="kanban-card">
+            <div nx="kanban-card-title">Write API docs</div>
+            <div nx="kanban-card-meta"><span nx="badge">Docs</span></div>
+          </div>
+          <div nx="kanban-card">
+            <div nx="kanban-card-title">Refactor token system</div>
+            <div nx="kanban-card-meta"><span nx="badge">Tech</span></div>
+          </div>
+        </div>
+        <button nx="kanban-add">+ Add card</button>
+      </div>
+
+      <div nx="kanban-col" tone="warn">
+        <div nx="kanban-col-header">
+          <span nx="kanban-col-title">In Progress</span>
+          <span nx="kanban-col-count">2</span>
+        </div>
+        <div nx="kanban-cards">
+          <div nx="kanban-card">
+            <div nx="kanban-card-title">Build Kanban component</div>
+            <div nx="kanban-card-desc">Drag and drop with pointer events</div>
+            <div nx="kanban-card-meta"><span nx="badge" tone="warn">Active</span><div nx="kanban-card-avatar">🧑</div></div>
+          </div>
+          <div nx="kanban-card">
+            <div nx="kanban-card-title">Responsive grid fixes</div>
+            <div nx="kanban-card-meta"><span nx="badge" tone="warn">Review</span></div>
+          </div>
+        </div>
+        <button nx="kanban-add">+ Add card</button>
+      </div>
+
+      <div nx="kanban-col" tone="ok">
+        <div nx="kanban-col-header">
+          <span nx="kanban-col-title">Done</span>
+          <span nx="kanban-col-count">3</span>
+        </div>
+        <div nx="kanban-cards">
+          <div nx="kanban-card">
+            <div nx="kanban-card-title">Drawer component ✓</div>
+            <div nx="kanban-card-meta"><span nx="badge" tone="ok">Shipped</span></div>
+          </div>
+          <div nx="kanban-card">
+            <div nx="kanban-card-title">Command palette ✓</div>
+            <div nx="kanban-card-meta"><span nx="badge" tone="ok">Shipped</span></div>
+          </div>
+          <div nx="kanban-card">
+            <div nx="kanban-card-title">Date picker ✓</div>
+            <div nx="kanban-card-meta"><span nx="badge" tone="ok">Shipped</span></div>
+          </div>
+        </div>
+        <button nx="kanban-add">+ Add card</button>
+      </div>
+
+    </div>
+  </div>
+  <div class="code"><span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"kanban"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"kanban-col"</span> <span class="a">tone</span>=<span class="v">"warn"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"kanban-col-header"</span><span class="t">&gt;</span>
+      <span class="t">&lt;span</span> <span class="a">nx</span>=<span class="v">"kanban-col-title"</span><span class="t">&gt;</span>In Progress<span class="t">&lt;/span&gt;</span>
+      <span class="t">&lt;span</span> <span class="a">nx</span>=<span class="v">"kanban-col-count"</span><span class="t">&gt;&lt;/span&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"kanban-cards"</span><span class="t">&gt;</span>
+      <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"kanban-card"</span><span class="t">&gt;</span>
+        <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"kanban-card-title"</span><span class="t">&gt;</span>Task title<span class="t">&lt;/div&gt;</span>
+        <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"kanban-card-desc"</span><span class="t">&gt;</span>Details<span class="t">&lt;/div&gt;</span>
+        <span class="t">&lt;div</span> <span class="a">nx</span>=<span class="v">"kanban-card-meta"</span><span class="t">&gt;</span><span class="t">&lt;span</span> <span class="a">nx</span>=<span class="v">"badge"</span><span class="t">&gt;</span>Tag<span class="t">&lt;/span&gt;&lt;/div&gt;</span>
+      <span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;button</span> <span class="a">nx</span>=<span class="v">"kanban-add"</span><span class="t">&gt;</span>+ Add card<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+tone="ok|warn|err|info"   <span class="c">column accent color</span>
+<span class="c">// Drag & drop is automatic — no config needed</span></div>
+
+
+  <!-- SUMMARY -->
+  <div style="margin-top:72px;padding:40px;background:linear-gradient(135deg,var(--nx-color-surface-2),var(--nx-color-surface));border:1px solid var(--nx-color-border-2);border-radius:var(--nx-radius-xl);text-align:center">
+    <div style="font-family:var(--nx-font-mono);font-size:11px;color:var(--nx-color-ok);background:var(--nx-color-ok-lo);border:1px solid rgba(0,255,136,0.25);border-radius:99px;display:inline-block;padding:3px 12px;margin-bottom:16px">Ready to push</div>
+    <h2 style="margin:0 0 8px">v2.1.0 — 13 Features Total</h2>
+    <p style="color:var(--nx-color-text-2);margin:0 0 12px">5 from first batch + 8 new = <strong style="color:var(--nx-color-text)">13 world-class components</strong> built in one session.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0 28px">
+      <span nx="badge">Drawer</span><span nx="badge">Command</span><span nx="badge">Carousel</span><span nx="badge">Container Queries</span><span nx="badge">Data Grid</span>
+      <span nx="badge" tone="ok">Tooltip ✦</span><span nx="badge" tone="ok">Rating ✦</span><span nx="badge" tone="ok">Timeline ✦</span><span nx="badge" tone="ok">Stepper ✦</span>
+      <span nx="badge" tone="ok">Date Picker ✦</span><span nx="badge" tone="ok">File Upload ✦</span><span nx="badge" tone="ok">Color Picker ✦</span><span nx="badge" tone="ok">Kanban ✦</span>
+    </div>
+    <div nx="row" gap="md" style="justify-content:center;flex-wrap:wrap">
+      <a href="https://github.com/noxen-css/noxen" nx="btn" size="lg">🚀 Push to GitHub as v2.1.0</a>
+      <button nx="btn" variant="outline" size="lg" onclick="if(typeof Noxen!=='undefined')Noxen.toast.success('npm version minor && npm publish',{title:'Publish command'})">Publish to NPM</button>
+    </div>
+  </div>
+
+</div><!-- .wrap -->
+
+<script src="dist/noxen.min.js"></script>
+<script>
+function setTheme(name) {
+  document.documentElement.setAttribute('data-nx-theme', name);
+  if (typeof Noxen !== 'undefined') Noxen.theme.set(name);
+}
+
+// Wire color picker to live theme change
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    if (typeof Noxen === 'undefined') return;
+    const themePicker = document.getElementById('theme-picker');
+    if (themePicker) {
+      Noxen.on('colorpicker:change', function(e) {
+        if (e.el === themePicker) {
+          Noxen.tokens.set('--nx-color-accent', e.color);
+          Noxen.tokens.set('--nx-color-accent-lo', e.color + '14');
+          Noxen.tokens.set('--nx-color-border-2', e.color + '40');
+        }
+      });
+    }
+  }, 200);
+});
+</script>
+</body>
+</html>

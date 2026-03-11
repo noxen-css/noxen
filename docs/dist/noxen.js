@@ -1,5 +1,5 @@
 /**
- * NOXEN CSS FRAMEWORK v2.1.2
+ * NOXEN CSS FRAMEWORK v2.0
  * Layer 6 — Intelligence Layer
  * Auto-ARIA · Theme Engine · AI Palette · Token Bridge · Scroll Reveal
  * Cross-platform Export · Accessibility Audit · Toast · Modal · Accordion
@@ -170,25 +170,25 @@
       // Derive full palette using the hue
       const isDark = l < 0.5;
       const generated = {
-        '--nx-color-accent': hex,
+        '--nx-color-accent':    hex,
         '--nx-color-accent-lo': hexToRgba(hex, 0.08),
         '--nx-color-accent-md': hexToRgba(hex, 0.20),
         '--nx-color-accent-hi': hexToRgba(hex, 0.45),
-        '--nx-color-accent-2': hslToHex((h + 180) % 360, Math.min(s * 1.1, 1), Math.max(l - 0.15, 0.2)),
+        '--nx-color-accent-2':  hslToHex((h + 180) % 360, Math.min(s * 1.1, 1), Math.max(l - 0.15, 0.2)),
 
         // Background surfaces derived from hue (very dark)
-        '--nx-color-bg': hslToHex(h, Math.min(s * 0.3, 0.3), isDark ? 0.03 : 0.97),
-        '--nx-color-surface': hslToHex(h, Math.min(s * 0.3, 0.25), isDark ? 0.06 : 0.94),
+        '--nx-color-bg':        hslToHex(h, Math.min(s * 0.3, 0.3), isDark ? 0.03 : 0.97),
+        '--nx-color-surface':   hslToHex(h, Math.min(s * 0.3, 0.25), isDark ? 0.06 : 0.94),
         '--nx-color-surface-2': hslToHex(h, Math.min(s * 0.25, 0.20), isDark ? 0.10 : 0.90),
         '--nx-color-surface-3': hslToHex(h, Math.min(s * 0.20, 0.18), isDark ? 0.14 : 0.86),
 
         // Text
-        '--nx-color-text': isDark ? '#eeeef8' : '#111118',
+        '--nx-color-text':   isDark ? '#eeeef8' : '#111118',
         '--nx-color-text-2': isDark ? hslToHex(h, 0.20, 0.65) : hslToHex(h, 0.15, 0.40),
         '--nx-color-text-3': isDark ? hslToHex(h, 0.25, 0.30) : hslToHex(h, 0.10, 0.65),
 
         // Border
-        '--nx-color-border': isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)',
+        '--nx-color-border':   isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)',
         '--nx-color-border-2': hexToRgba(hex, 0.18),
 
         // Seam
@@ -316,7 +316,7 @@
         issues.push({ type: 'warn', rule: 'keyboard-access', el: el, msg: 'Interactive element not keyboard accessible' });
       });
 
-      const errors = issues.filter(i => i.type === 'error').length;
+      const errors   = issues.filter(i => i.type === 'error').length;
       const warnings = issues.filter(i => i.type === 'warn').length;
       console.group('🔍 Noxen A11y Audit');
       console.log(`${errors} errors · ${warnings} warnings`);
@@ -365,7 +365,7 @@
         const isOpen = trigger.classList.contains('open');
         const content = trigger.nextElementSibling;
         trigger.classList.toggle('open', !isOpen);
-        if (content && content.hasAttribute('nx')) {/* skip */ }
+        if (content && content.hasAttribute('nx')) {/* skip */}
         else if (content) content.classList.toggle('open', !isOpen);
         trigger.setAttribute('open', !isOpen ? '' : null);
         trigger.setAttribute('aria-expanded', (!isOpen).toString());
@@ -517,9 +517,9 @@
       return el;
     },
     success(msg, opts) { return this.show(msg, { ...opts, tone: 'ok' }); },
-    warn(msg, opts) { return this.show(msg, { ...opts, tone: 'warn' }); },
-    error(msg, opts) { return this.show(msg, { ...opts, tone: 'err' }); },
-    info(msg, opts) { return this.show(msg, { ...opts, tone: 'info' }); },
+    warn(msg, opts)    { return this.show(msg, { ...opts, tone: 'warn' }); },
+    error(msg, opts)   { return this.show(msg, { ...opts, tone: 'err' }); },
+    info(msg, opts)    { return this.show(msg, { ...opts, tone: 'info' }); },
   };
 
   // ═══════════════════════════════════════════════════════
@@ -675,13 +675,8 @@
     });
     mo.observe(document.body, { childList: true, subtree: true });
 
-<<<<<<< HEAD
-    emit('ready', { version: '2.1.2' });
-    if (config.debug) console.log('[Noxen v2.1.2] Ready ✓');
-=======
     emit('ready', { version: '2.1.0' });
     if (config.debug) console.log('[Noxen v2.0.0] Ready ✓');
->>>>>>> f1d56973dc79ade9bd6d3417fcefaedea5d6358a
   }
 
   // ══════════════════════════════════════════════════════
@@ -1167,11 +1162,7 @@
   //  PUBLIC API
   // ═══════════════════════════════════════════════════════
   const Noxen = {
-<<<<<<< HEAD
-    version: '2.1.2',
-=======
     version: '2.1.0',
->>>>>>> f1d56973dc79ade9bd6d3417fcefaedea5d6358a
 
     // Core
     init,

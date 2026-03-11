@@ -1,6 +1,10 @@
 {
   "name": "noxen-css",
+<<<<<<< HEAD
   "version": "2.1.2",
+=======
+  "version": "2.1.0",
+>>>>>>> f1d56973dc79ade9bd6d3417fcefaedea5d6358a
   "description": "The world's first intent-based CSS framework. Design intent, not class names. 7 themes, Antigravity Engine, Auto-ARIA, AI Palette, Cross-platform tokens — all in 74KB.",
   "main": "dist/noxen.css",
   "style": "dist/noxen.css",

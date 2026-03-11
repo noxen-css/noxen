@@ -615,7 +615,37 @@
     // Init all systems
     initScrollReveal();
     initComponents();
+    initDrawers();
+    initCommand();
+    initCarousels();
+    initDataGrids();
+    initRatings();
+    initSteppers();
+    initDatePickers();
+    initFileUploads();
+    initColorPickers();
+    initKanbans();
+    initForms();
+    initRanges();
+    initNavbarTogglers();
+    initPopovers();
+    initScrollspy();
     initMasonry();
+    initDrawers();
+    initCommand();
+    initCarousels();
+    initDataGrids();
+    initRatings();
+    initSteppers();
+    initDatePickers();
+    initFileUploads();
+    initColorPickers();
+    initKanbans();
+    initForms();
+    initRanges();
+    initNavbarTogglers();
+    initPopovers();
+    initScrollspy();
 
     // Detect system color scheme preference
     if (!document.documentElement.getAttribute('data-nx-theme')) {
@@ -627,6 +657,21 @@
     const mo = new MutationObserver(() => {
       a11y.init();
       initComponents();
+      initDrawers();
+      initCommand();
+      initCarousels();
+      initDataGrids();
+      initRatings();
+      initSteppers();
+      initDatePickers();
+      initFileUploads();
+      initColorPickers();
+      initKanbans();
+      initForms();
+      initRanges();
+      initNavbarTogglers();
+      initPopovers();
+      initScrollspy();
     });
     mo.observe(document.body, { childList: true, subtree: true });
 
@@ -634,43 +679,1126 @@
     if (config.debug) console.log('[Noxen v2.1.2] Ready ✓');
   }
 
-  // ═══════════════════════════════════════════════════════
-  //  PUBLIC API
-  // ═══════════════════════════════════════════════════════
-  const Noxen = {
-    version: '2.1.2',
-
-    // Core
-    init,
-    query,
-
-    // Subsystems
-    theme,
-    tokens,
-    palette,
-    a11y,
-    ag,
-    toast,
-    print,
-
-    // Convenience aliases
-    on(event, fn) { (state.listeners[event] = state.listeners[event] || []).push(fn); },
-
-    // Quick theme switch
-    setTheme(name) { theme.set(name); },
-
-    // Quick token override
-    setToken(key, value) { tokens.set(key, value); },
+  // ══════════════════════════════════════════════════════
+  // v2.1 — TOOLTIP  (CSS-only, but JS for dynamic content)
+  // ══════════════════════════════════════════════════════
+  const tooltip = {
+    set(el, text, opts = {}) {
+      el.setAttribute('nx-tip', text);
+      if (opts.side) el.setAttribute('tip-side', opts.side);
+      if (opts.tone) el.setAttribute('tip-tone', opts.tone);
+    },
+    remove(el) {
+      el.removeAttribute('nx-tip');
+      el.removeAttribute('tip-side');
+      el.removeAttribute('tip-tone');
+    },
   };
 
-  // ── Auto-init on DOMContentLoaded ──
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => init({ a11y: true }));
-  } else {
-    init({ a11y: true });
+  // ══════════════════════════════════════════════════════
+  // v2.1 — RATING
+  // ══════════════════════════════════════════════════════
+  const rating = {
+    init(el) {
+      if (el._nxRatingInit) return;
+      el._nxRatingInit = true;
+      const stars = [...el.querySelectorAll('[nx="rating-star"]')];
+      const valEl = el.querySelector('[nx="rating-value"]');
+      const isReadonly = el.hasAttribute('readonly');
+      let current = parseInt(el.getAttribute('value') || '0');
+
+      function update(val) {
+        stars.forEach((s, i) => {
+          s.classList.toggle('filled', i < val);
+          s.classList.remove('hover');
+        });
+        if (valEl) valEl.textContent = val + '/' + stars.length;
+        el.setAttribute('value', val);
+        emit('rating:change', { value: val, el });
+      }
+
+      if (!isReadonly) {
+        stars.forEach((star, i) => {
+          star.addEventListener('mouseenter', () => {
+            stars.forEach((s, j) => s.classList.toggle('hover', j <= i));
+          });
+          star.addEventListener('mouseleave', () => {
+            stars.forEach(s => s.classList.remove('hover'));
+          });
+          star.addEventListener('click', () => {
+            current = i + 1;
+            update(current);
+          });
+        });
+      }
+      update(current);
+    },
+  };
+
+  function initRatings() {
+    document.querySelectorAll('[nx="rating"]').forEach(el => rating.init(el));
   }
 
-  // ── Expose globally ──
-  global.Noxen = Noxen;
+  // ══════════════════════════════════════════════════════
+  // v2.1 — STEPPER
+  // ══════════════════════════════════════════════════════
+  const stepper = {
+    init(el) {
+      if (el._nxStepperInit) return;
+      el._nxStepperInit = true;
 
-}(typeof window !== 'undefined' ? window : this));
+      // Find the stepper, panels, and nav within a common parent
+      const container = el.closest('[data-stepper]') || el.parentElement;
+      const steps = [...el.querySelectorAll('[nx="step"]')];
+      const panels = [...container.querySelectorAll('[nx="step-panel"]')];
+      let current = 0;
+
+      function goTo(n) {
+        n = Math.max(0, Math.min(n, steps.length - 1));
+        current = n;
+        steps.forEach((s, i) => {
+          s.removeAttribute('current');
+          s.removeAttribute('active');
+          if (i < n) s.setAttribute('active', '');
+          if (i === n) s.setAttribute('current', '');
+          const dot = s.querySelector('[nx="step-dot"]');
+          if (dot) dot.textContent = i < n ? '✓' : (i + 1);
+        });
+        panels.forEach((p, i) => {
+          p.removeAttribute('active');
+          if (i === n) p.setAttribute('active', '');
+        });
+        // Update prev/next buttons
+        container.querySelectorAll('[data-step-prev]').forEach(b => b.disabled = (n === 0));
+        container.querySelectorAll('[data-step-next]').forEach(b => {
+          b.disabled = (n === steps.length - 1);
+          b.textContent = n === steps.length - 2 ? 'Finish' : 'Next →';
+        });
+        emit('stepper:change', { step: n, el });
+      }
+
+      container.querySelectorAll('[data-step-next]').forEach(b => {
+        b.addEventListener('click', () => goTo(current + 1));
+      });
+      container.querySelectorAll('[data-step-prev]').forEach(b => {
+        b.addEventListener('click', () => goTo(current - 1));
+      });
+
+      goTo(0);
+
+      el._nxStepper = { goTo, current: () => current, steps: steps.length };
+    },
+    goTo(el, n) { el._nxStepper?.goTo(n); },
+    next(el) { const s = el._nxStepper; if (s) s.goTo(s.current() + 1); },
+    prev(el) { const s = el._nxStepper; if (s) s.goTo(s.current() - 1); },
+  };
+
+  function initSteppers() {
+    document.querySelectorAll('[nx="stepper"]').forEach(el => stepper.init(el));
+  }
+
+  // ══════════════════════════════════════════════════════
+  // v2.1 — DATE PICKER
+  // ══════════════════════════════════════════════════════
+  const datePicker = {
+    _months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    _days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+
+    init(el) {
+      if (el._nxDateInit) return;
+      el._nxDateInit = true;
+
+      const trigger = el.querySelector('[nx="date-input"]');
+      const calendar = el.querySelector('[nx="date-calendar"]');
+      if (!trigger || !calendar) return;
+
+      let view = new Date();
+      let selected = null;
+
+      const nav = calendar.querySelector('[nx="date-nav"]');
+      const label = calendar.querySelector('[nx="date-month-label"]');
+      const grid = calendar.querySelector('[nx="date-grid"]');
+      if (!nav || !grid) return;
+
+      function renderCalendar() {
+        grid.innerHTML = '';
+        const y = view.getFullYear(), m = view.getMonth();
+        if (label) label.textContent = this._months[m] + ' ' + y;
+        const first = new Date(y, m, 1).getDay();
+        const total = new Date(y, m + 1, 0).getDate();
+        const today = new Date();
+
+        for (let i = 0; i < first; i++) {
+          const prev = new Date(y, m, -(first - i - 1));
+          const d = document.createElement('div');
+          d.setAttribute('nx', 'date-day');
+          d.setAttribute('other-month', '');
+          d.textContent = prev.getDate();
+          grid.appendChild(d);
+        }
+        for (let i = 1; i <= total; i++) {
+          const d = document.createElement('div');
+          d.setAttribute('nx', 'date-day');
+          d.textContent = i;
+          const thisDate = new Date(y, m, i);
+          if (today.toDateString() === thisDate.toDateString()) d.setAttribute('today', '');
+          if (selected && selected.toDateString() === thisDate.toDateString()) d.setAttribute('selected', '');
+          d.addEventListener('click', () => {
+            selected = new Date(y, m, i);
+            trigger.querySelector('.nx-date-text').textContent =
+              selected.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            trigger.setAttribute('data-value', selected.toISOString().split('T')[0]);
+            calendar.removeAttribute('open');
+            trigger.removeAttribute('open');
+            emit('datepicker:change', { date: selected, el });
+          });
+          grid.appendChild(d);
+        }
+      }.bind(this);
+
+    nav.querySelectorAll('button')[0]?.addEventListener('click', () => { view.setMonth(view.getMonth() - 1); renderCalendar(); });
+    nav.querySelectorAll('button')[1]?.addEventListener('click', () => { view.setMonth(view.getMonth() + 1); renderCalendar(); });
+
+    trigger.addEventListener('click', () => {
+      const open = calendar.hasAttribute('open');
+      if (open) { calendar.removeAttribute('open'); trigger.removeAttribute('open'); }
+      else { calendar.setAttribute('open', ''); trigger.setAttribute('open', ''); renderCalendar(); }
+    });
+
+    document.addEventListener('click', e => {
+      if (!el.contains(e.target)) { calendar.removeAttribute('open'); trigger.removeAttribute('open'); }
+    });
+
+    renderCalendar();
+  },
+};
+
+function initDatePickers() {
+  document.querySelectorAll('[nx="date-picker"]').forEach(el => datePicker.init(el));
+}
+
+// ══════════════════════════════════════════════════════
+// v2.1 — FILE UPLOAD
+// ══════════════════════════════════════════════════════
+const fileUpload = {
+  _icons: { image: '🖼', video: '🎬', audio: '🎵', pdf: '📄', zip: '📦', default: '📎' },
+
+  _icon(file) {
+    if (file.type.startsWith('image/')) return this._icons.image;
+    if (file.type.startsWith('video/')) return this._icons.video;
+    if (file.type.startsWith('audio/')) return this._icons.audio;
+    if (file.type === 'application/pdf') return this._icons.pdf;
+    if (file.type.includes('zip') || file.type.includes('tar')) return this._icons.zip;
+    return this._icons.default;
+  },
+
+  _size(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  },
+
+  init(el) {
+    if (el._nxFileInit) return;
+    el._nxFileInit = true;
+
+    const input = el.querySelector('input[type="file"]');
+    const listEl = el.parentElement?.querySelector('[nx="file-list"]') || el.nextElementSibling;
+    let files = [];
+
+    const addFiles = (newFiles) => {
+      [...newFiles].forEach(file => {
+        if (files.some(f => f.name === file.name)) return;
+        files.push(file);
+        if (listEl && listEl.getAttribute('nx') === 'file-list') renderFile(file);
+      });
+      emit('fileupload:change', { files, el });
+    };
+
+    const renderFile = (file) => {
+      const item = document.createElement('div');
+      item.setAttribute('nx', 'file-item');
+      item.innerHTML = `
+          <span nx="file-item-icon">${this._icon(file)}</span>
+          <div nx="file-item-info">
+            <div nx="file-item-name">${file.name}</div>
+            <div nx="file-item-size">${this._size(file.size)}</div>
+          </div>
+          <button nx="file-item-remove" aria-label="Remove">×</button>`;
+      item.querySelector('[nx="file-item-remove"]').addEventListener('click', () => {
+        files = files.filter(f => f.name !== file.name);
+        item.remove();
+        emit('fileupload:change', { files, el });
+      });
+      listEl.appendChild(item);
+    };
+
+    // Drag events
+    el.addEventListener('dragover', e => { e.preventDefault(); el.setAttribute('drag-over', ''); });
+    el.addEventListener('dragleave', e => { el.removeAttribute('drag-over'); });
+    el.addEventListener('drop', e => {
+      e.preventDefault();
+      el.removeAttribute('drag-over');
+      addFiles(e.dataTransfer.files);
+    });
+
+    if (input) input.addEventListener('change', () => addFiles(input.files));
+  },
+};
+
+function initFileUploads() {
+  document.querySelectorAll('[nx="file-upload"]').forEach(el => fileUpload.init(el));
+}
+
+// ══════════════════════════════════════════════════════
+// v2.1 — COLOR PICKER
+// ══════════════════════════════════════════════════════
+const colorPicker = {
+  _presets: [
+    '#ff4444', '#ff8800', '#ffdd00', '#88dd00', '#00cc66',
+    '#00ccff', '#0088ff', '#4444ff', '#8800ff', '#ff00aa',
+    '#ffffff', '#aaaaaa', '#666666', '#333333', '#000000',
+    '#00e5ff', '#ff3366', '#7c3aed', '#059669', '#d97706',
+  ],
+
+  init(el) {
+    if (el._nxColorInit) return;
+    el._nxColorInit = true;
+
+    const trigger = el.querySelector('[nx="color-trigger"]');
+    const panel = el.querySelector('[nx="color-panel"]');
+    const preview = trigger?.querySelector('[nx="color-swatch-preview"]');
+    const swatchWrap = panel?.querySelector('[nx="color-swatches"]');
+    const hexInput = panel?.querySelector('[nx="color-hex-input"] input');
+    const nativeIn = panel?.querySelector('[nx="color-native"]');
+
+    let current = el.getAttribute('value') || '#00e5ff';
+
+    const apply = (hex) => {
+      if (!/^#[0-9a-f]{3,6}$/i.test(hex)) return;
+      current = hex;
+      if (preview) preview.style.background = hex;
+      if (trigger) { const t = trigger.querySelector('.nx-cp-text'); if (t) t.textContent = hex.toUpperCase(); }
+      if (hexInput) hexInput.value = hex.replace('#', '').toUpperCase();
+      if (nativeIn) nativeIn.value = hex;
+      el.setAttribute('value', hex);
+      swatchWrap?.querySelectorAll('[nx="color-swatch"]').forEach(s => {
+        s.toggleAttribute('active', s.getAttribute('data-color') === hex);
+      });
+      emit('colorpicker:change', { color: hex, el });
+    };
+
+    // Build swatches
+    if (swatchWrap) {
+      this._presets.forEach(color => {
+        const s = document.createElement('div');
+        s.setAttribute('nx', 'color-swatch');
+        s.setAttribute('data-color', color);
+        s.style.background = color;
+        if (color === current) s.setAttribute('active', '');
+        s.addEventListener('click', () => { apply(color); });
+        swatchWrap.appendChild(s);
+      });
+    }
+
+    if (hexInput) {
+      hexInput.value = current.replace('#', '').toUpperCase();
+      hexInput.addEventListener('input', () => {
+        const val = '#' + hexInput.value.replace('#', '');
+        if (val.length === 7) apply(val);
+      });
+    }
+
+    if (nativeIn) {
+      nativeIn.value = current;
+      nativeIn.addEventListener('input', () => apply(nativeIn.value));
+    }
+
+    if (trigger) {
+      apply(current);
+      trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        const open = panel.hasAttribute('open');
+        panel.toggleAttribute('open', !open);
+        trigger.toggleAttribute('open', !open);
+      });
+    }
+
+    document.addEventListener('click', e => {
+      if (!el.contains(e.target)) {
+        panel?.removeAttribute('open');
+        trigger?.removeAttribute('open');
+      }
+    });
+  },
+
+  get(el) { return el.getAttribute('value'); },
+  set(el, hex) { el._nxColorPicker?.apply(hex); },
+};
+
+function initColorPickers() {
+  document.querySelectorAll('[nx="color-picker"]').forEach(el => colorPicker.init(el));
+}
+
+// ══════════════════════════════════════════════════════
+// v2.1 — KANBAN
+// ══════════════════════════════════════════════════════
+const kanban = {
+  init(el) {
+    if (el._nxKanbanInit) return;
+    el._nxKanbanInit = true;
+
+    let dragged = null, placeholder = null;
+
+    function updateCounts() {
+      el.querySelectorAll('[nx="kanban-col"]').forEach(col => {
+        const cards = col.querySelectorAll('[nx="kanban-card"]:not([placeholder])');
+        const cnt = col.querySelector('[nx="kanban-col-count"]');
+        if (cnt) cnt.textContent = cards.length;
+      });
+    }
+
+    function makeDraggable(card) {
+      if (card._nxDragInit) return;
+      card._nxDragInit = true;
+      card.setAttribute('draggable', 'true');
+
+      card.addEventListener('dragstart', e => {
+        dragged = card;
+        card.classList.add('dragging');
+        placeholder = card.cloneNode(true);
+        placeholder.setAttribute('placeholder', '');
+        placeholder.removeAttribute('draggable');
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => card.style.opacity = '0.4', 0);
+        emit('kanban:dragstart', { card });
+      });
+
+      card.addEventListener('dragend', () => {
+        card.classList.remove('dragging');
+        card.style.opacity = '';
+        placeholder?.remove();
+        el.querySelectorAll('[nx="kanban-col"]').forEach(c => c.removeAttribute('drag-over'));
+        dragged = null;
+        placeholder = null;
+        updateCounts();
+        emit('kanban:dragend', { card });
+      });
+    }
+
+    el.querySelectorAll('[nx="kanban-card"]').forEach(makeDraggable);
+
+    el.querySelectorAll('[nx="kanban-cards"]').forEach(zone => {
+      zone.addEventListener('dragover', e => {
+        e.preventDefault();
+        zone.closest('[nx="kanban-col"]')?.setAttribute('drag-over', '');
+        if (!dragged) return;
+        const after = getDragAfter(zone, e.clientY);
+        if (after) zone.insertBefore(dragged, after);
+        else zone.appendChild(dragged);
+      });
+      zone.addEventListener('dragleave', e => {
+        if (!zone.contains(e.relatedTarget)) {
+          zone.closest('[nx="kanban-col"]')?.removeAttribute('drag-over');
+        }
+      });
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.closest('[nx="kanban-col"]')?.removeAttribute('drag-over');
+        updateCounts();
+        emit('kanban:drop', { card: dragged, col: zone.closest('[nx="kanban-col"]') });
+      });
+    });
+
+    // Add card buttons
+    el.querySelectorAll('[nx="kanban-add"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const title = prompt('Card title:');
+        if (!title) return;
+        const zone = btn.closest('[nx="kanban-col"]').querySelector('[nx="kanban-cards"]');
+        const card = document.createElement('div');
+        card.setAttribute('nx', 'kanban-card');
+        card.innerHTML = `<div nx="kanban-card-title">${title}</div><div nx="kanban-card-meta"><span nx="badge">New</span></div>`;
+        zone.appendChild(card);
+        makeDraggable(card);
+        updateCounts();
+        emit('kanban:add', { title, col: btn.closest('[nx="kanban-col"]') });
+      });
+    });
+
+    function getDragAfter(container, y) {
+      const els = [...container.querySelectorAll('[nx="kanban-card"]:not(.dragging)')];
+      return els.reduce((closest, el) => {
+        const box = el.getBoundingClientRect();
+        const off = y - box.top - box.height / 2;
+        return (off < 0 && off > closest.offset) ? { offset: off, el } : closest;
+      }, { offset: Number.NEGATIVE_INFINITY }).el;
+    }
+
+    updateCounts();
+  },
+
+  addCard(boardEl, colIndex, { title, desc, tags = [] } = {}) {
+    const cols = boardEl.querySelectorAll('[nx="kanban-cards"]');
+    const zone = cols[colIndex];
+    if (!zone) return;
+    const card = document.createElement('div');
+    card.setAttribute('nx', 'kanban-card');
+    card.innerHTML = `
+        <div nx="kanban-card-title">${title || 'New Card'}</div>
+        ${desc ? `<div nx="kanban-card-desc">${desc}</div>` : ''}
+        <div nx="kanban-card-meta">${tags.map(t => `<span nx="badge">${t}</span>`).join('')}</div>`;
+    zone.appendChild(card);
+    boardEl._nxKanban?.makeDraggable?.(card);
+  },
+};
+
+function initKanbans() {
+  document.querySelectorAll('[nx="kanban"]').forEach(el => kanban.init(el));
+}
+
+
+// ═══════════════════════════════════════════════════════
+//  PUBLIC API
+// ═══════════════════════════════════════════════════════
+const Noxen = {
+  version: '2.1.2',
+
+  // Core
+  init,
+  query,
+
+  // Subsystems
+  theme,
+  tokens,
+  palette,
+  a11y,
+  ag,
+  toast,
+  print,
+
+  drawer,
+  command,
+  carousel,
+  dataGrid,
+
+  // v2.1 Features
+  tooltip,
+  rating,
+  stepper,
+  datePicker,
+  fileUpload,
+  colorPicker,
+  kanban,
+
+  // Bootstrap parity
+  form,
+  popover,
+  scrollspy,
+  pagination,
+
+  // Convenience aliases
+  on(event, fn) { (state.listeners[event] = state.listeners[event] || []).push(fn); },
+
+  // Quick theme switch
+  setTheme(name) { theme.set(name); },
+
+  // Quick token override
+  setToken(key, value) { tokens.set(key, value); },
+};
+
+
+// ══════════════════════════════════════════════════════════════
+// v2.1 FEATURE — DRAWER
+// ══════════════════════════════════════════════════════════════
+const drawer = {
+  open(id) {
+    const el = typeof id === 'string' ? document.getElementById(id) : id;
+    const backdrop = el?.closest('[nx="drawer-backdrop"]') || document.querySelector(`[nx="drawer-backdrop"][data-drawer="${id}"]`);
+    if (el) el.setAttribute('open', '');
+    if (backdrop) backdrop.setAttribute('open', '');
+    document.body.style.overflow = 'hidden';
+    el?.querySelector('[nx="drawer-close"], [nx="btn"]')?.focus();
+    emit('drawer:open', { id });
+  },
+  close(id) {
+    const els = id
+      ? [document.getElementById(id), document.querySelector(`[data-drawer="${id}"]`)]
+      : document.querySelectorAll('[nx="drawer"][open]');
+    (Array.isArray(els) ? els : [...els]).forEach(el => {
+      if (!el) return;
+      el.removeAttribute('open');
+      const backdrop = el.closest('[nx="drawer-backdrop"]');
+      if (backdrop) backdrop.removeAttribute('open');
+    });
+    if (!document.querySelector('[nx="drawer"][open]')) {
+      document.body.style.overflow = '';
+    }
+    emit('drawer:close', { id });
+  },
+  toggle(id) {
+    const el = typeof id === 'string' ? document.getElementById(id) : id;
+    if (el?.hasAttribute('open')) this.close(id);
+    else this.open(id);
+  },
+};
+
+function initDrawers() {
+  // Open triggers: data-drawer-open="drawer-id"
+  document.querySelectorAll('[data-drawer-open]').forEach(trigger => {
+    if (trigger._nxDrawerInit) return;
+    trigger._nxDrawerInit = true;
+    trigger.addEventListener('click', () => drawer.open(trigger.getAttribute('data-drawer-open')));
+  });
+  // Close triggers: data-drawer-close or nx="drawer-close"
+  document.querySelectorAll('[data-drawer-close], [nx="drawer-close"]').forEach(btn => {
+    if (btn._nxDrawerInit) return;
+    btn._nxDrawerInit = true;
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-drawer-close');
+      if (id) drawer.close(id);
+      else drawer.close();
+    });
+  });
+  // Close on backdrop click
+  document.querySelectorAll('[nx="drawer-backdrop"]').forEach(backdrop => {
+    if (backdrop._nxDrawerInit) return;
+    backdrop._nxDrawerInit = true;
+    backdrop.addEventListener('click', e => {
+      if (e.target === backdrop) drawer.close();
+    });
+  });
+  // Escape key
+  if (!window._nxDrawerEsc) {
+    window._nxDrawerEsc = true;
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') drawer.close();
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// v2.1 FEATURE — COMMAND PALETTE
+// ══════════════════════════════════════════════════════════════
+const command = {
+  _active: null,
+  _cursor: -1,
+
+  open(id = 'nx-command') {
+    const backdrop = document.getElementById(id) ||
+      document.querySelector('[nx="command-backdrop"]');
+    if (!backdrop) return;
+    backdrop.setAttribute('open', '');
+    this._active = backdrop;
+    this._cursor = -1;
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      backdrop.querySelector('[nx="command-input"]')?.focus();
+    }, 50);
+    emit('command:open', { id });
+  },
+  close() {
+    document.querySelectorAll('[nx="command-backdrop"][open]').forEach(el => {
+      el.removeAttribute('open');
+    });
+    document.body.style.overflow = '';
+    this._active = null;
+    emit('command:close', {});
+  },
+  toggle(id) {
+    const backdrop = id
+      ? document.getElementById(id)
+      : document.querySelector('[nx="command-backdrop"]');
+    if (backdrop?.hasAttribute('open')) this.close();
+    else this.open(id);
+  },
+};
+
+function initCommand() {
+  document.querySelectorAll('[nx="command-backdrop"]').forEach(backdrop => {
+    if (backdrop._nxCmdInit) return;
+    backdrop._nxCmdInit = true;
+
+    const input = backdrop.querySelector('[nx="command-input"]');
+    const list = backdrop.querySelector('[nx="command-list"]');
+    const empty = backdrop.querySelector('[nx="command-empty"]');
+
+    // Close on backdrop click
+    backdrop.addEventListener('click', e => {
+      if (e.target === backdrop) command.close();
+    });
+
+    // Filter on input
+    if (input && list) {
+      input.addEventListener('input', () => {
+        const q = input.value.toLowerCase().trim();
+        const items = list.querySelectorAll('[nx="command-item"]');
+        let visible = 0;
+        items.forEach(item => {
+          const text = item.textContent.toLowerCase();
+          const show = !q || text.includes(q);
+          item.hidden = !show;
+          if (show) visible++;
+        });
+        if (empty) empty.classList.toggle('visible', visible === 0);
+        // Reset cursor
+        list.querySelectorAll('[nx="command-item"].nx-active').forEach(i => i.classList.remove('nx-active'));
+        command._cursor = -1;
+      });
+
+      // Keyboard navigation
+      input.addEventListener('keydown', e => {
+        const items = [...list.querySelectorAll('[nx="command-item"]:not([hidden])')];
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          command._cursor = Math.min(command._cursor + 1, items.length - 1);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          command._cursor = Math.max(command._cursor - 1, 0);
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (command._cursor >= 0) items[command._cursor]?.click();
+        } else if (e.key === 'Escape') {
+          command.close();
+        }
+        // Update highlight
+        items.forEach((item, i) => {
+          item.classList.toggle('nx-active', i === command._cursor);
+        });
+        if (command._cursor >= 0) items[command._cursor]?.scrollIntoView({ block: 'nearest' });
+      });
+    }
+  });
+
+  // Global Cmd+K / Ctrl+K trigger
+  if (!window._nxCmdKey) {
+    window._nxCmdKey = true;
+    document.addEventListener('keydown', e => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        command.toggle();
+      }
+      if (e.key === 'Escape') command.close();
+    });
+  }
+
+  // data-command-open triggers
+  document.querySelectorAll('[data-command-open]').forEach(trigger => {
+    if (trigger._nxCmdInit) return;
+    trigger._nxCmdInit = true;
+    trigger.addEventListener('click', () => command.open(trigger.getAttribute('data-command-open')));
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// v2.1 FEATURE — CAROUSEL
+// ══════════════════════════════════════════════════════════════
+const carousel = {
+  init(el) {
+    if (el._nxCarouselInit) return;
+    el._nxCarouselInit = true;
+
+    const track = el.querySelector('[nx="carousel-track"]');
+    const slides = el.querySelectorAll('[nx="carousel-slide"]');
+    const prev = el.querySelector('[nx="carousel-prev"]');
+    const next = el.querySelector('[nx="carousel-next"]');
+    const dotsWrap = el.querySelector('[nx="carousel-dots"]');
+    const perView = parseInt(getComputedStyle(el).getPropertyValue('--nx-carousel-per-view')) || 1;
+    const total = slides.length;
+    const maxIndex = Math.max(0, total - perView);
+    let current = 0;
+    let autoTimer = null;
+    let dragStart = null;
+
+    // Build dots
+    if (dotsWrap) {
+      for (let i = 0; i <= maxIndex; i++) {
+        const dot = document.createElement('div');
+        dot.setAttribute('nx', 'carousel-dot');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(dot);
+      }
+    }
+
+    function goTo(index) {
+      current = Math.max(0, Math.min(index, maxIndex));
+      el.style.setProperty('--nx-carousel-index', current);
+      // Update dots
+      if (dotsWrap) {
+        dotsWrap.querySelectorAll('[nx="carousel-dot"]').forEach((d, i) => {
+          d.classList.toggle('active', i === current);
+        });
+      }
+      // Update nav buttons
+      if (prev) prev.toggleAttribute('disabled', current === 0);
+      if (next) next.toggleAttribute('disabled', current === maxIndex);
+      emit('carousel:change', { index: current, el });
+    }
+
+    if (prev) prev.addEventListener('click', () => goTo(current - 1));
+    if (next) next.addEventListener('click', () => goTo(current + 1));
+
+    // Touch/drag
+    if (track) {
+      track.addEventListener('pointerdown', e => {
+        dragStart = e.clientX;
+        track.setPointerCapture(e.pointerId);
+      });
+      track.addEventListener('pointerup', e => {
+        if (dragStart === null) return;
+        const delta = e.clientX - dragStart;
+        if (Math.abs(delta) > 50) goTo(delta < 0 ? current + 1 : current - 1);
+        dragStart = null;
+      });
+    }
+
+    // Autoplay
+    if (el.hasAttribute('autoplay')) {
+      const delay = parseInt(el.getAttribute('autoplay')) || 3000;
+      el.style.setProperty('--nx-carousel-duration', (delay / 1000) + 's');
+      autoTimer = setInterval(() => {
+        goTo(current >= maxIndex ? 0 : current + 1);
+      }, delay);
+      el.addEventListener('mouseenter', () => clearInterval(autoTimer));
+      el.addEventListener('mouseleave', () => {
+        autoTimer = setInterval(() => goTo(current >= maxIndex ? 0 : current + 1), delay);
+      });
+    }
+
+    goTo(0);
+  },
+};
+
+function initCarousels() {
+  document.querySelectorAll('[nx="carousel"]').forEach(el => carousel.init(el));
+}
+
+// ══════════════════════════════════════════════════════════════
+// v2.1 FEATURE — DATA GRID
+// ══════════════════════════════════════════════════════════════
+const dataGrid = {
+  init(el) {
+    if (el._nxGridInit) return;
+    el._nxGridInit = true;
+
+    const table = el.querySelector('table');
+    const tbody = table?.querySelector('tbody');
+    const headers = el.querySelectorAll('th[data-col]');
+    const searchEl = el.querySelector('[nx="data-grid-search"] input');
+    const emptyEl = el.querySelector('[nx="data-grid-empty"]');
+    const infoEl = el.querySelector('[nx="data-grid-info"]');
+    const pagesEl = el.querySelector('[nx="data-grid-pages"]');
+    const pageSize = parseInt(el.getAttribute('page-size')) || 10;
+
+    let allRows = tbody ? [...tbody.querySelectorAll('tr')] : [];
+    let filtered = [...allRows];
+    let sortCol = null;
+    let sortDir = 'asc';
+    let page = 1;
+
+    function render() {
+      if (!tbody) return;
+      const start = (page - 1) * pageSize;
+      const visible = filtered.slice(start, start + pageSize);
+      allRows.forEach(r => r.hidden = true);
+      visible.forEach(r => r.hidden = false);
+      const total = filtered.length;
+      const pages = Math.max(1, Math.ceil(total / pageSize));
+      if (emptyEl) emptyEl.classList.toggle('visible', total === 0);
+      if (infoEl) infoEl.textContent = `${Math.min(start + 1, total)}–${Math.min(start + pageSize, total)} of ${total}`;
+      if (pagesEl) {
+        pagesEl.innerHTML = '';
+        // Prev
+        const prevBtn = document.createElement('div');
+        prevBtn.setAttribute('nx', 'data-grid-page');
+        prevBtn.textContent = '‹';
+        if (page === 1) prevBtn.setAttribute('disabled', '');
+        prevBtn.addEventListener('click', () => { if (page > 1) { page--; render(); } });
+        pagesEl.appendChild(prevBtn);
+        // Page numbers
+        for (let i = 1; i <= pages; i++) {
+          if (pages > 7 && i > 2 && i < pages - 1 && Math.abs(i - page) > 1) {
+            if (i === 3 || i === pages - 2) {
+              const sep = document.createElement('div');
+              sep.setAttribute('nx', 'data-grid-page');
+              sep.textContent = '…';
+              sep.setAttribute('disabled', '');
+              pagesEl.appendChild(sep);
+            }
+            continue;
+          }
+          const btn = document.createElement('div');
+          btn.setAttribute('nx', 'data-grid-page');
+          btn.textContent = i;
+          if (i === page) btn.setAttribute('active', '');
+          btn.addEventListener('click', () => { page = i; render(); });
+          pagesEl.appendChild(btn);
+        }
+        // Next
+        const nextBtn = document.createElement('div');
+        nextBtn.setAttribute('nx', 'data-grid-page');
+        nextBtn.textContent = '›';
+        if (page === pages) nextBtn.setAttribute('disabled', '');
+        nextBtn.addEventListener('click', () => { if (page < pages) { page++; render(); } });
+        pagesEl.appendChild(nextBtn);
+      }
+    }
+
+    // Sort
+    headers.forEach(th => {
+      th.style.cursor = 'pointer';
+      th.addEventListener('click', () => {
+        const col = th.getAttribute('data-col');
+        if (sortCol === col) {
+          sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+          sortCol = col;
+          sortDir = 'asc';
+        }
+        headers.forEach(h => h.removeAttribute('sort'));
+        th.setAttribute('sort', sortDir);
+        const idx = [...th.parentElement.children].indexOf(th);
+        filtered.sort((a, b) => {
+          const aVal = a.cells[idx]?.textContent.trim() || '';
+          const bVal = b.cells[idx]?.textContent.trim() || '';
+          const num = !isNaN(aVal) && !isNaN(bVal);
+          const cmp = num ? parseFloat(aVal) - parseFloat(bVal) : aVal.localeCompare(bVal);
+          return sortDir === 'asc' ? cmp : -cmp;
+        });
+        page = 1;
+        render();
+      });
+    });
+
+    // Search
+    if (searchEl) {
+      searchEl.addEventListener('input', () => {
+        const q = searchEl.value.toLowerCase().trim();
+        filtered = q
+          ? allRows.filter(r => r.textContent.toLowerCase().includes(q))
+          : [...allRows];
+        page = 1;
+        render();
+      });
+    }
+
+    // Row selection
+    if (el.hasAttribute('selectable')) {
+      tbody.addEventListener('click', e => {
+        const row = e.target.closest('tr');
+        if (!row) return;
+        row.classList.toggle('selected');
+        emit('grid:select', { row, selected: row.classList.contains('selected') });
+      });
+    }
+
+    render();
+  },
+};
+
+function initDataGrids() {
+  document.querySelectorAll('[nx="data-grid"]').forEach(el => dataGrid.init(el));
+}
+
+// ══════════════════════════════════════════════════════
+// BOOTSTRAP PARITY — JS FEATURES
+// ══════════════════════════════════════════════════════
+
+// ── Form validation ──
+const form = {
+  validate(formEl) {
+    const fields = formEl.querySelectorAll('[nx="field"][required], [nx="field"] [required]');
+    let valid = true;
+    formEl.querySelectorAll('[nx="field"]').forEach(field => {
+      const input = field.querySelector('[nx="input"],[nx="select"],[nx="textarea"]');
+      if (!input) return;
+      const hint = field.querySelector('[nx="field-hint"]');
+      const isEmpty = !input.value.trim();
+      const isRequired = field.hasAttribute('required') || input.hasAttribute('required');
+      const emailOk = input.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+      const minLen = input.minLength > 0 && input.value.length < input.minLength;
+
+      field.removeAttribute('valid');
+      field.removeAttribute('invalid');
+
+      if (isRequired && isEmpty) {
+        field.setAttribute('invalid', '');
+        if (hint) hint.textContent = 'This field is required';
+        valid = false;
+      } else if (!emailOk) {
+        field.setAttribute('invalid', '');
+        if (hint) hint.textContent = 'Enter a valid email address';
+        valid = false;
+      } else if (minLen) {
+        field.setAttribute('invalid', '');
+        if (hint) hint.textContent = `Minimum ${input.minLength} characters`;
+        valid = false;
+      } else if (input.value) {
+        field.setAttribute('valid', '');
+        if (hint && hint.dataset.hint) hint.textContent = hint.dataset.hint;
+      }
+    });
+    emit('form:validate', { valid, el: formEl });
+    return valid;
+  },
+  reset(formEl) {
+    formEl.querySelectorAll('[nx="field"]').forEach(f => {
+      f.removeAttribute('valid'); f.removeAttribute('invalid'); f.removeAttribute('warn');
+    });
+  },
+  setError(fieldEl, msg) {
+    fieldEl.setAttribute('invalid', '');
+    const hint = fieldEl.querySelector('[nx="field-hint"]');
+    if (hint) hint.textContent = msg;
+  },
+  setValid(fieldEl, msg) {
+    fieldEl.setAttribute('valid', '');
+    const hint = fieldEl.querySelector('[nx="field-hint"]');
+    if (hint && msg) hint.textContent = msg;
+  },
+};
+
+function initForms() {
+  document.querySelectorAll('[nx="form"]').forEach(formEl => {
+    if (formEl._nxFormInit) return;
+    formEl._nxFormInit = true;
+    // Live validation on blur
+    formEl.querySelectorAll('[nx="input"],[nx="select"],[nx="textarea"]').forEach(input => {
+      input.addEventListener('blur', () => {
+        const field = input.closest('[nx="field"]');
+        if (field) form.validate(formEl);
+      });
+    });
+    // Submit handler
+    formEl.addEventListener('submit', e => {
+      e.preventDefault();
+      const valid = form.validate(formEl);
+      emit('form:submit', { valid, el: formEl, data: new FormData(formEl) });
+    });
+  });
+}
+
+// ── Range slider live value ──
+function initRanges() {
+  document.querySelectorAll('[nx="range"]').forEach(input => {
+    if (input._nxRangeInit) return;
+    input._nxRangeInit = true;
+    const group = input.closest('[nx="range-group"]');
+    const valEl = group?.querySelector('[nx="range-value"]');
+    const updateGradient = () => {
+      const pct = ((input.value - input.min) / (input.max - input.min)) * 100;
+      input.style.background = `linear-gradient(to right, var(--nx-color-accent) ${pct}%, var(--nx-color-surface-3) ${pct}%)`;
+      if (valEl) valEl.textContent = input.value;
+      emit('range:change', { value: +input.value, el: input });
+    };
+    input.addEventListener('input', updateGradient);
+    updateGradient();
+  });
+}
+
+// ── Navbar toggler ──
+function initNavbarTogglers() {
+  document.querySelectorAll('[nx="navbar-toggler"]').forEach(btn => {
+    if (btn._nxToggleInit) return;
+    btn._nxToggleInit = true;
+    const target = btn.getAttribute('data-target');
+    const collapse = target
+      ? document.querySelector(target)
+      : btn.closest('[nx="navbar"]')?.querySelector('[nx="navbar-collapse"]');
+    if (!collapse) return;
+    btn.addEventListener('click', () => {
+      const open = collapse.hasAttribute('open');
+      collapse.toggleAttribute('open', !open);
+      btn.toggleAttribute('open', !open);
+      btn.setAttribute('aria-expanded', (!open).toString());
+    });
+  });
+}
+
+// ── Popover ──
+const popover = {
+  open(el) {
+    const pop = el.querySelector('[nx="popover"]') || document.querySelector(`[nx="popover"][data-popover="${el.id}"]`);
+    if (pop) { pop.setAttribute('open', ''); el.setAttribute('open', ''); }
+  },
+  close(el) {
+    document.querySelectorAll('[nx="popover"][open]').forEach(p => p.removeAttribute('open'));
+    document.querySelectorAll('[nx="popover-wrap"][open]').forEach(p => p.removeAttribute('open'));
+  },
+  toggle(el) {
+    const wrap = el.closest('[nx="popover-wrap"]');
+    if (wrap?.hasAttribute('open')) this.close(el);
+    else if (wrap) this.open(wrap);
+  },
+};
+
+function initPopovers() {
+  document.querySelectorAll('[nx="popover-wrap"]').forEach(wrap => {
+    if (wrap._nxPopInit) return;
+    wrap._nxPopInit = true;
+    const trigger = wrap.querySelector('[data-popover-trigger], [nx="btn"]');
+    if (trigger) {
+      trigger.addEventListener('click', e => { e.stopPropagation(); popover.toggle(wrap); });
+    }
+    document.addEventListener('click', e => {
+      if (!wrap.contains(e.target)) popover.close(wrap);
+    });
+  });
+}
+
+// ── Scrollspy ──
+const scrollspy = {
+  init(navEl) {
+    if (navEl._nxSpyInit) return;
+    navEl._nxSpyInit = true;
+    const links = navEl.querySelectorAll('[nx="scrollspy-link"]');
+    const targets = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+    if (!targets.length) return;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const link = navEl.querySelector(`[href="#${entry.target.id}"]`);
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '-10% 0px -60% 0px' });
+    targets.forEach(t => obs.observe(t));
+  },
+};
+
+function initScrollspy() {
+  document.querySelectorAll('[nx="scrollspy-nav"]').forEach(el => scrollspy.init(el));
+}
+
+// ── Pagination standalone ──
+const pagination = {
+  create(containerEl, { total, page = 1, pageSize = 10, onChange } = {}) {
+    const pages = Math.ceil(total / pageSize);
+    const render = (p) => {
+      containerEl.innerHTML = '';
+      const items = [];
+      items.push({ label: '‹', page: p - 1, disabled: p === 1 });
+      for (let i = 1; i <= pages; i++) {
+        if (pages > 7 && i > 2 && i < pages - 1 && Math.abs(i - p) > 1) continue;
+        items.push({ label: i, page: i, active: i === p });
+      }
+      items.push({ label: '›', page: p + 1, disabled: p === pages });
+      items.forEach(item => {
+        const el = document.createElement('div');
+        el.setAttribute('nx', 'page-item');
+        el.textContent = item.label;
+        if (item.active) el.setAttribute('active', '');
+        if (item.disabled) el.setAttribute('disabled', '');
+        if (!item.disabled && !item.active) {
+          el.addEventListener('click', () => { render(item.page); onChange?.(item.page); });
+        }
+        containerEl.appendChild(el);
+      });
+    };
+    containerEl.setAttribute('nx', 'pagination');
+    render(page);
+  },
+};
+

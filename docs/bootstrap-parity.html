@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" data-nx-theme="void">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noxen v2.1 — Bootstrap Parity Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dist/noxen.min.css">
+<style>
+body { margin: 0; }
+.topbar { position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:56px;background:rgba(3,3,10,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--nx-color-border); }
+.logo { font-family:var(--nx-font-display);font-size:18px;font-weight:900;color:var(--nx-color-accent);letter-spacing:4px }
+.wrap { max-width:960px;margin:0 auto;padding:40px 28px 100px }
+.sh   { margin:60px 0 24px;padding-bottom:14px;border-bottom:1px solid var(--nx-color-border) }
+.sh h2{ margin:0 0 4px;font-size:1.5rem }
+.sh p { margin:0;color:var(--nx-color-text-2);font-size:13px }
+.demo { background:var(--nx-color-surface-2);border:1px solid var(--nx-color-border);border-radius:var(--nx-radius-lg);padding:24px;margin:14px 0 }
+.tag  { font-family:var(--nx-font-mono);font-size:10px;color:var(--nx-color-ok);background:var(--nx-color-ok-lo);border:1px solid rgba(0,255,136,.25);border-radius:99px;padding:2px 8px;display:inline-block;margin-bottom:8px }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="logo">NOXEN</span>
+    <span style="font-family:var(--nx-font-mono);font-size:11px;color:var(--nx-color-ok);background:var(--nx-color-ok-lo);border:1px solid rgba(0,255,136,.25);border-radius:99px;padding:2px 10px">Bootstrap Parity ✓</span>
+  </div>
+  <div style="display:flex;gap:5px">
+    <button nx="btn" size="xs" variant="ghost" onclick="setT('void')">void</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setT('neon')">neon</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setT('carbon')">carbon</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setT('bio')">bio</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setT('gold')">gold</button>
+    <button nx="btn" size="xs" variant="ghost" onclick="setT('aurora')">aurora</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div style="text-align:center;padding:40px 0 32px;border-bottom:1px solid var(--nx-color-border);margin-bottom:48px">
+    <span class="tag">Every Bootstrap feature. Then more.</span>
+    <h1 style="font-size:clamp(1.8rem,4vw,3rem);margin:10px 0;background:linear-gradient(135deg,var(--nx-color-text) 40%,var(--nx-color-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Noxen vs Bootstrap — Zero Gaps</h1>
+    <p style="color:var(--nx-color-text-2);max-width:520px;margin:0 auto">Every missing feature has been added. Forms · Nav · Content · Overlays · Full utility layer.</p>
+  </div>
+
+  <!-- FORMS -->
+  <div class="sh"><span class="tag">Forms & Inputs</span><h2>Form Validation · Input Groups · Checkboxes · Radio · Range</h2><p>Full form system with live validation, floating labels, and visual feedback states.</p></div>
+
+  <div class="demo">
+    <div nx="grid" cols="2" gap="lg">
+
+      <!-- Validated form -->
+      <div>
+        <div nx="label" style="margin-bottom:12px;font-size:13px">Live Validation Form</div>
+        <div nx="form" id="demo-form">
+          <div nx="field" required>
+            <div nx="label">Full Name</div>
+            <input nx="input" placeholder="Alex Johnson" required minlength="3">
+            <div nx="field-hint" data-hint="Looks great!">Enter your full name</div>
+          </div>
+          <div nx="field" required>
+            <div nx="label">Email</div>
+            <input nx="input" type="email" placeholder="you@example.com" required>
+            <div nx="field-hint" data-hint="Valid email ✓">Enter a valid email</div>
+          </div>
+          <div nx="field" valid>
+            <div nx="label">Username (pre-validated)</div>
+            <input nx="input" value="alexj" readonly>
+            <div nx="field-hint">Username is available</div>
+          </div>
+          <div nx="field" invalid>
+            <div nx="label">Password</div>
+            <input nx="input" type="password" placeholder="Too short">
+            <div nx="field-hint">Minimum 8 characters required</div>
+          </div>
+          <button nx="btn" type="submit" onclick="validateForm()">Validate & Submit</button>
+        </div>
+      </div>
+
+      <!-- Floating labels + Input Groups -->
+      <div>
+        <div nx="label" style="margin-bottom:12px;font-size:13px">Input Groups</div>
+        <div nx="stack" gap="sm">
+          <div nx="input-group">
+            <div nx="input-addon">$</div>
+            <input nx="input" type="number" placeholder="0.00">
+            <div nx="input-addon">.00</div>
+          </div>
+          <div nx="input-group">
+            <div nx="input-addon">🔍</div>
+            <input nx="input" placeholder="Search anything...">
+          </div>
+          <div nx="input-group">
+            <input nx="input" placeholder="yourusername">
+            <div nx="input-addon">@noxen.dev</div>
+          </div>
+          <div nx="input-group">
+            <div nx="input-addon">https://</div>
+            <input nx="input" placeholder="yoursite.com">
+            <button nx="btn" size="sm">Go</button>
+          </div>
+        </div>
+
+        <div nx="label" style="margin:16px 0 12px;font-size:13px">Checkboxes & Radio</div>
+        <div nx="check-group">
+          <label nx="checkbox"><input type="checkbox" checked> Send email notifications</label>
+          <label nx="checkbox"><input type="checkbox"> Weekly digest</label>
+          <label nx="checkbox" disabled><input type="checkbox" disabled> Disabled option</label>
+        </div>
+        <div nx="check-group" inline style="margin-top:12px">
+          <label nx="radio"><input type="radio" name="plan" value="free" checked> Free</label>
+          <label nx="radio"><input type="radio" name="plan" value="pro"> Pro</label>
+          <label nx="radio"><input type="radio" name="plan" value="team"> Team</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Range -->
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--nx-color-border)">
+      <div nx="label" style="margin-bottom:12px;font-size:13px">Range Sliders</div>
+      <div nx="grid" cols="2" gap="lg">
+        <div nx="range-group">
+          <div nx-flex="between"><span nx="label">Volume</span><span nx="range-value">70</span></div>
+          <input nx="range" type="range" min="0" max="100" value="70">
+          <div nx="range-labels"><span>0</span><span>50</span><span>100</span></div>
+        </div>
+        <div nx="range-group">
+          <div nx-flex="between"><span nx="label">Opacity</span><span nx="range-value">45</span></div>
+          <input nx="range" type="range" min="0" max="100" value="45">
+          <div nx="range-labels"><span>0%</span><span>100%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- NAVIGATION -->
+  <div class="sh"><span class="tag">Navigation</span><h2>Breadcrumb · Pagination · Nav Pills · Hamburger Navbar</h2></div>
+
+  <div class="demo">
+    <div nx="stack" gap="lg">
+
+      <!-- Breadcrumb -->
+      <div>
+        <div nx="label" style="margin-bottom:8px;font-size:13px">Breadcrumb</div>
+        <div nx="stack" gap="sm">
+          <nav nx="breadcrumb">
+            <div nx="breadcrumb-item"><a href="#">Home</a></div>
+            <div nx="breadcrumb-item"><a href="#">Components</a></div>
+            <div nx="breadcrumb-item" active>Breadcrumb</div>
+          </nav>
+          <nav nx="breadcrumb" separator="›">
+            <div nx="breadcrumb-item"><a href="#">Dashboard</a></div>
+            <div nx="breadcrumb-item"><a href="#">Settings</a></div>
+            <div nx="breadcrumb-item"><a href="#">Profile</a></div>
+            <div nx="breadcrumb-item" active>Edit</div>
+          </nav>
+          <nav nx="breadcrumb" separator="→">
+            <div nx="breadcrumb-item"><a href="#">Docs</a></div>
+            <div nx="breadcrumb-item" active>API Reference</div>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div>
+        <div nx="label" style="margin-bottom:8px;font-size:13px">Standalone Pagination</div>
+        <div nx="stack" gap="sm">
+          <div nx="pagination">
+            <div nx="page-item" disabled>‹</div>
+            <div nx="page-item" active>1</div>
+            <div nx="page-item">2</div>
+            <div nx="page-item">3</div>
+            <div nx="page-item" ellipsis>…</div>
+            <div nx="page-item">12</div>
+            <div nx="page-item">›</div>
+          </div>
+          <div nx="pagination" variant="pill" size="sm">
+            <div nx="page-item" disabled>‹ Prev</div>
+            <div nx="page-item">1</div>
+            <div nx="page-item" active>2</div>
+            <div nx="page-item">3</div>
+            <div nx="page-item">Next ›</div>
+          </div>
+          <div nx="pagination" size="lg">
+            <div nx="page-item" disabled>«</div>
+            <div nx="page-item">1</div>
+            <div nx="page-item" active>2</div>
+            <div nx="page-item">3</div>
+            <div nx="page-item">»</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nav Pills -->
+      <div>
+        <div nx="label" style="margin-bottom:8px;font-size:13px">Nav Pills</div>
+        <div nx="tabs" variant="pills">
+          <div nx="tab" class="active">Overview</div>
+          <div nx="tab">Analytics</div>
+          <div nx="tab">Settings</div>
+          <div nx="tab">Billing</div>
+        </div>
+      </div>
+
+      <!-- Hamburger Navbar demo -->
+      <div>
+        <div nx="label" style="margin-bottom:8px;font-size:13px">Mobile Navbar (resize window to see hamburger)</div>
+        <nav nx="navbar" style="position:relative;border:1px solid var(--nx-color-border);border-radius:var(--nx-radius-lg);background:var(--nx-color-surface)">
+          <span style="font-family:var(--nx-font-display);font-weight:900;color:var(--nx-color-accent);letter-spacing:3px;font-size:14px">BRAND</span>
+          <button nx="navbar-toggler" data-target="#demo-collapse" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <div nx="navbar-collapse" id="demo-collapse">
+            <a href="#" style="color:var(--nx-color-text-2);text-decoration:none;font-size:14px">Home</a>
+            <a href="#" style="color:var(--nx-color-text-2);text-decoration:none;font-size:14px">Docs</a>
+            <a href="#" style="color:var(--nx-color-text-2);text-decoration:none;font-size:14px">GitHub</a>
+            <div nx="spacer"></div>
+            <button nx="btn" size="sm">Get Started</button>
+          </div>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- CONTENT & TYPOGRAPHY -->
+  <div class="sh"><span class="tag">Content & Typography</span><h2>Display Headings · Blockquote · List Group · Figure · Text Utilities</h2></div>
+
+  <div class="demo">
+    <div nx="grid" cols="2" gap="lg">
+
+      <div>
+        <!-- Display headings -->
+        <div nx="label" style="margin-bottom:8px;font-size:13px">Display Headings</div>
+        <div nx="stack" gap="xs" style="margin-bottom:20px">
+          <div nx="display-1" style="line-height:1">Noxen</div>
+          <div nx="display-3">Display 3</div>
+          <div nx="display-5">Display 5</div>
+        </div>
+
+        <div nx="lead" style="margin-bottom:16px">This is a lead paragraph — larger and more prominent than body text, used for introductions.</div>
+
+        <!-- Blockquote -->
+        <div nx="label" style="margin-bottom:8px;font-size:13px">Blockquote</div>
+        <blockquote nx="blockquote">
+          The best CSS framework is the one that gets out of your way and lets you build.
+          <cite nx="blockquote-footer">Noxen Philosophy</cite>
+        </blockquote>
+        <div style="margin-top:10px">
+          <blockquote nx="blockquote" tone="ok" style="font-size:1rem">
+            Feature complete. Zero compromises.
+            <cite nx="blockquote-footer">v2.1.0 Release Notes</cite>
+          </blockquote>
+        </div>
+      </div>
+
+      <div>
+        <!-- List group -->
+        <div nx="label" style="margin-bottom:8px;font-size:13px">List Group</div>
+        <div nx="list-group" style="margin-bottom:16px">
+          <div nx="list-item" action active>
+            <span>🏠</span>
+            <div>
+              <div nx="list-item-title">Dashboard</div>
+              <div nx="list-item-desc">Overview and analytics</div>
+            </div>
+            <div nx="list-item-meta"><span nx="badge" tone="ok">Active</span></div>
+          </div>
+          <div nx="list-item" action>
+            <span>⚙️</span>
+            <div>
+              <div nx="list-item-title">Settings</div>
+              <div nx="list-item-desc">Account preferences</div>
+            </div>
+          </div>
+          <div nx="list-item" action tone="warn">
+            <span>⚠️</span>
+            <div>
+              <div nx="list-item-title">2 Pending Alerts</div>
+              <div nx="list-item-desc">Requires attention</div>
+            </div>
+            <div nx="list-item-meta"><span nx="badge" tone="warn">2</span></div>
+          </div>
+          <div nx="list-item" disabled>
+            <span>🔒</span>
+            <div nx="list-item-title">Admin Panel</div>
+          </div>
+        </div>
+
+        <!-- Numbered -->
+        <div nx="label" style="margin-bottom:8px;font-size:13px">Numbered List</div>
+        <div nx="list-group" numbered>
+          <div nx="list-item">Install Noxen via CDN or NPM</div>
+          <div nx="list-item">Add <code>data-nx-theme="void"</code> to html</div>
+          <div nx="list-item">Use <code>nx=""</code> attributes</div>
+          <div nx="list-item">Ship faster than ever</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text & inline utilities -->
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--nx-color-border)">
+      <div nx="label" style="margin-bottom:12px;font-size:13px">Inline Text Elements & Utilities</div>
+      <div nx="row" gap="md" style="flex-wrap:wrap;align-items:center">
+        <span nx="mark">Highlighted text</span>
+        <span nx="kbd">⌘K</span>
+        <span nx="kbd">Ctrl+S</span>
+        <span nx="code">nx="btn"</span>
+        <span nx-text="accent">Accent color</span>
+        <span nx-text="muted">Muted text</span>
+        <span nx-text="ok">Success text</span>
+        <span nx-text="err">Error text</span>
+        <span nx-text="bold">Bold text</span>
+        <span nx-text="upper">uppercase text</span>
+        <span nx-text="mono">monospace text</span>
+      </div>
+
+      <div style="margin-top:16px">
+        <div nx="label" style="margin-bottom:8px;font-size:13px">Definition List</div>
+        <div nx="dl">
+          <div nx="dt">Framework</div><div nx="dd">Noxen CSS v2.1.0</div>
+          <div nx="dt">License</div><div nx="dd">MIT — free forever</div>
+          <div nx="dt">Bundle size</div><div nx="dd">103KB CSS · 58KB JS (minified)</div>
+          <div nx="dt">Themes</div><div nx="dd">7 built-in + unlimited custom</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- FEEDBACK & OVERLAYS -->
+  <div class="sh"><span class="tag">Feedback & Overlays</span><h2>Spinner · Popover · (Bootstrap fully matched)</h2></div>
+
+  <div class="demo">
+    <div nx="grid" cols="2" gap="lg">
+
+      <div>
+        <div nx="label" style="margin-bottom:12px;font-size:13px">Spinners — 3 styles, 5 sizes</div>
+        <div nx="row" gap="md" style="align-items:center;flex-wrap:wrap">
+          <div nx="spinner" size="xs"></div>
+          <div nx="spinner" size="sm"></div>
+          <div nx="spinner"></div>
+          <div nx="spinner" size="lg"></div>
+          <div nx="spinner" size="xl"></div>
+        </div>
+        <div nx="row" gap="md" style="align-items:center;flex-wrap:wrap;margin-top:14px">
+          <div nx="spinner" tone="ok"></div>
+          <div nx="spinner" tone="err"></div>
+          <div nx="spinner" tone="warn"></div>
+          <div nx="spinner" variant="grow"></div>
+          <div nx="spinner" variant="dots"><span></span></div>
+        </div>
+        <div style="margin-top:14px">
+          <button nx="btn" id="loading-btn" onclick="simulateLoad(this)">Click to load</button>
+        </div>
+      </div>
+
+      <div>
+        <div nx="label" style="margin-bottom:12px;font-size:13px">Popover — 4 sides</div>
+        <div nx="row" gap="md" style="flex-wrap:wrap">
+
+          <div nx="popover-wrap">
+            <button nx="btn">Top Popover</button>
+            <div nx="popover">
+              <div nx="popover-header">Information</div>
+              <div nx="popover-body">This is a popover with a title and body text. Click anywhere else to dismiss.</div>
+            </div>
+          </div>
+
+          <div nx="popover-wrap">
+            <button nx="btn" variant="outline">Right</button>
+            <div nx="popover" side="right">
+              <div nx="popover-header">Quick tip</div>
+              <div nx="popover-body">Appears to the right of the trigger element.</div>
+            </div>
+          </div>
+
+          <div nx="popover-wrap">
+            <button nx="btn" variant="ghost">Bottom</button>
+            <div nx="popover" side="bottom">
+              <div nx="popover-header">Note</div>
+              <div nx="popover-body">Appears below the element. Auto-closes on outside click.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- UTILITY LAYER -->
+  <div class="sh"><span class="tag">Utility Layer</span><h2>Display · Flex · Spacing · Text · BG · Border · Shadow · and more</h2><p>Bootstrap-style utilities — Noxen's syntax. Attribute-based, not class-based.</p></div>
+
+  <div class="demo">
+    <div nx="stack" gap="lg">
+
+      <div>
+        <div nx="label" style="margin-bottom:10px;font-size:13px">Display & Visibility</div>
+        <div nx="row" gap="sm" style="flex-wrap:wrap">
+          <code style="font-size:12px;color:var(--nx-color-accent)">nx-d="flex|block|grid|none|inline-flex"</code>
+          <code style="font-size:12px;color:var(--nx-color-accent)">nx-hide="xs|sm|md|lg"</code>
+          <code style="font-size:12px;color:var(--nx-color-accent)">nx-show="xs|sm|md|lg"</code>
+          <code style="font-size:12px;color:var(--nx-color-accent)">nx-visible="visible|invisible"</code>
+        </div>
+      </div>
+
+      <div>
+        <div nx="label" style="margin-bottom:10px;font-size:13px">Flex Utilities (live demo)</div>
+        <div nx-flex="between" style="background:var(--nx-color-surface-3);border-radius:var(--nx-radius-md);padding:12px;border:1px solid var(--nx-color-border)">
+          <span nx="badge">nx-flex="between"</span>
+          <span nx="badge" tone="ok">items spaced</span>
+          <span nx="badge" tone="info">apart</span>
+        </div>
+        <div nx-flex="center" style="background:var(--nx-color-surface-3);border-radius:var(--nx-radius-md);padding:16px;border:1px solid var(--nx-color-border);margin-top:8px;gap:10px">
+          <span nx="badge">nx-flex="center"</span>
+          <span nx="badge" tone="ok">all centered</span>
+        </div>
+      </div>
+
+      <div>
+        <div nx="label" style="margin-bottom:10px;font-size:13px">Spacing · Text · Background · Border · Shadow</div>
+        <div nx="grid" cols="2" gap="sm">
+          <div nx-bg="accent-lo" nx-border="accent" nx-radius="lg" nx-p="md">
+            <code style="font-size:12px">nx-bg="accent-lo" nx-border="accent" nx-radius="lg" nx-p="md"</code>
+          </div>
+          <div nx-bg="surface-3" nx-shadow="glow" nx-radius="xl" nx-p="md">
+            <code style="font-size:12px">nx-bg="surface-3" nx-shadow="glow" nx-radius="xl"</code>
+          </div>
+          <div nx-bg="ok" nx-radius="md" nx-p="sm">
+            <span nx-text="ok" nx-text="bold">nx-bg="ok" with nx-text="ok"</span>
+          </div>
+          <div nx-bg="err" nx-radius="md" nx-p="sm">
+            <span nx-text="err">nx-bg="err" with nx-text="err"</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div nx="label" style="margin-bottom:10px;font-size:13px">Full Utility Reference</div>
+        <div nx="grid" cols="3" gap="sm" style="font-family:var(--nx-font-mono);font-size:11px">
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Display</strong><br>nx-d="block|flex|grid|none|inline|inline-flex|inline-block"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Flex</strong><br>nx-flex="row|col|wrap|center|between|end|1|auto|none"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Align</strong><br>nx-align="start|center|end|stretch"<br>nx-justify="start|center|end|between|around"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Spacing</strong><br>nx-p/px/py/m/mx/mb/mt="0|xs|sm|md|lg|xl|auto"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Text</strong><br>nx-text="left|center|right|xs→2xl|accent|muted|ok|err|warn|bold|mono|upper|truncate"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Background</strong><br>nx-bg="surface|surface-2|surface-3|accent|accent-lo|ok|err|warn|transparent"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Border</strong><br>nx-border="none|0|1|accent|ok|err"<br>nx-radius="none|sm|md|lg|xl|full"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Shadow</strong><br>nx-shadow="none|sm|md|lg|xl|glow"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Width/Height</strong><br>nx-w="full|half|third|auto|screen"<br>nx-h="full|auto|screen"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Overflow</strong><br>nx-overflow="hidden|auto|scroll|x|y"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Position</strong><br>nx-pos="relative|absolute|fixed|sticky"</div>
+          <div nx-bg="surface-3" nx-p="sm" nx-radius="md"><strong nx-text="accent">Misc</strong><br>nx-gap="0|xs|sm|md|lg"<br>nx-opacity="0|25|50|75|100"<br>nx-cursor="pointer|default|grab"<br>nx-visible="visible|invisible"<br>nx-transition="none|all|fast|slow"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- FINAL COMPARISON -->
+  <div style="margin-top:64px;padding:40px;background:linear-gradient(135deg,var(--nx-color-surface-2),var(--nx-color-surface));border:1px solid var(--nx-color-border-2);border-radius:var(--nx-radius-xl)">
+    <div style="text-align:center;margin-bottom:32px">
+      <div class="tag">Final Score</div>
+      <h2 style="margin:8px 0">Noxen vs Bootstrap — Complete</h2>
+      <p style="color:var(--nx-color-text-2);margin:0">Every Bootstrap feature matched. Then 13 features Bootstrap will never have.</p>
+    </div>
+    <div nx="grid" cols="2" gap="lg">
+      <div nx="card" no-hover>
+        <div nx="card-header">
+          <span style="font-size:1rem">Bootstrap 5</span>
+          <span nx="badge" tone="warn">Matched ✓</span>
+        </div>
+        <div nx="list-group" flush>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Form validation & states</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Input groups (prefix/suffix)</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Checkbox & radio styled</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Range slider</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Breadcrumb (3 separator styles)</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Pagination (3 sizes + pill)</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Nav pills</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Hamburger navbar toggle</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Scrollspy</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Blockquote (+ tone variants)</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; List group (numbered, flush)</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Display headings (1–6)</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Spinner (border, grow, dots)</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Popover (4 sides)</div>
+          <div nx="list-item"><span nx-text="ok">✓</span>&nbsp; Full utility layer</div>
+        </div>
+      </div>
+      <div nx="card" no-hover style="border-color:var(--nx-color-accent)">
+        <div nx="card-header">
+          <span style="font-size:1rem">Noxen Only 🚀</span>
+          <span nx="badge" tone="ok">13 Exclusives</span>
+        </div>
+        <div nx="list-group" flush>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; 7 built-in themes (1ms switch)</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Antigravity Engine (CSS physics)</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; AI Palette (full design from 1 hex)</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Command Palette (Cmd+K)</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Kanban board (drag & drop)</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Data Grid (sort, search, paginate)</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Color Picker component</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Date Picker (fully custom)</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Timeline component</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Auto-ARIA (WCAG 2.1 AA)</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Living Token Engine</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Container Queries built-in</div>
+          <div nx="list-item"><span nx-text="accent">★</span>&nbsp; Fluid clamp() typography</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:28px" nx="row" style="justify-content:center;gap:16px">
+      <a href="https://github.com/noxen-css/noxen" nx="btn" size="lg">🚀 Push v2.1.0 to GitHub</a>
+      <button nx="btn" variant="outline" size="lg" onclick="if(typeof Noxen!=='undefined')Noxen.toast.success('npm version minor && npm publish',{title:'Publish to NPM'})">Publish to NPM</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="dist/noxen.min.js"></script>
+<script>
+function setT(name) {
+  document.documentElement.setAttribute('data-nx-theme', name);
+  if (typeof Noxen !== 'undefined') Noxen.theme.set(name);
+}
+
+function validateForm() {
+  if (typeof Noxen !== 'undefined') {
+    const el = document.getElementById('demo-form');
+    const valid = Noxen.form.validate(el);
+    Noxen.toast[valid ? 'success' : 'error'](
+      valid ? 'Form is valid! Ready to submit.' : 'Please fix the errors above.',
+      { title: valid ? 'Valid ✓' : 'Validation failed' }
+    );
+  }
+}
+
+function simulateLoad(btn) {
+  const orig = btn.textContent;
+  btn.innerHTML = '<div nx="spinner" size="xs" style="display:inline-block;width:14px;height:14px;border-width:2px;border-top-color:#000;vertical-align:middle;margin-right:6px"></div> Loading...';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = orig;
+    btn.disabled = false;
+    if (typeof Noxen !== 'undefined') Noxen.toast.success('Loaded!');
+  }, 2000);
+}
+</script>
+</body>
+</html>
