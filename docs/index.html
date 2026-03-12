@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Noxen CSS v2.1.2 — The Intent-Based Framework</title>
+  <title>Noxen CSS v2.1.3 — The Intent-Based Framework</title>
   <meta name="description"
     content="Noxen is the world's first intent-based CSS framework. 7 themes, Antigravity Engine, Auto-ARIA, AI Palette, 25+ components, 64KB total.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2.1.3/dist/noxen.min.css">
   <style>
     /* Docs-specific styles */
     .nx-sidebar {
@@ -258,13 +258,33 @@
       background: var(--nx-color-accent-lo);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .nx-sidebar {
         display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        z-index: 1000;
+        box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+      }
+      .nx-sidebar.open {
+        display: block;
+      }
+      .mob-menu-toggle {
+        display: block !important;
+      }
+      .desktop-only {
+        display: none !important;
       }
 
       .nx-main {
         margin-left: 0;
+      }
+
+      .nx-topbar {
+        padding: 0 16px;
       }
 
       .nx-content {
@@ -276,13 +296,14 @@
 
 <body>
 
+  <div id="sidebar-overlay" onclick="toggleSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:900"></div>
   <a class="nx-skip-link" href="#main-content">Skip to main content</a>
 
   <!-- SIDEBAR -->
   <nav class="nx-sidebar" role="navigation" aria-label="Documentation navigation">
     <div class="nx-sidebar-logo">
       <span>NOXEN</span>
-      <small>CSS FRAMEWORK v2.1.2</small>
+      <small>CSS FRAMEWORK v2.1.3</small>
     </div>
 
     <div class="nx-nav-section">Getting Started</div>
@@ -300,7 +321,11 @@
     <a class="nx-nav-link" onclick="showPage('buttons')">🔲 Buttons</a>
     <a class="nx-nav-link" onclick="showPage('forms')">📝 Forms</a>
     <a class="nx-nav-link" onclick="showPage('feedback')">💬 Feedback</a>
+    <a class="nx-nav-link" onclick="showPage('modal')">🪟 Modal</a>
     <a class="nx-nav-link" onclick="showPage('data')">📊 Data Display</a>
+    <a class="nx-nav-link" onclick="showPage('typography')">🖋 Typography</a>
+    <a class="nx-nav-link" onclick="showPage('accordion')">↕ Accordion</a>
+    <a class="nx-nav-link" onclick="showPage('sidebar')">📦 Sidebar & Drawer</a>
     <a class="nx-nav-link" onclick="showPage('navigation')">🔀 Navigation</a>
 
     <div class="nx-nav-section">Advanced</div>
@@ -319,9 +344,10 @@
   <!-- MAIN -->
   <div class="nx-main" id="main-content">
     <div class="nx-topbar">
-      <div style="display:flex;align-items:center;gap:12px">
-        <span style="font-family:var(--nx-font-mono);font-size:12px;color:var(--nx-color-text-3)">Theme:</span>
-        <div id="theme-switcher" style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="mob-menu-toggle" onclick="toggleSidebar()" style="display:none;background:none;border:none;color:var(--nx-color-text);font-size:24px;cursor:pointer;padding:0;margin-right:12px">☰</button>
+      <div style="display:flex;align-items:center;gap:12px;flex:1">
+        <input type="text" placeholder="⌘K Search docs..." style="max-width:200px;height:32px;background:var(--nx-color-surface-2);border:1px solid var(--nx-color-border);border-radius:var(--nx-radius-sm);padding:0 12px;font-size:13px;color:var(--nx-color-text);outline:none" onfocus="this.style.borderColor='var(--nx-color-accent)'" onblur="this.style.borderColor='var(--nx-color-border)'">
+        <div id="theme-switcher" class="desktop-only" style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="theme-btn active" onclick="switchTheme('void',this)">void</button>
           <button class="theme-btn" onclick="switchTheme('neon',this)">neon</button>
           <button class="theme-btn" onclick="switchTheme('carbon',this)">carbon</button>
@@ -1119,8 +1145,46 @@
             </div>
             <input nx="input" tone="err" placeholder="Error state">
             <input nx="input" tone="ok" placeholder="Success state">
+            
+            <div nx="row" gap="md" style="margin-top:16px">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="checkbox" nx="checkbox" checked> <span style="font-size:14px">Allow notifications</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="radio" name="r1" nx="radio" checked> <span style="font-size:14px">Option A</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="radio" name="r1" nx="radio"> <span style="font-size:14px">Option B</span>
+              </label>
+            </div>
           </div>
         </div>
+
+        <h2>Example: Login Card</h2>
+        <div class="demo-box">
+          <div nx="card" variant="raised" style="max-width:400px;margin:0 auto">
+            <h3 style="margin-top:0">Welcome Back</h3>
+            <p style="color:var(--nx-color-text-3);font-size:14px">Enter your credentials to access your account.</p>
+            <div nx="stack" gap="md" style="margin-top:24px">
+              <div>
+                <div nx="label" style="margin-bottom:8px">Email Address</div>
+                <input nx="input" type="email" placeholder="name@company.com">
+              </div>
+              <div>
+                <div nx="row" justify="between" style="margin-bottom:8px">
+                  <div nx="label">Password</div>
+                  <a href="#" style="font-size:12px;color:var(--nx-color-accent)">Forgot?</a>
+                </div>
+                <input nx="input" type="password" placeholder="••••••••">
+              </div>
+              <button nx="btn" full style="margin-top:8px">Sign In</button>
+              <div style="text-align:center;font-size:13px;margin-top:12px">
+                Don't have an account? <a href="#" style="color:var(--nx-color-accent)">Sign up</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
 
       <!-- ═══════ FEEDBACK ═══════ -->
@@ -1137,7 +1201,23 @@
             <div nx="alert" tone="err">✕ Error — something went wrong. Please try again.</div>
             <div nx="alert" tone="info">ℹ New version available. Update now.</div>
           </div>
+          
           <div nx="row" gap="sm" style="flex-wrap:wrap;margin-top:20px">
+            <div nx="label" style="width:100%;margin-bottom:8px">Badges (4 sizes)</div>
+            <span nx="badge" size="sm">Small</span>
+            <span nx="badge">Default</span>
+            <span nx="badge" size="lg">Large</span>
+            <span nx="badge" size="xl">XLarge</span>
+          </div>
+
+          <div nx="row" gap="sm" style="flex-wrap:wrap;margin-top:20px">
+            <div nx="label" style="width:100%;margin-bottom:8px">Chips (closable)</div>
+            <div nx="chip">Design <span nx="chip-close">✕</span></div>
+            <div nx="chip" tone="ok">Development <span nx="chip-close">✕</span></div>
+            <div nx="chip" tone="accent">Marketing <span nx="chip-close">✕</span></div>
+          </div>
+
+          <div style="margin-top:20px">
             <span nx="badge">Default</span>
             <span nx="badge" tone="ok">Active</span>
             <span nx="badge" tone="warn">Pending</span>
@@ -1455,10 +1535,119 @@
         </div>
       </div>
 
+      <!-- ═══════ TYPOGRAPHY ═══════ -->
+      <div class="nx-page" id="page-typography">
+        <div class="section-hero">
+          <h1>Typography</h1>
+          <p class="tag-line">Fluid scales, semantic headings, and clean text defaults.</p>
+        </div>
+        <div class="demo-box">
+          <h1 style="margin-top:0">H1 Heading — Fluid Scale</h1>
+          <h2>H2 Heading</h2>
+          <h3>H3 Heading</h3>
+          <h4>H4 Heading</h4>
+          <h5>H5 Heading</h5>
+          <h6>H6 Heading</h6>
+          <p nx="lead" style="margin-top:24px">This is a lead paragraph. It stands out with a larger font size and lighter weight.</p>
+          <p>This is a standard paragraph. It uses the body font scale and optimal line height for readability.</p>
+          <blockquote class="blockquote-demo" style="border-left:3px solid var(--nx-color-accent);padding:16px 20px;background:var(--nx-color-surface-2);margin-top:24px">
+            "Noxen is not just a CSS framework; it's a new way of thinking about design intent and technical accessibility."
+            <cite style="display:block;margin-top:8px;font-size:14px;color:var(--nx-color-accent);font-style:normal">— Noxen Team</cite>
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- ═══════ ACCORDION ═══════ -->
+      <div class="nx-page" id="page-accordion">
+        <div class="section-hero">
+          <h1>Accordion</h1>
+          <p class="tag-line">nx="accordion" — Accessible, animated, and keyboard-friendly.</p>
+        </div>
+        <div class="demo-box">
+          <div nx="accordion">
+            <div nx="accordion-item">
+              <button nx="accordion-trigger">What makes it accessible?</button>
+              <div nx="accordion-content">
+                <p style="padding:16px 0">Noxen automatically injects ARIA roles, states (aria-expanded), and keyboard support so your accordions work for everyone out of the box.</p>
+              </div>
+            </div>
+            <div nx="accordion-item">
+              <button nx="accordion-trigger">How do I use it?</button>
+              <div nx="accordion-content">
+                <p style="padding:16px 0">Just use the <code>nx="accordion"</code>, <code>nx="accordion-item"</code>, and <code>nx="accordion-trigger"</code> attributes. No JS classes needed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════ SIDEBAR ═══════ -->
+      <div class="nx-page" id="page-sidebar">
+        <div class="section-hero">
+          <h1>Sidebar & Drawer</h1>
+          <p class="tag-line">nx="sidebar" — Desktop collapse, mobile drawer, and dashboard layouts.</p>
+        </div>
+        <div class="demo-box" style="padding:0;overflow:hidden;border-radius:12px;height:400px;display:flex">
+          <div nx="sidebar" id="doc-demo-sidebar" style="min-height:auto;width:240px;position:relative;border-radius:0">
+            <div nx="sidebar-header">
+              <div nx="sidebar-logo">N</div>
+              <span nx="sidebar-logo-text">Noxen</span>
+              <button nx="sidebar-toggle" title="Toggle">&#8676;</button>
+            </div>
+            <div nx="sidebar-body">
+              <div nx="sidebar-section">
+                <div nx="sidebar-section-title">Overview</div>
+                <a nx="sidebar-link" active><span nx="sidebar-icon">🏠</span><span nx="sidebar-link-text">Home</span></a>
+                <a nx="sidebar-link"><span nx="sidebar-icon">📈</span><span nx="sidebar-link-text">Analytics</span></a>
+                <a nx="sidebar-link" has-sub><span nx="sidebar-icon">⚙️</span><span nx="sidebar-link-text">Settings</span><span class="sb-chevron"></span></a>
+                <div nx="sidebar-sub">
+                  <a nx="sidebar-sub-link">Profile</a>
+                  <a nx="sidebar-sub-link">Billing</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1;background:var(--nx-color-bg);padding:32px;overflow:auto">
+            <h4 style="margin-top:0">Dashboard View</h4>
+            <p>This is a live preview of the Noxen Sidebar system. It supports:</p>
+            <ul style="font-size:14px;line-height:1.8">
+              <li>Collapsible desktop mode with icons</li>
+              <li>Mobile drawer mode (automatic)</li>
+              <li>Sub-menus with chevrons</li>
+              <li>Active state indicators</li>
+              <li>Badges and counters</li>
+            </ul>
+            <div nx="alert" tone="info" size="sm" style="margin-top:24px">Press the ☰ icon in the sidebar header to toggle collapse mode.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════ MODAL ═══════ -->
+      <div class="nx-page" id="page-modal">
+        <div class="section-hero">
+          <h1>Modal</h1>
+          <p class="tag-line">Backdrop blur, focus trapping, and keyboard dismiss built-in.</p>
+        </div>
+        <div class="demo-box" style="text-align:center">
+          <button nx="btn" size="lg" data-nx-modal="docs-demo-modal">Launch Demo Modal</button>
+        </div>
+
+        <div nx="modal-backdrop" data-modal-id="docs-demo-modal">
+          <div nx="modal">
+            <h3 style="margin-top:0">System Update</h3>
+            <p>A new version of Noxen (v2.1.3) is available. Would you like to update your project tokens automatically?</p>
+            <div nx="row" justify="end" gap="sm" style="margin-top:24px">
+              <button nx="btn" variant="ghost" data-nx-modal-close>Later</button>
+              <button nx="btn" onclick="nxToast('success','Updating tokens...')">Update Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div><!-- end .nx-content -->
   </div><!-- end .nx-main -->
 
-  <script src="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/noxen-css@2.1.3/dist/noxen.min.js"></script>
   <script>
 
     // ════════════════════════════════════════════════
@@ -1499,7 +1688,41 @@
     }
 
     // ════════════════════════════════════════════════
-    // PAGE NAVIGATION
+    // SIDEBAR TOGGLE
+    // ════════════════════════════════════════════════
+    function toggleSidebar() {
+      var sb = document.querySelector('.nx-sidebar');
+      var ov = document.getElementById('sidebar-overlay');
+      if (!sb || !ov) return;
+      var isOpen = sb.classList.contains('open');
+      if (isOpen) {
+        sb.classList.remove('open');
+        ov.style.display = 'none';
+      } else {
+        sb.classList.add('open');
+        ov.style.display = 'block';
+      }
+    }
+
+    // ════════════════════════════════════════════════
+    // KEYBOARD SHORTCUTS
+    // ════════════════════════════════════════════════
+    document.addEventListener('keydown', function (e) {
+      // Cmd+K or Ctrl+K for Search
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        var search = document.querySelector('.nx-topbar input');
+        if (search) search.focus();
+      }
+      // ESC to close sidebar
+      if (e.key === 'Escape') {
+        var sb = document.querySelector('.nx-sidebar');
+        if (sb && sb.classList.contains('open')) toggleSidebar();
+      }
+    });
+
+    // ════════════════════════════════════════════════
+    // PAGE NAVIGATION (Modified to close mobile sidebar)
     // ════════════════════════════════════════════════
     function showPage(id) {
       document.querySelectorAll('.nx-page').forEach(function (p) {
@@ -1514,6 +1737,13 @@
         var oc = l.getAttribute('onclick') || '';
         if (oc.indexOf("'" + id + "'") !== -1) l.classList.add('active');
       });
+
+      // Close mobile sidebar if open
+      var sb = document.querySelector('.nx-sidebar');
+      if (sb && sb.classList.contains('open') && window.innerWidth <= 900) {
+        toggleSidebar();
+      }
+
       try { window.scrollTo(0, 0); } catch (e) { }
       try { document.querySelector('.nx-main').scrollTo(0, 0); } catch (e) { }
     }
