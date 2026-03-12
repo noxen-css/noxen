@@ -43,7 +43,7 @@ function minifyJs(js) {
         .trim();
 }
 
-console.log('\n🔧 Building Noxen CSS v2.1.2 (Node.js)...\n');
+console.log('\n🔧 Building Noxen CSS v2.1.3 (Node.js)...\n');
 
 // ── CSS ──
 const parts = CSS_LAYERS.map(layer => {
@@ -53,7 +53,7 @@ const parts = CSS_LAYERS.map(layer => {
 
 const fullCss = parts.join('\n');
 const miniCss = minifyCss(fullCss);
-const cssBanner = "/* Noxen CSS v2.1.2 | MIT License | https://noxen.dev | npm i noxen-css */\n";
+const cssBanner = "/* Noxen CSS v2.1.3 | MIT License | https://noxen.dev | npm i noxen-css */\n";
 
 write('dist/noxen.css', fullCss);
 write('dist/noxen.min.css', cssBanner + miniCss);
@@ -61,7 +61,7 @@ write('dist/noxen.min.css', cssBanner + miniCss);
 // ── JS ──
 const fullJs = read('src/intelligence/noxen.js');
 const miniJs = minifyJs(fullJs);
-const jsBanner = "/* Noxen JS v2.1.2 | MIT License | https://noxen.dev */\n";
+const jsBanner = "/* Noxen JS v2.1.3 | MIT License | https://noxen.dev */\n";
 
 write('dist/noxen.js', fullJs);
 write('dist/noxen.min.js', jsBanner + miniJs);
@@ -74,7 +74,7 @@ const minJsSize = Buffer.byteLength(fs.readFileSync(path.join(ROOT, 'dist/noxen.
 
 const manifest = {
     "name": "noxen-css",
-    "version": "2.1.2",
+    "version": "2.1.3",
     "built": new Date().toISOString(),
     "files": {
         "noxen.css": `${(cssSize / 1024).toFixed(1)}KB`,

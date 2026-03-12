@@ -221,7 +221,8 @@
     /** Inject ARIA roles and keyboard handlers for all nx components */
     init() {
       // Buttons
-      document.querySelectorAll('[nx="btn"]:not([role])').forEach(el => {
+      document.querySelectorAll('[nx="btn"]:not([role]):not([data-nx-a11y])').forEach(el => {
+        el.setAttribute('data-nx-a11y', '');
         if (el.tagName !== 'BUTTON' && el.tagName !== 'A') {
           el.setAttribute('role', 'button');
           if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
@@ -232,35 +233,33 @@
       });
 
       // Toggles
-      document.querySelectorAll('[nx="toggle"]').forEach(el => {
+      document.querySelectorAll('[nx="toggle"]:not([data-nx-a11y])').forEach(el => {
+        el.setAttribute('data-nx-a11y', '');
         el.setAttribute('role', 'switch');
         el.setAttribute('aria-checked', el.classList.contains('on') || el.hasAttribute('on') ? 'true' : 'false');
         if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
-        el.addEventListener('click', () => {
-          const checked = el.getAttribute('aria-checked') === 'true';
-          el.setAttribute('aria-checked', (!checked).toString());
-          el.classList.toggle('on', !checked);
-        });
         el.addEventListener('keydown', e => {
           if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); el.click(); }
         });
       });
 
       // Accordion triggers
-      document.querySelectorAll('[nx="accordion-trigger"]').forEach(el => {
+      document.querySelectorAll('[nx="accordion-trigger"]:not([data-nx-a11y])').forEach(el => {
+        el.setAttribute('data-nx-a11y', '');
         el.setAttribute('role', 'button');
         if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
         const content = el.nextElementSibling;
         if (content) {
-          const id = 'nx-acc-' + Math.random().toString(36).slice(2, 8);
-          content.setAttribute('id', id);
-          el.setAttribute('aria-controls', id);
-          el.setAttribute('aria-expanded', el.classList.contains('open') ? 'true' : 'false');
+          const id = el.getAttribute('id') || 'nx-acc-' + Math.random().toString(36).slice(2, 8);
+          if (!el.getAttribute('id')) content.setAttribute('id', id);
+          el.setAttribute('aria-controls', content.getAttribute('id'));
+          el.setAttribute('aria-expanded', (el.classList.contains('open') || el.hasAttribute('open')).toString());
         }
       });
 
       // Alerts — add role
-      document.querySelectorAll('[nx="alert"]').forEach(el => {
+      document.querySelectorAll('[nx="alert"]:not([data-nx-a11y])').forEach(el => {
+        el.setAttribute('data-nx-a11y', '');
         if (!el.getAttribute('role')) {
           const tone = el.getAttribute('tone');
           el.setAttribute('role', tone === 'err' ? 'alert' : 'status');
@@ -360,14 +359,23 @@
   // ═══════════════════════════════════════════════════════
   function initComponents() {
     // ── Accordion ──
-    document.querySelectorAll('[nx="accordion-trigger"]').forEach(trigger => {
+    document.querySelectorAll('[nx="accordion-trigger"]:not([data-nx-init])').forEach(trigger => {
+      trigger.setAttribute('data-nx-init', '');
       trigger.addEventListener('click', () => {
-        const isOpen = trigger.classList.contains('open');
+        const isOpen = trigger.classList.contains('open') || trigger.hasAttribute('open');
         const content = trigger.nextElementSibling;
-        trigger.classList.toggle('open', !isOpen);
-        if (content && content.hasAttribute('nx')) {/* skip */ }
-        else if (content) content.classList.toggle('open', !isOpen);
-        trigger.setAttribute('open', !isOpen ? '' : null);
+        
+        // Handle class and attribute consistently
+        if (isOpen) {
+          trigger.classList.remove('open');
+          trigger.removeAttribute('open');
+          if (content) content.classList.remove('open');
+        } else {
+          trigger.classList.add('open');
+          trigger.setAttribute('open', '');
+          if (content) content.classList.add('open');
+        }
+        
         trigger.setAttribute('aria-expanded', (!isOpen).toString());
       });
     });
@@ -375,17 +383,18 @@
     // ── Toggle ──
     document.querySelectorAll('[nx="toggle"]:not([data-nx-init])').forEach(toggle => {
       toggle.setAttribute('data-nx-init', '');
-      toggle.setAttribute('role', 'switch');
-      toggle.setAttribute('tabindex', toggle.getAttribute('tabindex') || '0');
+      if (!toggle.hasAttribute('role')) toggle.setAttribute('role', 'switch');
+      if (!toggle.hasAttribute('tabindex')) toggle.setAttribute('tabindex', '0');
       toggle.addEventListener('click', () => {
-        toggle.classList.toggle('on');
-        toggle.setAttribute('aria-checked', toggle.classList.contains('on').toString());
-        toggle.dispatchEvent(new CustomEvent('nx:toggle', { detail: { on: toggle.classList.contains('on') } }));
+        const isOn = toggle.classList.toggle('on');
+        toggle.setAttribute('aria-checked', isOn.toString());
+        toggle.dispatchEvent(new CustomEvent('nx:toggle', { detail: { on: isOn }, bubbles: true }));
       });
     });
 
     // ── Tabs ──
-    document.querySelectorAll('[nx="tabs"]').forEach(tabList => {
+    document.querySelectorAll('[nx="tabs"]:not([data-nx-init])').forEach(tabList => {
+      tabList.setAttribute('data-nx-init', '');
       tabList.querySelectorAll('[nx="tab"]').forEach(tab => {
         tab.addEventListener('click', () => {
           tabList.querySelectorAll('[nx="tab"]').forEach(t => {
@@ -399,8 +408,9 @@
           // Show/hide panels
           const target = tab.getAttribute('data-target');
           if (target) {
-            document.querySelectorAll('[data-tab-panel]').forEach(p => p.hidden = true);
-            const panel = document.querySelector(`[data-tab-panel="${target}"]`);
+            const panels = tabList.parentElement.querySelectorAll('[data-tab-panel]');
+            panels.forEach(p => p.hidden = true);
+            const panel = Array.from(panels).find(p => p.getAttribute('data-tab-panel') === target);
             if (panel) panel.hidden = false;
           }
           tab.dispatchEvent(new CustomEvent('nx:tab-change', { detail: { tab: tab.dataset.target }, bubbles: true }));
@@ -409,7 +419,8 @@
     });
 
     // ── Dropdown ──
-    document.querySelectorAll('[nx="dropdown"]').forEach(dropdown => {
+    document.querySelectorAll('[nx="dropdown"]:not([data-nx-init])').forEach(dropdown => {
+      dropdown.setAttribute('data-nx-init', '');
       const menu = dropdown.querySelector('[nx="dropdown-menu"]');
       const trigger = dropdown.querySelector('[data-dropdown-trigger], [nx="btn"]');
       if (!menu) return;
@@ -425,7 +436,8 @@
     });
 
     // ── Dismissible alerts ──
-    document.querySelectorAll('[nx="alert"][dismissible]').forEach(alert => {
+    document.querySelectorAll('[nx="alert"][dismissible]:not([data-nx-init])').forEach(alert => {
+      alert.setAttribute('data-nx-init', '');
       const btn = document.createElement('button');
       btn.setAttribute('aria-label', 'Dismiss');
       btn.style.cssText = 'position:absolute;top:8px;right:12px;background:none;border:none;color:inherit;cursor:pointer;font-size:16px;opacity:0.6;';
@@ -436,7 +448,8 @@
     });
 
     // ── Modal ──
-    document.querySelectorAll('[data-nx-modal]').forEach(trigger => {
+    document.querySelectorAll('[data-nx-modal]:not([data-nx-init])').forEach(trigger => {
+      trigger.setAttribute('data-nx-init', '');
       trigger.addEventListener('click', () => {
         const targetId = trigger.getAttribute('data-nx-modal');
         const backdrop = document.querySelector(`[nx="modal-backdrop"][data-modal-id="${targetId}"]`);
@@ -446,15 +459,17 @@
         }
       });
     });
-    document.querySelectorAll('[nx="modal-backdrop"]').forEach(backdrop => {
+    document.querySelectorAll('[nx="modal-backdrop"]:not([data-nx-init])').forEach(backdrop => {
+        backdrop.setAttribute('data-nx-init', '');
       backdrop.addEventListener('click', e => {
         if (e.target === backdrop) backdrop.removeAttribute('open');
       });
-      backdrop.addEventListener('keydown', e => {
-        if (e.key === 'Escape') backdrop.removeAttribute('open');
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && backdrop.hasAttribute('open')) backdrop.removeAttribute('open');
       });
     });
-    document.querySelectorAll('[data-nx-modal-close]').forEach(btn => {
+    document.querySelectorAll('[data-nx-modal-close]:not([data-nx-init])').forEach(btn => {
+      btn.setAttribute('data-nx-init', '');
       btn.addEventListener('click', () => {
         btn.closest('[nx="modal-backdrop"]')?.removeAttribute('open');
       });
@@ -604,6 +619,148 @@
   };
 
   // ═══════════════════════════════════════════════════════
+  //  SIDEBAR
+  // ═══════════════════════════════════════════════════════
+  const sidebar = {
+    open(id) {
+      const el = typeof id === 'string' ? document.getElementById(id) : id;
+      if (!el) return;
+      el.setAttribute('open', '');
+      const overlay = el.closest('.body')?.querySelector('[nx="sidebar-overlay"]')
+        || el.closest('[nx="dashboard-layout"]')?.querySelector('[nx="sidebar-overlay"]')
+        || document.querySelector('[nx="sidebar-overlay"]');
+      if (overlay) { overlay.setAttribute('open', ''); }
+      document.body.style.overflow = 'hidden';
+      emit('sidebar:open', { id: el.id });
+    },
+    close(id) {
+      const el = typeof id === 'string' ? document.getElementById(id) : id;
+      if (!el) return;
+      el.removeAttribute('open');
+      const overlay = el.closest('.body')?.querySelector('[nx="sidebar-overlay"]')
+        || el.closest('[nx="dashboard-layout"]')?.querySelector('[nx="sidebar-overlay"]')
+        || document.querySelector('[nx="sidebar-overlay"]');
+      if (overlay) overlay.removeAttribute('open');
+      document.body.style.overflow = '';
+      emit('sidebar:close', { id: el.id || 'sidebar' });
+    },
+    toggle(id) {
+      const el = typeof id === 'string' ? document.getElementById(id) : id;
+      if (!el) return;
+      if (el.hasAttribute('open')) this.close(el);
+      else this.open(el);
+    },
+    collapse(id) {
+      const el = typeof id === 'string' ? document.getElementById(id) : id;
+      if (!el) return;
+      el.setAttribute('collapsed', '');
+      emit('sidebar:collapse', { id: el.id });
+    },
+    expand(id) {
+      const el = typeof id === 'string' ? document.getElementById(id) : id;
+      if (!el) return;
+      el.removeAttribute('collapsed');
+      emit('sidebar:expand', { id: el.id });
+    },
+    toggleCollapse(id) {
+      const el = typeof id === 'string' ? document.getElementById(id) : id;
+      if (!el) return;
+      if (el.hasAttribute('collapsed')) this.expand(el);
+      else this.collapse(el);
+    },
+    init(el) {
+      if (el._nxSidebarInit) return;
+      el._nxSidebarInit = true;
+
+      // Sub-menu toggles
+      el.querySelectorAll('[nx="sidebar-link"][has-sub]').forEach(link => {
+        const subId = link.getAttribute('has-sub');
+        const sub = subId
+          ? el.querySelector('#' + subId) || link.nextElementSibling
+          : link.nextElementSibling;
+        if (!sub || sub.getAttribute('nx') !== 'sidebar-sub') return;
+
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const isOpen = link.hasAttribute('open');
+          link.toggleAttribute('open', !isOpen);
+          sub.toggleAttribute('open', !isOpen);
+        });
+
+        // Auto-open sub if it has an active child
+        if (sub.querySelector('[nx="sidebar-sub-link"][active], [nx="sidebar-sub-link"].active')) {
+          link.setAttribute('open', '');
+          sub.setAttribute('open', '');
+        }
+      });
+
+      // Toggle/collapse button (closes on mobile, collapses on desktop)
+      el.querySelectorAll('[nx="sidebar-toggle"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (window.innerWidth <= 768 && el.hasAttribute('open')) {
+            sidebar.close(el);
+          } else {
+            sidebar.toggleCollapse(el);
+          }
+        });
+      });
+
+      // Auto-active link based on current URL path
+      const path = window.location.pathname;
+      el.querySelectorAll('[nx="sidebar-link"][href], [nx="sidebar-sub-link"][href]').forEach(link => {
+        if (link.getAttribute('href') === path) {
+          link.setAttribute('active', '');
+          const sub = link.closest('[nx="sidebar-sub"]');
+          if (sub) {
+            sub.setAttribute('open', '');
+            const parentLink = sub.previousElementSibling;
+            if (parentLink) parentLink.setAttribute('open', '');
+          }
+        }
+      });
+
+      // External open/close triggers
+      document.querySelectorAll(`[data-sidebar-open="${el.id}"]`).forEach(btn => {
+        btn.addEventListener('click', () => sidebar.open(el));
+      });
+      document.querySelectorAll(`[data-sidebar-close="${el.id}"], [data-sidebar-close=""]`).forEach(btn => {
+        btn.addEventListener('click', () => sidebar.close(el));
+      });
+
+      // Close button inside sidebar
+      el.querySelectorAll('[nx="sidebar-close"]').forEach(btn => {
+        btn.addEventListener('click', () => sidebar.close(el));
+      });
+
+      // Overlay click to close
+      const overlay = el.closest('[nx="dashboard-layout"]')?.querySelector('[nx="sidebar-overlay"]')
+        || document.querySelector('[nx="sidebar-overlay"]');
+      if (overlay) {
+        overlay.addEventListener('click', () => sidebar.close(el));
+      }
+
+      // Escape key to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && el.hasAttribute('open')) sidebar.close(el);
+      });
+
+      // Auto-close mobile sidebar on resize to desktop
+      const handleResize = () => {
+        if (window.innerWidth > 768) {
+          el.removeAttribute('open');
+          if (overlay) overlay.removeAttribute('open');
+          document.body.style.overflow = '';
+        }
+      };
+      window.addEventListener('resize', handleResize, { passive: true });
+    },
+  };
+
+  function initSidebars() {
+    document.querySelectorAll('[nx="sidebar"]').forEach(el => sidebar.init(el));
+  }
+
+  // ═══════════════════════════════════════════════════════
   //  INIT
   // ═══════════════════════════════════════════════════════
   function init(config = {}) {
@@ -615,6 +772,7 @@
     // Init all systems
     initScrollReveal();
     initComponents();
+    initSidebars();
     initMasonry();
 
     // Detect system color scheme preference
@@ -623,22 +781,28 @@
       if (!prefersDark) theme.set('paper');
     }
 
-    // Watch for new elements added to DOM
+    // Watch for new elements added to DOM (throttled)
+    let moTimeout;
     const mo = new MutationObserver(() => {
-      a11y.init();
-      initComponents();
+      if (moTimeout) return;
+      moTimeout = setTimeout(() => {
+        a11y.init();
+        initComponents();
+        initSidebars();
+        moTimeout = null;
+      }, 50);
     });
     mo.observe(document.body, { childList: true, subtree: true });
 
-    emit('ready', { version: '2.1.2' });
-    if (config.debug) console.log('[Noxen v2.1.2] Ready ✓');
+    emit('ready', { version: '2.1.3' });
+    if (config.debug) console.log('[Noxen v2.1.3] Ready ✓');
   }
 
   // ═══════════════════════════════════════════════════════
   //  PUBLIC API
   // ═══════════════════════════════════════════════════════
   const Noxen = {
-    version: '2.1.2',
+    version: '2.1.3',
 
     // Core
     init,
@@ -652,6 +816,7 @@
     ag,
     toast,
     print,
+    sidebar,
 
     // Convenience aliases
     on(event, fn) { (state.listeners[event] = state.listeners[event] || []).push(fn); },
