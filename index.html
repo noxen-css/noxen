@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en" data-nx-theme="void">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noxen CSS v2.1.3 — Introduction &amp; Feature Showcase</title>
+  <meta name="description" content="Noxen CSS — A modern, attribute-driven CSS framework with 25+ components, 7 themes, and zero class names needed.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Oxanium:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dist/noxen.css">
+  <style>
+    /* Page-specific overrides */
+    .docs-layout { display: flex; min-height: calc(100vh - 60px); }
+    .docs-sidebar {
+      width: 260px; flex-shrink: 0; position: sticky; top: 60px;
+      height: calc(100vh - 60px); overflow-y: auto; padding: var(--nx-space-5) 0;
+      border-right: 1px solid var(--nx-color-border);
+      background: var(--nx-color-surface); scrollbar-width: thin;
+    }
+    .docs-sidebar::-webkit-scrollbar { width: 3px; }
+    .docs-sidebar::-webkit-scrollbar-thumb { background: var(--nx-color-surface-3); border-radius: 4px; }
+    .docs-main { flex: 1; min-width: 0; padding: var(--nx-space-7) var(--nx-space-8); max-width: 960px; }
+    .docs-section { margin-bottom: var(--nx-space-9); scroll-margin-top: 80px; }
+    .docs-section > h2 { font-size: var(--nx-fluid-2xl); margin-bottom: var(--nx-space-2); color: var(--nx-color-text); }
+    .docs-section > .section-desc { color: var(--nx-color-text-2); margin-bottom: var(--nx-space-6); font-size: var(--nx-text-base); }
+    .demo-box {
+      background: var(--nx-color-surface); border: 1px solid var(--nx-color-border);
+      border-radius: var(--nx-radius-lg) var(--nx-radius-lg) 0 0;
+      padding: var(--nx-space-6); margin-bottom: 0;
+    }
+    .demo-code {
+      border-radius: 0 0 var(--nx-radius-lg) var(--nx-radius-lg);
+      margin-top: 0; border-top: none; margin-bottom: var(--nx-space-6);
+      font-size: var(--nx-text-sm); max-height: 260px; overflow-y: auto;
+    }
+    .demo-code code { font-size: 12px; line-height: 1.7; }
+    .sb-cat {
+      font-family: var(--nx-font-mono); font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: var(--nx-tracking-widest);
+      color: var(--nx-color-text-3); padding: var(--nx-space-4) var(--nx-space-5) var(--nx-space-2);
+    }
+    .sb-link {
+      display: block; padding: 6px var(--nx-space-5); font-size: var(--nx-text-sm);
+      color: var(--nx-color-text-2); text-decoration: none; transition: all 0.15s;
+      border-left: 2px solid transparent;
+    }
+    .sb-link:hover { color: var(--nx-color-accent); background: var(--nx-color-accent-lo); }
+    .sb-link.active { color: var(--nx-color-accent); border-left-color: var(--nx-color-accent); background: var(--nx-color-accent-lo); }
+    .hero-section {
+      text-align: center; padding: var(--nx-space-10) var(--nx-space-6);
+      background: linear-gradient(180deg, var(--nx-color-surface) 0%, var(--nx-color-bg) 100%);
+      border-bottom: 1px solid var(--nx-color-border); position: relative; overflow: hidden;
+    }
+    .hero-section::before {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at 50% 80%, var(--nx-color-accent-lo) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-section h1 { font-size: var(--nx-fluid-hero); font-weight: 900; position: relative; margin-bottom: var(--nx-space-4); }
+    .hero-section h1 span { background: linear-gradient(135deg, var(--nx-color-accent), var(--nx-color-accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-section .lead { font-size: var(--nx-fluid-lg); color: var(--nx-color-text-2); max-width: 640px; margin: 0 auto var(--nx-space-6); position: relative; }
+    .hero-actions { display: flex; gap: var(--nx-space-3); justify-content: center; flex-wrap: wrap; position: relative; }
+    .install-block {
+      background: var(--nx-color-surface-2); border: 1px solid var(--nx-color-border);
+      border-radius: var(--nx-radius-md); padding: var(--nx-space-3) var(--nx-space-5);
+      font-family: var(--nx-font-mono); font-size: var(--nx-text-sm); color: var(--nx-color-accent);
+      display: inline-flex; align-items: center; gap: var(--nx-space-3); margin-top: var(--nx-space-5); position: relative;
+    }
+    .install-block .dollar { color: var(--nx-color-text-3); }
+    .copy-btn {
+      background: none; border: none; color: var(--nx-color-text-3); cursor: pointer;
+      font-size: 14px; padding: 2px; transition: color 0.15s;
+    }
+    .copy-btn:hover { color: var(--nx-color-accent); }
+    .grid-demo-cell {
+      background: var(--nx-color-accent-lo); border: 1px solid var(--nx-color-border-2);
+      border-radius: var(--nx-radius-sm); padding: var(--nx-space-3);
+      text-align: center; font-family: var(--nx-font-mono); font-size: var(--nx-text-xs);
+      color: var(--nx-color-accent);
+    }
+    .color-swatch {
+      width: 100%; height: 48px; border-radius: var(--nx-radius-md);
+      border: 1px solid var(--nx-color-border); margin-bottom: var(--nx-space-2);
+    }
+    .swatch-label { font-family: var(--nx-font-mono); font-size: 10px; color: var(--nx-color-text-3); }
+    .spacer-demo { display: flex; align-items: flex-end; gap: var(--nx-space-3); flex-wrap: wrap; }
+    .spacer-block { background: var(--nx-color-accent-lo); border: 1px dashed var(--nx-color-border-2); border-radius: var(--nx-radius-xs); }
+    .spacer-label { font-family: var(--nx-font-mono); font-size: 9px; color: var(--nx-color-text-3); text-align: center; margin-top: 4px; }
+    .stats-row { display: flex; gap: var(--nx-space-6); flex-wrap: wrap; justify-content: center; margin-top: var(--nx-space-6); position: relative; }
+    .stat-item { text-align: center; }
+    .stat-item .num { font-family: var(--nx-font-display); font-size: var(--nx-text-3xl); font-weight: 800; color: var(--nx-color-accent); }
+    .stat-item .lbl { font-size: var(--nx-text-xs); color: var(--nx-color-text-3); text-transform: uppercase; letter-spacing: var(--nx-tracking-widest); font-family: var(--nx-font-mono); }
+    .docs-footer {
+      border-top: 1px solid var(--nx-color-border); padding: var(--nx-space-7) var(--nx-space-6);
+      text-align: center; color: var(--nx-color-text-3); font-size: var(--nx-text-sm);
+    }
+    .docs-footer a { color: var(--nx-color-accent); }
+    .footer-links { display: flex; gap: var(--nx-space-5); justify-content: center; margin-bottom: var(--nx-space-4); }
+    .blockquote-demo {
+      border-left: 3px solid var(--nx-color-accent); padding: var(--nx-space-4) var(--nx-space-5);
+      background: var(--nx-color-surface-2); border-radius: 0 var(--nx-radius-md) var(--nx-radius-md) 0;
+      font-style: italic; color: var(--nx-color-text-2); margin: var(--nx-space-4) 0;
+    }
+    .blockquote-demo cite { display: block; margin-top: var(--nx-space-2); font-size: var(--nx-text-sm); color: var(--nx-color-accent); font-style: normal; }
+    @media (max-width: 768px) {
+      .docs-main { padding: var(--nx-space-5) var(--nx-space-4); }
+      .hero-section { padding: var(--nx-space-8) var(--nx-space-4); }
+      .hero-section h1 { font-size: var(--nx-text-4xl); }
+      .mob-only { display: block !important; }
+      .desktop-only { display: none !important; }
+    }
+    .mob-only { display: none; }
+    .desktop-only { display: block; }
+    .nav-search {
+      background: var(--nx-color-surface-2); border: 1px solid var(--nx-color-border);
+      border-radius: var(--nx-radius-full); padding: 6px var(--nx-space-4);
+      color: var(--nx-color-text); font-family: var(--nx-font-body);
+      font-size: var(--nx-text-sm); outline: none; width: 220px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .nav-search:focus { border-color: var(--nx-color-accent); box-shadow: 0 0 0 3px var(--nx-color-accent-lo); }
+    .nav-search::placeholder { color: var(--nx-color-text-3); }
+    .theme-btn-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--nx-space-4); }
+    .theme-dot {
+      width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--nx-color-border);
+      cursor: pointer; transition: transform 0.15s, border-color 0.15s;
+    }
+    .theme-dot:hover { transform: scale(1.15); border-color: var(--nx-color-accent); }
+    .theme-dot.active { border-color: var(--nx-color-accent); box-shadow: 0 0 8px var(--nx-color-accent-md); }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════ NAVBAR ═══════════════ -->
+  <nav nx="navbar" sticky glass id="main-nav">
+    <!-- Mobile toggle -->
+    <button nx="btn" variant="ghost" size="sm" class="mob-only" data-sidebar-open="docs-nav" aria-label="Open Menu" style="margin-right:var(--nx-space-3); font-size:20px;">☰</button>
+    <a href="#" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+      <div style="width:32px;height:32px;border-radius:var(--nx-radius-md);background:var(--nx-color-accent);display:flex;align-items:center;justify-content:center;font-family:var(--nx-font-display);font-weight:900;color:#000;font-size:16px;">N</div>
+      <span style="font-family:var(--nx-font-display);font-weight:700;font-size:var(--nx-text-lg);color:var(--nx-color-text);">Noxen</span>
+      <span nx="badge" size="sm">v2.1.3</span>
+    </a>
+    <div style="flex:1;"></div>
+    <input type="text" class="nav-search" placeholder="⌘K  Search docs..." aria-label="Search documentation">
+    <a nx="nav-link" href="#getting-started">Docs</a>
+    <a nx="nav-link" href="#components">Examples</a>
+    <a nx="btn" variant="outline" size="sm" href="https://github.com" target="_blank">★ GitHub</a>
+  </nav>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="hero-section" id="hero">
+    <h1>Build Faster with <span>Noxen CSS</span></h1>
+    <p class="lead">A modern, attribute-driven CSS framework with 25+ components, 7 built-in themes, a smart grid, and an intelligence layer — all with zero class names needed.</p>
+    <div class="hero-actions">
+      <a nx="btn" size="lg" href="#getting-started">Get Started</a>
+      <a nx="btn" variant="outline" size="lg" href="#installation">Installation</a>
+    </div>
+    <div class="install-block">
+      <span class="dollar">$</span> npm install noxen-css
+      <button class="copy-btn" onclick="navigator.clipboard.writeText('npm install noxen-css');this.textContent='✓';setTimeout(()=>this.textContent='⧉',1500)" title="Copy">⧉</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item"><div class="num">25+</div><div class="lbl">Components</div></div>
+      <div class="stat-item"><div class="num">7</div><div class="lbl">Themes</div></div>
+      <div class="stat-item"><div class="num">~55KB</div><div class="lbl">Min CSS</div></div>
+      <div class="stat-item"><div class="num">0</div><div class="lbl">Dependencies</div></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ DOCS LAYOUT ═══════════════ -->
+  <div class="docs-layout">
+
+    <!-- Sidebar -->
+    <div nx="sidebar-overlay"></div>
+    <aside nx="sidebar" class="docs-sidebar" id="docs-nav">
+      <div class="mob-only" style="padding:var(--nx-space-4);border-bottom:1px solid var(--nx-color-border);display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-weight:700;color:var(--nx-color-accent);">Noxen Docs</span>
+        <button nx="btn" variant="ghost" size="sm" data-sidebar-close="docs-nav">×</button>
+      </div>
+      <div class="sb-cat">Getting Started</div>
+      <a class="sb-link active" href="#getting-started">Introduction</a>
+      <a class="sb-link" href="#installation">Installation</a>
+      <a class="sb-link" href="#themes">Themes</a>
+      <div class="sb-cat">Content</div>
+      <a class="sb-link" href="#typography">Typography</a>
+      <a class="sb-link" href="#colors">Colors</a>
+      <div class="sb-cat">Layout</div>
+      <a class="sb-link" href="#grid">Grid System</a>
+      <a class="sb-link" href="#spacing">Spacing</a>
+      <div class="sb-cat">Components</div>
+      <a class="sb-link" href="#buttons">Buttons</a>
+      <a class="sb-link" href="#badges">Badges &amp; Chips</a>
+      <a class="sb-link" href="#alerts">Alerts</a>
+      <a class="sb-link" href="#cards">Cards</a>
+      <a class="sb-link" href="#progress">Progress</a>
+      <a class="sb-link" href="#toggles">Toggles</a>
+      <a class="sb-link" href="#accordion">Accordion</a>
+      <a class="sb-link" href="#table">Tables</a>
+      <a class="sb-link" href="#sidebar-demo">Sidebar</a>
+      <a class="sb-link" href="#navigation">Navigation</a>
+      <a class="sb-link" href="#toasts">Toast Notifications</a>
+      <a class="sb-link" href="#modal">Modal</a>
+      <a class="sb-link" href="#tabs">Tabs</a>
+      <div class="sb-cat">Forms</div>
+      <a class="sb-link" href="#forms">Inputs &amp; Forms</a>
+      <div class="sb-cat">Systems</div>
+      <a class="sb-link" href="#motion">Motion System</a>
+      <a class="sb-link" href="#antigravity">Antigravity Engine</a>
+      <a class="sb-link" href="#palette">AI Palette Engine</a>
+      <div class="sb-cat">Data &amp; Utilities</div>
+      <a class="sb-link" href="#data-display">Data Display</a>
+      <a class="sb-link" href="#layout-utils">Layout Utilities</a>
+      <a class="sb-link" href="#utilities">Hover &amp; Animations</a>
+      <a class="sb-link" href="#tokens-section">Token Engine</a>
+      <a class="sb-link" href="#a11y">Accessibility</a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-main" id="main-content">
+
+      <!-- GETTING STARTED -->
+      <section class="docs-section" id="getting-started">
+        <h2>Introduction</h2>
+        <p class="section-desc">Noxen CSS is an attribute-driven CSS framework. Instead of class names, you use <code>nx=""</code> attributes to style your components. This keeps your HTML clean, scannable, and semantic.</p>
+        <div class="demo-box">
+          <div nx="alert" tone="info">💡 Noxen uses <code>nx="component"</code> attributes instead of class names — making your markup cleaner and more readable.</div>
+        </div>
+        <pre class="demo-code"><code>&lt;!-- Traditional CSS framework --&gt;
+&lt;button class="btn btn-primary btn-lg"&gt;Click&lt;/button&gt;
+
+&lt;!-- Noxen CSS --&gt;
+&lt;button nx="btn" size="lg"&gt;Click&lt;/button&gt;</code></pre>
+      </section>
+
+      <!-- INSTALLATION -->
+      <section class="docs-section" id="installation">
+        <h2>Installation</h2>
+        <p class="section-desc">Get started with Noxen CSS via npm, CDN, or direct download.</p>
+        <h4 style="margin-bottom:var(--nx-space-3);">NPM</h4>
+        <pre class="demo-code" style="border-radius:var(--nx-radius-lg);margin-bottom:var(--nx-space-5);"><code>npm install noxen-css</code></pre>
+        <h4 style="margin-bottom:var(--nx-space-3);">CDN</h4>
+        <pre class="demo-code" style="border-radius:var(--nx-radius-lg);margin-bottom:var(--nx-space-5);"><code>&lt;!-- CSS --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css"&gt;
+
+&lt;!-- JS (optional — for interactive components) --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.js"&gt;&lt;/script&gt;</code></pre>
+        <h4 style="margin-bottom:var(--nx-space-3);">Quick Start Template</h4>
+        <pre class="demo-code" style="border-radius:var(--nx-radius-lg);"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en" data-nx-theme="void"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div nx="container"&gt;
+    &lt;h1&gt;Hello Noxen!&lt;/h1&gt;
+    &lt;button nx="btn"&gt;Get Started&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/noxen-css@2/dist/noxen.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </section>
+
+      <!-- THEMES -->
+      <section class="docs-section" id="themes">
+        <h2>Themes</h2>
+        <p class="section-desc">Noxen ships with 7 built-in themes. Switch instantly with a single attribute or via JavaScript.</p>
+        <div class="demo-box">
+          <p style="margin-bottom:var(--nx-space-3);color:var(--nx-color-text);">Click a theme to preview:</p>
+          <div class="theme-btn-row" id="theme-switcher">
+            <button class="theme-dot active" style="background:#03030a;" onclick="setTheme('void')" title="Void"></button>
+            <button class="theme-dot" style="background:linear-gradient(135deg,#0ff,#f0f);" onclick="setTheme('neon')" title="Neon"></button>
+            <button class="theme-dot" style="background:#1a1a1a;" onclick="setTheme('carbon')" title="Carbon"></button>
+            <button class="theme-dot" style="background:#0a2a1a;" onclick="setTheme('bio')" title="Bio"></button>
+            <button class="theme-dot" style="background:linear-gradient(135deg,#d4a017,#b8860b);" onclick="setTheme('gold')" title="Gold"></button>
+            <button class="theme-dot" style="background:#f5f0eb;" onclick="setTheme('paper')" title="Paper"></button>
+            <button class="theme-dot" style="background:linear-gradient(135deg,#4158D0,#C850C0);" onclick="setTheme('aurora')" title="Aurora"></button>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;!-- Set theme via attribute --&gt;
+&lt;html data-nx-theme="neon"&gt;
+
+&lt;!-- Or switch via JS --&gt;
+&lt;script&gt;
+  Noxen.theme.set('aurora');
+&lt;/script&gt;</code></pre>
+      </section>
+
+      <!-- TYPOGRAPHY -->
+      <section class="docs-section" id="typography">
+        <h2>Typography</h2>
+        <p class="section-desc">Fluid, responsive typography powered by CSS custom properties and clamp-based scaling.</p>
+        <div class="demo-box">
+          <h1 style="margin-bottom:12px;">Heading 1 — Display</h1>
+          <h2 style="margin-bottom:10px;">Heading 2 — Section Title</h2>
+          <h3 style="margin-bottom:8px;">Heading 3 — Subsection</h3>
+          <h4 style="margin-bottom:8px;">Heading 4 — Card Title</h4>
+          <h5 style="margin-bottom:6px;">Heading 5 — Small Title</h5>
+          <h6 style="margin-bottom:16px;">Heading 6 — Label</h6>
+          <p style="font-size:var(--nx-text-lg);color:var(--nx-color-text-2);margin-bottom:12px;">This is a <strong>lead paragraph</strong> — perfect for hero sections and introductions. It uses a larger font size for emphasis.</p>
+          <p>This is a regular body paragraph. Noxen uses <code>Space Grotesk</code> for body text and <code>Oxanium</code> for display headings. All typography scales fluidly between viewport widths.</p>
+          <div class="blockquote-demo">
+            "The best CSS framework is the one that gets out of your way and lets your design speak."
+            <cite>— The Noxen Team</cite>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;h1&gt;Heading 1&lt;/h1&gt;
+&lt;h2&gt;Heading 2&lt;/h2&gt;
+&lt;h3&gt;Heading 3&lt;/h3&gt;
+&lt;p&gt;Body paragraph with &lt;code&gt;inline code&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;"A great quote."&lt;/blockquote&gt;</code></pre>
+      </section>
+
+      <!-- COLORS -->
+      <section class="docs-section" id="colors">
+        <h2>Colors</h2>
+        <p class="section-desc">A complete semantic color system with accent, surface, and status colors — all as CSS custom properties.</p>
+        <div class="demo-box">
+          <div nx="grid" cols="4" gap="sm" style="margin-bottom:var(--nx-space-4);">
+            <div><div class="color-swatch" style="background:var(--nx-color-accent);"></div><div class="swatch-label">--nx-color-accent</div></div>
+            <div><div class="color-swatch" style="background:var(--nx-color-accent-2);"></div><div class="swatch-label">--nx-color-accent-2</div></div>
+            <div><div class="color-swatch" style="background:var(--nx-color-ok);"></div><div class="swatch-label">--nx-color-ok</div></div>
+            <div><div class="color-swatch" style="background:var(--nx-color-warn);"></div><div class="swatch-label">--nx-color-warn</div></div>
+            <div><div class="color-swatch" style="background:var(--nx-color-err);"></div><div class="swatch-label">--nx-color-err</div></div>
+            <div><div class="color-swatch" style="background:var(--nx-color-info);"></div><div class="swatch-label">--nx-color-info</div></div>
+            <div><div class="color-swatch" style="background:var(--nx-color-surface);"></div><div class="swatch-label">--nx-color-surface</div></div>
+            <div><div class="color-swatch" style="background:var(--nx-color-surface-3);"></div><div class="swatch-label">--nx-color-surface-3</div></div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>/* Use any token in your CSS */
+.my-element {
+  background: var(--nx-color-surface-2);
+  color: var(--nx-color-accent);
+  border: 1px solid var(--nx-color-border);
+}</code></pre>
+      </section>
+
+      <!-- GRID -->
+      <section class="docs-section" id="grid">
+        <h2>Grid System</h2>
+        <p class="section-desc">An intent-based CSS Grid system. No rows needed — just set <code>cols</code> and let Noxen handle the rest.</p>
+        <div class="demo-box">
+          <p style="color:var(--nx-color-text);margin-bottom:var(--nx-space-3);font-weight:600;">12-Column Visual</p>
+          <div nx="grid" cols="6" gap="xs" style="margin-bottom:var(--nx-space-5);">
+            <div class="grid-demo-cell">1</div><div class="grid-demo-cell">2</div>
+            <div class="grid-demo-cell">3</div><div class="grid-demo-cell">4</div>
+            <div class="grid-demo-cell">5</div><div class="grid-demo-cell">6</div>
+          </div>
+          <div nx="grid" cols="4" gap="xs" style="margin-bottom:var(--nx-space-5);">
+            <div class="grid-demo-cell">col</div><div class="grid-demo-cell">col</div>
+            <div class="grid-demo-cell">col</div><div class="grid-demo-cell">col</div>
+          </div>
+          <div nx="grid" cols="3" gap="xs" style="margin-bottom:var(--nx-space-5);">
+            <div class="grid-demo-cell">col-4</div><div class="grid-demo-cell">col-4</div><div class="grid-demo-cell">col-4</div>
+          </div>
+          <div nx="grid" cols="2" gap="xs">
+            <div class="grid-demo-cell">col-6</div><div class="grid-demo-cell">col-6</div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx="grid" cols="3" gap="md"&gt;
+  &lt;div&gt;Column 1&lt;/div&gt;
+  &lt;div&gt;Column 2&lt;/div&gt;
+  &lt;div&gt;Column 3&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Auto-responsive grid --&gt;
+&lt;div nx="grid" cols="auto-md"&gt; ... &lt;/div&gt;
+
+&lt;!-- Layout presets --&gt;
+&lt;div nx="grid" layout="sidebar-main"&gt; ... &lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- BUTTONS -->
+      <section class="docs-section" id="buttons">
+        <h2>Buttons</h2>
+        <p class="section-desc">Full button system with variants, sizes, states, and built-in hover animations.</p>
+        <div class="demo-box">
+          <p style="color:var(--nx-color-text);margin-bottom:var(--nx-space-3);font-weight:600;">Variants</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:var(--nx-space-5);">
+            <button nx="btn">Primary</button>
+            <button nx="btn" variant="outline">Outline</button>
+            <button nx="btn" variant="ghost">Ghost</button>
+            <button nx="btn" variant="solid">Solid</button>
+            <button nx="btn" variant="danger">Danger</button>
+          </div>
+          <p style="color:var(--nx-color-text);margin-bottom:var(--nx-space-3);font-weight:600;">Sizes</p>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:var(--nx-space-5);">
+            <button nx="btn" size="xs">X-Small</button>
+            <button nx="btn" size="sm">Small</button>
+            <button nx="btn">Default</button>
+            <button nx="btn" size="lg">Large</button>
+            <button nx="btn" size="xl">X-Large</button>
+          </div>
+          <p style="color:var(--nx-color-text);margin-bottom:var(--nx-space-3);font-weight:600;">States</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button nx="btn" loading>Loading</button>
+            <button nx="btn" disabled>Disabled</button>
+            <button nx="btn" full style="max-width:300px;">Full Width</button>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;button nx="btn"&gt;Primary&lt;/button&gt;
+&lt;button nx="btn" variant="outline"&gt;Outline&lt;/button&gt;
+&lt;button nx="btn" variant="danger" size="lg"&gt;Delete&lt;/button&gt;
+&lt;button nx="btn" loading&gt;Saving...&lt;/button&gt;</code></pre>
+      </section>
+
+      <!-- BADGES -->
+      <section class="docs-section" id="badges">
+        <h2>Badges &amp; Chips</h2>
+        <p class="section-desc">Semantic badges and interactive chips for labels, statuses, and filters.</p>
+        <div class="demo-box">
+          <p style="color:var(--nx-color-text);margin-bottom:var(--nx-space-3);font-weight:600;">Badges</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:var(--nx-space-5);">
+            <span nx="badge">Default</span>
+            <span nx="badge" tone="ok">● Success</span>
+            <span nx="badge" tone="warn">● Warning</span>
+            <span nx="badge" tone="err">● Error</span>
+            <span nx="badge" tone="info">● Info</span>
+          </div>
+          <p style="color:var(--nx-color-text);margin-bottom:var(--nx-space-3);font-weight:600;">Chips</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span nx="chip">React</span>
+            <span nx="chip" active>Vue</span>
+            <span nx="chip">Svelte</span>
+            <span nx="chip" tone="ok">Online</span>
+            <span nx="chip" tone="err">Offline</span>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;span nx="badge" tone="ok"&gt;● Success&lt;/span&gt;
+&lt;span nx="chip" active&gt;Selected&lt;/span&gt;</code></pre>
+      </section>
+
+      <!-- ALERTS -->
+      <section class="docs-section" id="alerts">
+        <h2>Alerts</h2>
+        <p class="section-desc">Contextual feedback messages with semantic tones and optional dismiss.</p>
+        <div class="demo-box">
+          <div style="display:flex;flex-direction:column;gap:var(--nx-space-3);">
+            <div nx="alert">ℹ️ This is a default informational alert.</div>
+            <div nx="alert" tone="ok">✅ Operation completed successfully!</div>
+            <div nx="alert" tone="warn">⚠️ Please review before submitting.</div>
+            <div nx="alert" tone="err">❌ An error occurred. Please try again.</div>
+            <div nx="alert" tone="info" dismissible>🔮 This alert can be dismissed. Click the × button.</div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx="alert" tone="ok"&gt;✅ Success!&lt;/div&gt;
+&lt;div nx="alert" tone="err" dismissible&gt;Error!&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- CARDS -->
+      <section class="docs-section" id="cards">
+        <h2>Cards</h2>
+        <p class="section-desc">Flexible card components with multiple variants and hover effects.</p>
+        <div class="demo-box">
+          <div nx="grid" cols="3" gap="sm">
+            <div nx="card" size="sm">
+              <h5 style="margin-bottom:8px;">Default Card</h5>
+              <p style="font-size:var(--nx-text-sm);">A standard card with hover lift effect and accent gradient overlay.</p>
+            </div>
+            <div nx="card" variant="accent" size="sm">
+              <h5 style="margin-bottom:8px;">Accent Card</h5>
+              <p style="font-size:var(--nx-text-sm);">Highlighted with the accent color border and background tint.</p>
+            </div>
+            <div nx="card" variant="glass" size="sm">
+              <h5 style="margin-bottom:8px;">Glass Card</h5>
+              <p style="font-size:var(--nx-text-sm);">Frosted glass effect with backdrop blur for modern UIs.</p>
+            </div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx="card"&gt;Default&lt;/div&gt;
+&lt;div nx="card" variant="accent"&gt;Accent&lt;/div&gt;
+&lt;div nx="card" variant="glass"&gt;Glass&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- PROGRESS -->
+      <section class="docs-section" id="progress">
+        <h2>Progress</h2>
+        <p class="section-desc">Animated progress bars with gradient fills and semantic tones.</p>
+        <div class="demo-box">
+          <div style="display:flex;flex-direction:column;gap:var(--nx-space-5);">
+            <div><div class="swatch-label" style="margin-bottom:4px;">Default — 72%</div><div nx="progress" style="--nx-progress:72;"></div></div>
+            <div><div class="swatch-label" style="margin-bottom:4px;">Success — 100%</div><div nx="progress" tone="ok" style="--nx-progress:100;"></div></div>
+            <div><div class="swatch-label" style="margin-bottom:4px;">Warning — 45%</div><div nx="progress" tone="warn" style="--nx-progress:45;" size="lg"></div></div>
+            <div><div class="swatch-label" style="margin-bottom:4px;">Error — 18%</div><div nx="progress" tone="err" style="--nx-progress:18;"></div></div>
+            <div><div class="swatch-label" style="margin-bottom:4px;">Indeterminate</div><div nx="progress" indeterminate></div></div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx="progress" style="--nx-progress: 72;"&gt;&lt;/div&gt;
+&lt;div nx="progress" tone="ok" style="--nx-progress: 100;"&gt;&lt;/div&gt;
+&lt;div nx="progress" indeterminate&gt;&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- TOGGLES -->
+      <section class="docs-section" id="toggles">
+        <h2>Toggles</h2>
+        <p class="section-desc">Accessible toggle switches with size variants and smooth animations.</p>
+        <div class="demo-box">
+          <div style="display:flex;gap:var(--nx-space-5);align-items:center;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;"><span nx="toggle" size="sm"></span><span style="color:var(--nx-color-text-2);font-size:var(--nx-text-sm);">Small</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span nx="toggle" on></span><span style="color:var(--nx-color-text-2);font-size:var(--nx-text-sm);">Default (On)</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span nx="toggle" size="lg"></span><span style="color:var(--nx-color-text-2);font-size:var(--nx-text-sm);">Large</span></div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;span nx="toggle"&gt;&lt;/span&gt;
+&lt;span nx="toggle" on&gt;&lt;/span&gt;
+&lt;span nx="toggle" size="lg"&gt;&lt;/span&gt;</code></pre>
+      </section>
+
+      <!-- ACCORDION -->
+      <section class="docs-section" id="accordion">
+        <h2>Accordion</h2>
+        <p class="section-desc">Collapsible content panels with smooth animations and keyboard support.</p>
+        <div class="demo-box">
+          <div nx="accordion">
+            <div nx="accordion-item"><button nx="accordion-trigger">What is Noxen CSS?</button><div nx="accordion-content"><p style="padding:var(--nx-space-4) 0;">Noxen CSS is a modern, attribute-driven CSS framework that uses nx="" attributes instead of class names for cleaner, more semantic markup.</p></div></div>
+            <div nx="accordion-item"><button nx="accordion-trigger">How do I install it?</button><div nx="accordion-content"><p style="padding:var(--nx-space-4) 0;">Install via npm with <code>npm install noxen-css</code> or use the CDN link directly in your HTML.</p></div></div>
+            <div nx="accordion-item"><button nx="accordion-trigger">Is it production-ready?</button><div nx="accordion-content"><p style="padding:var(--nx-space-4) 0;">Yes! Noxen CSS v2.1.3 is stable, tested, and used in production applications. The minified bundle is ~55KB.</p></div></div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx="accordion"&gt;
+  &lt;div nx="accordion-item"&gt;
+    &lt;button nx="accordion-trigger"&gt;Question?&lt;/button&gt;
+    &lt;div nx="accordion-content"&gt;Answer.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- TABLE -->
+      <section class="docs-section" id="table">
+        <h2>Tables</h2>
+        <p class="section-desc">Clean, styled tables with striped rows and hover highlighting.</p>
+        <div class="demo-box" style="overflow-x:auto;">
+          <table nx="table" striped hover>
+            <thead><tr><th>Property</th><th>Token</th><th>Default</th></tr></thead>
+            <tbody>
+              <tr><td>Accent Color</td><td><code>--nx-color-accent</code></td><td>#00e5ff</td></tr>
+              <tr><td>Font Body</td><td><code>--nx-font-body</code></td><td>Space Grotesk</td></tr>
+              <tr><td>Radius Medium</td><td><code>--nx-radius-md</code></td><td>10px</td></tr>
+              <tr><td>Shadow Glow</td><td><code>--nx-shadow-glow</code></td><td>0 0 24px accent</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="demo-code"><code>&lt;table nx="table" striped hover&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+  &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;...&lt;/td&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+      </section>
+
+      <!-- FORMS -->
+      <section class="docs-section" id="forms">
+        <h2>Forms</h2>
+        <p class="section-desc">Styled form controls with focus glow, validation states, and variant styles.</p>
+        <div class="demo-box">
+          <div nx="grid" cols="2" gap="md">
+            <!-- Login Form -->
+            <div nx="card" size="sm" no-hover>
+              <h5 style="margin-bottom:var(--nx-space-4);">Login</h5>
+              <div style="margin-bottom:var(--nx-space-3);"><label nx="label" style="margin-bottom:4px;">Email</label><input nx="input" type="email" placeholder="you@example.com"></div>
+              <div style="margin-bottom:var(--nx-space-4);"><label nx="label" style="margin-bottom:4px;">Password</label><input nx="input" type="password" placeholder="••••••••"></div>
+              <button nx="btn" full>Sign In</button>
+            </div>
+            <!-- Contact Form -->
+            <div nx="card" size="sm" no-hover>
+              <h5 style="margin-bottom:var(--nx-space-4);">Contact</h5>
+              <div style="margin-bottom:var(--nx-space-3);"><label nx="label" style="margin-bottom:4px;">Name</label><input nx="input" placeholder="John Doe"></div>
+              <div style="margin-bottom:var(--nx-space-3);"><label nx="label" style="margin-bottom:4px;">Subject</label><select nx="select"><option>General Inquiry</option><option>Bug Report</option><option>Feature Request</option></select></div>
+              <div style="margin-bottom:var(--nx-space-4);"><label nx="label" style="margin-bottom:4px;">Message</label><textarea nx="textarea" placeholder="Your message..." style="min-height:70px;"></textarea></div>
+              <button nx="btn">Send Message</button>
+            </div>
+          </div>
+          <div style="margin-top:var(--nx-space-5);">
+            <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Input Variants</p>
+            <div nx="grid" cols="3" gap="sm">
+              <div><label nx="label" muted style="margin-bottom:4px;">Default</label><input nx="input" placeholder="Default"></div>
+              <div><label nx="label" muted style="margin-bottom:4px;">Filled</label><input nx="input" variant="filled" placeholder="Filled"></div>
+              <div><label nx="label" muted style="margin-bottom:4px;">Underline</label><input nx="input" variant="underline" placeholder="Underline"></div>
+            </div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;label nx="label"&gt;Email&lt;/label&gt;
+&lt;input nx="input" type="email" placeholder="you@example.com"&gt;
+
+&lt;textarea nx="textarea" placeholder="Message"&gt;&lt;/textarea&gt;
+
+&lt;select nx="select"&gt;
+  &lt;option&gt;Option 1&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+      </section>
+
+      <!-- SPACING -->
+      <section class="docs-section" id="spacing">
+        <h2>Spacing</h2>
+        <p class="section-desc">A 4px-based spacing scale from <code>--nx-space-1</code> (4px) to <code>--nx-space-10</code> (128px).</p>
+        <div class="demo-box">
+          <div class="spacer-demo">
+            <div><div class="spacer-block" style="width:24px;height:4px;"></div><div class="spacer-label">1 · 4px</div></div>
+            <div><div class="spacer-block" style="width:24px;height:8px;"></div><div class="spacer-label">2 · 8px</div></div>
+            <div><div class="spacer-block" style="width:24px;height:12px;"></div><div class="spacer-label">3 · 12px</div></div>
+            <div><div class="spacer-block" style="width:24px;height:16px;"></div><div class="spacer-label">4 · 16px</div></div>
+            <div><div class="spacer-block" style="width:24px;height:24px;"></div><div class="spacer-label">5 · 24px</div></div>
+            <div><div class="spacer-block" style="width:24px;height:32px;"></div><div class="spacer-label">6 · 32px</div></div>
+            <div><div class="spacer-block" style="width:24px;height:48px;"></div><div class="spacer-label">7 · 48px</div></div>
+            <div><div class="spacer-block" style="width:24px;height:64px;"></div><div class="spacer-label">8 · 64px</div></div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>/* Use spacing tokens anywhere */
+.my-section {
+  padding: var(--nx-space-6);      /* 32px */
+  margin-bottom: var(--nx-space-8); /* 64px */
+  gap: var(--nx-space-4);          /* 16px */
+}</code></pre>
+      </section>
+
+      <!-- UTILITIES -->
+      <section class="docs-section" id="utilities">
+        <h2>Utility Classes</h2>
+        <p class="section-desc">Noxen provides utility attributes for common patterns — animations, hover effects, and scroll reveals.</p>
+        <div class="demo-box">
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Hover Effects</p>
+          <div style="display:flex;gap:var(--nx-space-3);flex-wrap:wrap;margin-bottom:var(--nx-space-5);">
+            <div nx="card" size="sm" nx-hover="lift" style="cursor:pointer;"><code>nx-hover="lift"</code></div>
+            <div nx="card" size="sm" nx-hover="scale" style="cursor:pointer;"><code>nx-hover="scale"</code></div>
+            <div nx="card" size="sm" nx-hover="glow" style="cursor:pointer;"><code>nx-hover="glow"</code></div>
+          </div>
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Animation Utilities</p>
+          <div style="display:flex;gap:var(--nx-space-4);flex-wrap:wrap;align-items:center;">
+            <div style="width:32px;height:32px;background:var(--nx-color-accent);border-radius:50%;" nx-animate="pulse"></div>
+            <span style="color:var(--nx-color-text-3);font-size:var(--nx-text-xs);font-family:var(--nx-font-mono);">pulse</span>
+            <div style="width:32px;height:32px;background:var(--nx-color-accent-2);border-radius:50%;" nx-animate="bounce"></div>
+            <span style="color:var(--nx-color-text-3);font-size:var(--nx-text-xs);font-family:var(--nx-font-mono);">bounce</span>
+            <div style="width:32px;height:32px;background:var(--nx-color-ok);border-radius:var(--nx-radius-sm);" nx-animate="spin-slow"></div>
+            <span style="color:var(--nx-color-text-3);font-size:var(--nx-text-xs);font-family:var(--nx-font-mono);">spin-slow</span>
+            <div style="width:32px;height:32px;background:var(--nx-color-warn);border-radius:50%;" nx-animate="float"></div>
+            <span style="color:var(--nx-color-text-3);font-size:var(--nx-text-xs);font-family:var(--nx-font-mono);">float</span>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;!-- Hover effects --&gt;
+&lt;div nx-hover="lift"&gt;Lifts on hover&lt;/div&gt;
+&lt;div nx-hover="glow"&gt;Glows on hover&lt;/div&gt;
+
+&lt;!-- Animations --&gt;
+&lt;div nx-animate="pulse"&gt;...&lt;/div&gt;
+&lt;div nx-animate="float"&gt;...&lt;/div&gt;
+
+&lt;!-- Scroll reveal --&gt;
+&lt;div nx-scroll-reveal="rise"&gt;Appears on scroll&lt;/div&gt;</code></pre>
+      </section>
+
+
+      <!-- SIDEBAR -->
+      <section class="docs-section" id="sidebar-demo">
+        <h2>Sidebar &amp; Dashboard</h2>
+        <p class="section-desc">Full sidebar navigation with collapsible sub-menus, mobile drawer mode, and dashboard layout system.</p>
+        <div class="demo-box">
+          <div style="display:flex;border:1px solid var(--nx-color-border);border-radius:var(--nx-radius-lg);overflow:hidden;height:320px;">
+            <div id="demo-sidebar" nx="sidebar" style="min-height:auto;width:220px;border-radius:0;">
+              <div nx="sidebar-header">
+                <div nx="sidebar-logo">N</div>
+                <span nx="sidebar-logo-text">Noxen</span>
+                <button nx="sidebar-toggle" class="desktop-only" title="Collapse">&#8676;</button>
+              </div>
+              <div nx="sidebar-body">
+                <div nx="sidebar-section">
+                  <div nx="sidebar-section-title">Main</div>
+                  <a nx="sidebar-link" active data-label="Dashboard"><span nx="sidebar-icon">📊</span><span nx="sidebar-link-text">Dashboard</span></a>
+                  <a nx="sidebar-link" data-label="Users"><span nx="sidebar-icon">👥</span><span nx="sidebar-link-text">Users</span><span nx="sidebar-badge">24</span></a>
+                  <a nx="sidebar-link" has-sub data-label="Settings"><span nx="sidebar-icon">⚙️</span><span nx="sidebar-link-text">Settings</span><span class="sb-chevron"></span></a>
+                  <div nx="sidebar-sub"><a nx="sidebar-sub-link">General</a><a nx="sidebar-sub-link" active>Security</a><a nx="sidebar-sub-link">API Keys</a></div>
+                </div>
+              </div>
+              <div nx="sidebar-footer"><span style="font-size:var(--nx-text-xs);color:var(--nx-color-text-3);">v2.1.3</span></div>
+            </div>
+            <div style="flex:1;padding:var(--nx-space-5);overflow:auto;background:var(--nx-color-bg);">
+              <h4 style="margin-bottom:var(--nx-space-3);">Dashboard Content</h4>
+              <p style="font-size:var(--nx-text-sm);">This is the main content area. The sidebar supports collapse, sub-menus, badges, sections, and mobile drawer mode.</p>
+            </div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx="dashboard-layout"&gt;
+  &lt;nav id="sidebar" nx="sidebar"&gt;
+    &lt;div nx="sidebar-header"&gt;
+      &lt;div nx="sidebar-logo"&gt;N&lt;/div&gt;
+      &lt;span nx="sidebar-logo-text"&gt;App&lt;/span&gt;
+      &lt;button nx="sidebar-toggle"&gt;&amp;#8676;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div nx="sidebar-body"&gt;...&lt;/div&gt;
+  &lt;/nav&gt;
+  &lt;div nx="sidebar-overlay"&gt;&lt;/div&gt;
+  &lt;main nx="dashboard-main"&gt;...&lt;/main&gt;
+&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- NAVBAR -->
+      <section class="docs-section" id="navigation">
+        <h2>Navigation</h2>
+        <p class="section-desc">Sticky/fixed navbars with glass effect, mobile collapse, dropdowns, and mega menus.</p>
+        <div class="demo-box">
+          <nav nx="navbar" glass style="border-radius:var(--nx-radius-lg);position:relative;">
+            <div style="font-family:var(--nx-font-display);font-weight:700;">MyApp</div>
+            <div style="flex:1;"></div>
+            <a nx="nav-link">Home</a>
+            <a nx="nav-link" active>Docs</a>
+            <div nx="dropdown">
+              <button nx="btn" variant="ghost" size="sm">Menu ▾</button>
+              <div nx="dropdown-menu">
+                <div nx="dropdown-item">Profile</div>
+                <div nx="dropdown-item">Settings</div>
+                <div nx="dropdown-item">Logout</div>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <pre class="demo-code"><code>&lt;nav nx="navbar" sticky glass&gt;
+  &lt;div&gt;Logo&lt;/div&gt;
+  &lt;a nx="nav-link" active&gt;Home&lt;/a&gt;
+  &lt;div nx="dropdown"&gt;
+    &lt;button nx="btn" variant="ghost"&gt;Menu ▾&lt;/button&gt;
+    &lt;div nx="dropdown-menu"&gt;
+      &lt;div nx="dropdown-item"&gt;Item&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+      </section>
+
+      <!-- TOAST -->
+      <section class="docs-section" id="toasts">
+        <h2>Toast Notifications</h2>
+        <p class="section-desc">Programmatic toast notifications via <code>Noxen.toast</code> API with auto-dismiss and semantic tones.</p>
+        <div class="demo-box">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button nx="btn" size="sm" onclick="Noxen.toast.success('File saved successfully!',{title:'Success'})">Success Toast</button>
+            <button nx="btn" variant="ghost" size="sm" onclick="Noxen.toast.warn('Storage almost full',{title:'Warning'})">Warning Toast</button>
+            <button nx="btn" variant="danger" size="sm" onclick="Noxen.toast.error('Connection lost',{title:'Error'})">Error Toast</button>
+            <button nx="btn" variant="outline" size="sm" onclick="Noxen.toast.info('New version available',{title:'Info'})">Info Toast</button>
+          </div>
+        </div>
+        <pre class="demo-code"><code>Noxen.toast.success('Saved!', { title: 'Success' });
+Noxen.toast.error('Failed!', { duration: 6000 });
+Noxen.toast.info('New update available');</code></pre>
+      </section>
+
+      <!-- MODAL -->
+      <section class="docs-section" id="modal">
+        <h2>Modal</h2>
+        <p class="section-desc">Dialog modals with backdrop blur, keyboard dismiss, and focus trapping.</p>
+        <div class="demo-box">
+          <button nx="btn" data-nx-modal="demo-modal">Open Modal</button>
+        </div>
+        <div nx="modal-backdrop" data-modal-id="demo-modal">
+          <div nx="modal">
+            <h3 style="margin-bottom:var(--nx-space-3);">Confirm Action</h3>
+            <p style="margin-bottom:var(--nx-space-5);">Are you sure you want to proceed? This action cannot be undone.</p>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+              <button nx="btn" variant="ghost" data-nx-modal-close>Cancel</button>
+              <button nx="btn" data-nx-modal-close>Confirm</button>
+            </div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;button nx="btn" data-nx-modal="my-modal"&gt;Open&lt;/button&gt;
+&lt;div nx="modal-backdrop" data-modal-id="my-modal"&gt;
+  &lt;div nx="modal"&gt;
+    &lt;h3&gt;Title&lt;/h3&gt;
+    &lt;p&gt;Content&lt;/p&gt;
+    &lt;button data-nx-modal-close&gt;Close&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- TABS -->
+      <section class="docs-section" id="tabs">
+        <h2>Tabs</h2>
+        <p class="section-desc">Accessible tabbed navigation with ARIA roles and keyboard support.</p>
+        <div class="demo-box">
+          <div nx="tabs" style="margin-bottom:var(--nx-space-4);">
+            <span nx="tab" class="active" data-target="tab1">Overview</span>
+            <span nx="tab" data-target="tab2">Features</span>
+            <span nx="tab" data-target="tab3">Pricing</span>
+          </div>
+          <div data-tab-panel="tab1"><p>Overview content — the main tab panel.</p></div>
+          <div data-tab-panel="tab2" hidden><p>Features: Grid, Components, Themes, Motion, Antigravity, AI Palette.</p></div>
+          <div data-tab-panel="tab3" hidden><p>Noxen CSS is free and open-source under MIT license.</p></div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx="tabs"&gt;
+  &lt;span nx="tab" class="active" data-target="t1"&gt;Tab 1&lt;/span&gt;
+  &lt;span nx="tab" data-target="t2"&gt;Tab 2&lt;/span&gt;
+&lt;/div&gt;
+&lt;div data-tab-panel="t1"&gt;Content 1&lt;/div&gt;
+&lt;div data-tab-panel="t2" hidden&gt;Content 2&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- MOTION -->
+      <section class="docs-section" id="motion">
+        <h2>Motion System</h2>
+        <p class="section-desc">Entrance animations, scroll reveals, stagger groups, continuous animations, and hover transitions — all respecting <code>prefers-reduced-motion</code>.</p>
+        <div class="demo-box">
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Entrance Animations</p>
+          <div nx="grid" cols="4" gap="sm" nx-stagger style="margin-bottom:var(--nx-space-5);">
+            <div nx="card" size="sm" no-hover nx-enter="fade"><code>fade</code></div>
+            <div nx="card" size="sm" no-hover nx-enter="rise"><code>rise</code></div>
+            <div nx="card" size="sm" no-hover nx-enter="scale"><code>scale</code></div>
+            <div nx="card" size="sm" no-hover nx-enter="blur"><code>blur</code></div>
+          </div>
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Continuous Animations</p>
+          <div style="display:flex;gap:var(--nx-space-5);flex-wrap:wrap;align-items:center;margin-bottom:var(--nx-space-5);">
+            <div style="text-align:center;"><div style="width:40px;height:40px;background:var(--nx-color-accent);border-radius:50%;margin:0 auto 6px;" nx-animate="pulse"></div><span class="swatch-label">pulse</span></div>
+            <div style="text-align:center;"><div style="width:40px;height:40px;background:var(--nx-color-accent-2);border-radius:50%;margin:0 auto 6px;" nx-animate="bounce"></div><span class="swatch-label">bounce</span></div>
+            <div style="text-align:center;"><div style="width:40px;height:40px;background:var(--nx-color-ok);border-radius:var(--nx-radius-sm);margin:0 auto 6px;" nx-animate="spin-slow"></div><span class="swatch-label">spin</span></div>
+            <div style="text-align:center;"><div style="width:40px;height:40px;background:var(--nx-color-warn);border-radius:50%;margin:0 auto 6px;" nx-animate="float"></div><span class="swatch-label">float</span></div>
+            <div style="text-align:center;"><div style="width:40px;height:40px;border:2px solid var(--nx-color-accent);border-radius:50%;margin:0 auto 6px;" nx-animate="glow"></div><span class="swatch-label">glow</span></div>
+          </div>
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Scroll Reveal</p>
+          <div nx="grid" cols="3" gap="sm">
+            <div nx="card" size="sm" no-hover nx-scroll-reveal="rise"><code>rise</code> on scroll</div>
+            <div nx="card" size="sm" no-hover nx-scroll-reveal="slide-left"><code>slide-left</code></div>
+            <div nx="card" size="sm" no-hover nx-scroll-reveal="scale"><code>scale</code></div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;!-- Entrance --&gt;
+&lt;div nx-enter="rise"&gt;Animates in&lt;/div&gt;
+
+&lt;!-- Stagger group --&gt;
+&lt;div nx-stagger&gt;
+  &lt;div nx-enter="fade"&gt;1&lt;/div&gt;
+  &lt;div nx-enter="fade"&gt;2&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Scroll reveal --&gt;
+&lt;div nx-scroll-reveal="rise"&gt;Appears on scroll&lt;/div&gt;
+
+&lt;!-- Continuous --&gt;
+&lt;div nx-animate="float"&gt;Floats&lt;/div&gt;</code></pre>
+      </section>
+
+
+      <!-- ANTIGRAVITY -->
+      <section class="docs-section" id="antigravity">
+        <h2>Antigravity Engine</h2>
+        <p class="section-desc">The world's first CSS gravity system — mirror, reflect, floor, zone, pair, and invert transforms.</p>
+        <div class="demo-box">
+          <div nx="grid" cols="3" gap="md">
+            <div>
+              <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Mirror</p>
+              <div nx="card" size="sm" no-hover>
+                <p style="margin-bottom:8px;">Original text</p>
+                <div nx-ag="mirror" style="color:var(--nx-color-text-3);opacity:0.5;">
+                  <p>Mirrored reflection</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Zone Pull</p>
+              <div nx-ag="zone" nx-ag-pull="center" style="height:120px;background:var(--nx-color-surface-2);border-radius:var(--nx-radius-md);border:1px solid var(--nx-color-border);">
+                <span nx="badge">Centered</span>
+              </div>
+            </div>
+            <div>
+              <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Pair + Seam</p>
+              <div nx-ag="pair">
+                <div style="background:var(--nx-color-surface-2);padding:var(--nx-space-4);border-radius:var(--nx-radius-md) var(--nx-radius-md) 0 0;text-align:center;font-size:var(--nx-text-sm);color:var(--nx-color-text-2);">Top Half</div>
+                <div nx-ag-seam></div>
+                <div style="background:var(--nx-color-surface-2);padding:var(--nx-space-4);border-radius:0 0 var(--nx-radius-md) var(--nx-radius-md);text-align:center;font-size:var(--nx-text-sm);color:var(--nx-color-text-2);">Bottom Half</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx-ag="mirror"&gt;Flipped content&lt;/div&gt;
+&lt;div nx-ag="reflect"&gt;Ghost reflection&lt;/div&gt;
+&lt;div nx-ag="floor"&gt;Bottom-stacked&lt;/div&gt;
+&lt;div nx-ag="zone" nx-ag-pull="center"&gt;Gravity zone&lt;/div&gt;
+
+&lt;!-- Antigravity Pair with glowing seam --&gt;
+&lt;div nx-ag="pair"&gt;
+  &lt;div&gt;Top section&lt;/div&gt;
+  &lt;div nx-ag-seam&gt;&lt;/div&gt;
+  &lt;div&gt;Bottom section&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- AI PALETTE -->
+      <section class="docs-section" id="palette">
+        <h2>AI Palette Engine</h2>
+        <p class="section-desc">Generate a complete design system from a single hex color using <code>Noxen.palette.apply()</code>.</p>
+        <div class="demo-box">
+          <div style="display:flex;gap:var(--nx-space-3);align-items:center;flex-wrap:wrap;margin-bottom:var(--nx-space-4);">
+            <input type="color" id="palette-color" value="#6366f1" style="width:48px;height:36px;border:none;border-radius:var(--nx-radius-md);cursor:pointer;background:none;">
+            <button nx="btn" size="sm" onclick="Noxen.palette.apply(document.getElementById('palette-color').value)">Generate Palette</button>
+            <button nx="btn" variant="ghost" size="sm" onclick="Noxen.theme.set('void')">Reset to Void</button>
+          </div>
+          <p style="font-size:var(--nx-text-sm);color:var(--nx-color-text-3);">Pick any color above and click "Generate" — Noxen derives surfaces, text, borders, and accents automatically.</p>
+        </div>
+        <pre class="demo-code"><code>// Generate palette from any color
+const tokens = Noxen.palette.fromHex('#6366f1');
+
+// Apply as a new theme
+Noxen.palette.apply('#ff6b6b', 'my-brand');
+
+// Preview without applying
+const preview = Noxen.palette.preview('#10b981');</code></pre>
+      </section>
+
+      <!-- DATA DISPLAY -->
+      <section class="docs-section" id="data-display">
+        <h2>Data Display</h2>
+        <p class="section-desc">Stat cards, avatars, avatar groups, skeletons, and tooltips for rich data interfaces.</p>
+        <div class="demo-box">
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Stats</p>
+          <div nx="grid" cols="4" gap="sm" style="margin-bottom:var(--nx-space-5);">
+            <div nx="card" size="sm" no-hover><div nx="stat"><span nx="stat-label">Revenue</span><span nx="stat-value">$48.2k</span><span nx="stat-desc">↑ 12% from last month</span></div></div>
+            <div nx="card" size="sm" no-hover><div nx="stat"><span nx="stat-label">Users</span><span nx="stat-value">2,847</span><span nx="stat-desc">↑ 8% this week</span></div></div>
+            <div nx="card" size="sm" no-hover><div nx="stat"><span nx="stat-label">Orders</span><span nx="stat-value">1,234</span><span nx="stat-desc">↓ 3% today</span></div></div>
+            <div nx="card" size="sm" no-hover><div nx="stat"><span nx="stat-label">Rating</span><span nx="stat-value">4.9</span><span nx="stat-desc">★★★★★</span></div></div>
+          </div>
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Avatars &amp; Tooltips</p>
+          <div style="display:flex;gap:var(--nx-space-5);align-items:center;flex-wrap:wrap;margin-bottom:var(--nx-space-5);">
+            <div nx="avatar" size="xs">A</div>
+            <div nx="avatar" size="sm">B</div>
+            <div nx="avatar">C</div>
+            <div nx="avatar" size="lg">D</div>
+            <div nx="avatar" size="xl">E</div>
+            <div style="margin-left:var(--nx-space-4);">
+              <div nx="avatar-group">
+                <div nx="avatar">J</div><div nx="avatar">K</div><div nx="avatar">L</div><div nx="avatar" style="background:var(--nx-color-accent-lo);color:var(--nx-color-accent);">+3</div>
+              </div>
+            </div>
+            <div nx="tooltip" tip="I'm a tooltip!"><button nx="btn" variant="ghost" size="sm">Hover me</button></div>
+          </div>
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Skeleton Loaders</p>
+          <div nx="grid" cols="3" gap="sm">
+            <div><div nx="skeleton" style="width:100%;height:14px;margin-bottom:8px;"></div><div nx="skeleton" style="width:75%;height:14px;margin-bottom:8px;"></div><div nx="skeleton" style="width:50%;height:14px;"></div></div>
+            <div><div nx="skeleton" style="width:100%;height:80px;border-radius:var(--nx-radius-md);margin-bottom:8px;"></div><div nx="skeleton" style="width:60%;height:12px;"></div></div>
+            <div><div style="display:flex;gap:8px;align-items:center;"><div nx="skeleton" style="width:40px;height:40px;border-radius:50%;"></div><div style="flex:1;"><div nx="skeleton" style="width:100%;height:12px;margin-bottom:6px;"></div><div nx="skeleton" style="width:60%;height:12px;"></div></div></div></div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx="stat"&gt;
+  &lt;span nx="stat-label"&gt;Revenue&lt;/span&gt;
+  &lt;span nx="stat-value"&gt;$48.2k&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div nx="avatar-group"&gt;
+  &lt;div nx="avatar"&gt;A&lt;/div&gt;
+  &lt;div nx="avatar"&gt;B&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div nx="skeleton" style="width:100%;height:14px;"&gt;&lt;/div&gt;
+
+&lt;div nx="tooltip" tip="Hello!"&gt;Hover me&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- LAYOUT UTILITIES -->
+      <section class="docs-section" id="layout-utils">
+        <h2>Layout Utilities</h2>
+        <p class="section-desc">Flex row, stack, center, divider, and spacer utilities for quick layouts.</p>
+        <div class="demo-box">
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Row &amp; Stack</p>
+          <div nx="row" justify="between" style="background:var(--nx-color-surface-2);padding:var(--nx-space-3);border-radius:var(--nx-radius-md);margin-bottom:var(--nx-space-4);">
+            <span nx="badge">Left</span>
+            <span nx="badge" tone="info">Center</span>
+            <span nx="badge" tone="ok">Right</span>
+          </div>
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);">Dividers</p>
+          <div nx="divider"></div>
+          <div nx="divider" variant="accent"></div>
+          <p style="color:var(--nx-color-text);font-weight:600;margin-bottom:var(--nx-space-3);margin-top:var(--nx-space-4);">Container Sizes</p>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="max-width:640px;width:100%;height:20px;background:var(--nx-color-accent-lo);border:1px dashed var(--nx-color-border-2);border-radius:var(--nx-radius-xs);display:flex;align-items:center;padding:0 8px;"><span class="swatch-label">sm — 640px</span></div>
+            <div style="max-width:768px;width:100%;height:20px;background:var(--nx-color-accent-lo);border:1px dashed var(--nx-color-border-2);border-radius:var(--nx-radius-xs);display:flex;align-items:center;padding:0 8px;"><span class="swatch-label">md — 768px</span></div>
+            <div style="width:100%;height:20px;background:var(--nx-color-accent-lo);border:1px dashed var(--nx-color-border-2);border-radius:var(--nx-radius-xs);display:flex;align-items:center;padding:0 8px;"><span class="swatch-label">default — 1200px</span></div>
+          </div>
+        </div>
+        <pre class="demo-code"><code>&lt;div nx="row" justify="between"&gt;...&lt;/div&gt;
+&lt;div nx="stack" gap="md"&gt;...&lt;/div&gt;
+&lt;div nx="center"&gt;Perfectly centered&lt;/div&gt;
+&lt;div nx="divider" variant="accent"&gt;&lt;/div&gt;
+&lt;div nx="container" size="sm"&gt;...&lt;/div&gt;</code></pre>
+      </section>
+
+      <!-- TOKEN EXPORT -->
+      <section class="docs-section" id="tokens-section">
+        <h2>Token Engine &amp; Export</h2>
+        <p class="section-desc">Override, export, and bridge tokens to Swift, Kotlin, Figma, SCSS, or CSS.</p>
+        <div class="demo-box">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:var(--nx-space-4);">
+            <button nx="btn" size="sm" variant="ghost" onclick="console.log(Noxen.tokens.export('css'));Noxen.toast.info('CSS tokens logged to console')">Export CSS</button>
+            <button nx="btn" size="sm" variant="ghost" onclick="console.log(Noxen.tokens.export('json'));Noxen.toast.info('JSON tokens logged to console')">Export JSON</button>
+            <button nx="btn" size="sm" variant="ghost" onclick="console.log(Noxen.tokens.export('scss'));Noxen.toast.info('SCSS tokens logged to console')">Export SCSS</button>
+            <button nx="btn" size="sm" variant="ghost" onclick="console.log(Noxen.tokens.export('swift'));Noxen.toast.info('Swift tokens logged to console')">Export Swift</button>
+          </div>
+          <p style="font-size:var(--nx-text-sm);color:var(--nx-color-text-3);">Tokens are exported to the browser console. Open DevTools (F12) to see the output.</p>
+        </div>
+        <pre class="demo-code"><code>// Override tokens
+Noxen.tokens.set('--nx-color-accent', '#ff6b6b');
+
+// Export for any platform
+const css = Noxen.tokens.export('css');
+const json = Noxen.tokens.export('json');
+const swift = Noxen.tokens.export('swift');
+const figma = Noxen.tokens.export('figma');</code></pre>
+      </section>
+
+      <!-- ACCESSIBILITY -->
+      <section class="docs-section" id="a11y">
+        <h2>Accessibility</h2>
+        <p class="section-desc">Auto-ARIA injection, keyboard navigation, skip links, reduced motion support, and full page audits.</p>
+        <div class="demo-box">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:var(--nx-space-4);">
+            <button nx="btn" size="sm" onclick="const r=Noxen.a11y.audit();Noxen.toast.info(`${r.errors} errors, ${r.warnings} warnings`,{title:'A11y Audit'})">Run A11y Audit</button>
+          </div>
+          <div nx="alert" tone="ok" style="margin-top:var(--nx-space-3);">✅ Auto-ARIA: Noxen automatically injects <code>role</code>, <code>aria-expanded</code>, <code>aria-checked</code>, <code>tabindex</code>, and keyboard handlers on all interactive components.</div>
+        </div>
+        <pre class="demo-code"><code>// Run accessibility audit
+const result = Noxen.a11y.audit();
+// → { errors: 0, warnings: 2, issues: [...] }
+
+// Auto-injected: roles, aria-labels, keyboard nav
+// Respects prefers-reduced-motion automatically</code></pre>
+      </section>
+
+
+    </main>
+  </div>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="docs-footer">
+    <div class="footer-links">
+      <a href="#">Documentation</a>
+      <a href="#">GitHub</a>
+      <a href="#">npm</a>
+      <a href="#">Discord</a>
+      <a href="#">Twitter</a>
+    </div>
+    <p>Noxen CSS v2.1.3 · MIT License · Built with ♥ for developers</p>
+    <p style="margin-top:var(--nx-space-2);">© 2024 Noxen. All rights reserved.</p>
+  </footer>
+
+  <script src="dist/noxen.js"></script>
+  <script>
+    // Theme switcher
+    function setTheme(name) {
+      Noxen.theme.set(name);
+      document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Scrollspy for sidebar
+    const sections = document.querySelectorAll('.docs-section');
+    const sbLinks = document.querySelectorAll('.sb-link');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          sbLinks.forEach(l => l.classList.remove('active'));
+          const link = document.querySelector(`.sb-link[href="#${entry.target.id}"]`);
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '-80px 0px -60% 0px' });
+    sections.forEach(s => observer.observe(s));
+
+    // Smooth scroll for sidebar links
+    sbLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+</html>
